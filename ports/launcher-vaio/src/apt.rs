@@ -170,6 +170,13 @@ impl AptBackend {
         let busy = self.query_busy.clone();
         std::thread::spawn(move || {
             let _ = sender.send(Event::CheckStarted);
+            // Installed apps remain usable while a slow/offline archive check runs.
+            if online {
+                if let Ok(events) = state_events() {
+                    for event in events { let _ = sender.send(event); }
+                    context.request_repaint();
+                }
+            }
             let source = if online {
                 match refresh() {
                     Ok(_) => Source::Apt,

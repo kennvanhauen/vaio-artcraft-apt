@@ -1,0 +1,68 @@
+{
+  "versions": {
+    "wordcraft-vaio": "0.8.0~vaio5",
+    "pdfcraft-vaio": "0.9.0~vaio1",
+    "figcraft-vaio": "0.7.0~vaio1",
+    "gridcraft-vaio": "0.8.0~vaio1",
+    "artcraft-launcher-vaio": "0.5.1~vaio8",
+    "designcraft-vaio": "0.9.0~vaio1",
+    "deckcraft-vaio": "0.8.0~vaio1",
+    "vectorcraft-vaio": "0.13.1~vaio1"
+  },
+  "policy": "figcraft-vaio:\n  Installed: 0.7.0~vaio1\n  Candidate: 0.7.0~vaio1\n  Version table:\n *** 0.7.0~vaio1 500\n         -1 https://kennvanhauen.github.io/vaio-artcraft-apt xenial/main i386 Packages\n        100 /var/lib/dpkg/status\nartcraft-launcher-vaio:\n  Installed: 0.5.1~vaio8\n  Candidate: 0.5.1~vaio8\n  Version table:\n *** 0.5.1~vaio8 500\n         -1 https://kennvanhauen.github.io/vaio-artcraft-apt xenial/main i386 Packages\n        100 /var/lib/dpkg/status",
+  "key_sha256": "dfe2482d39a8785758534e312440b21fa494004e13a2726f1e4921c27cb561f1",
+  "source": "deb [arch=i386 signed-by=/usr/share/keyrings/vaio-artcraft-archive-keyring.gpg] https://kennvanhauen.github.io/vaio-artcraft-apt xenial main\n",
+  "checks": [
+    "eight installed versions",
+    "package integrity",
+    "manifest binary hashes",
+    "private XCB ownership",
+    "unchanged scoped key",
+    "eight-package APT preference",
+    "native MIME",
+    "no test control listeners"
+  ],
+  "passed": true,
+  "mime": {
+    "repair-club.figcraft": "application/x-figcraft"
+  },
+  "manifests": {
+    "figcraft-vaio": {
+      "zig": "0.14.1",
+      "renderer": "Glow",
+      "port_patch_sha256": "f68aff9830764a9c66e6503e6c4bcedd7146be1bae38afd82d181ef126b40693",
+      "source_revision": "a0d1162976fac1e4a8b8fd49a3948e9d6bad6f40",
+      "binary_sha256": {
+        "figcraft-cli": "290613151f484cdb4aa4dd511abc50fbb9c5097a622874ed48bd77f68171a221",
+        "figcraft": "71a46418c08795523f8c74cb77fdc2cc0c14d49185f6601832f5f19ed873f80b"
+      },
+      "private_libxcb": "1.17.0",
+      "glibc_target": "2.23",
+      "craft_fonts_revision": "43913056ce82a3fdad0ef69f6b88d1dc922a8104",
+      "package_version": "0.7.0~vaio1",
+      "rust": "1.95.0",
+      "target": "i686-unknown-linux-gnu",
+      "cpu": "atom",
+      "embedded_font_faces": 56
+    },
+    "artcraft-launcher-vaio": {
+      "package_version": "0.5.1~vaio8",
+      "upstream_revision": "9cef5d2a0f207da50d31547a726057ea40f7e5b4",
+      "port_patch_sha256": "84cb8b70e9608403f40aada5d094a7b5697852262b9c94978e270d10d1a5ba3b",
+      "target": "i686-unknown-linux-gnu",
+      "private_libxcb": "1.17.0",
+      "cpu": "atom",
+      "binary_sha256": "f385a4c4c535a29cbd2ab47a05d4a512ccc1055207ede74640432c0ae8de9687",
+      "glibc_target": "2.23",
+      "renderer": "Glow"
+    }
+  },
+  "temperatures_millicelsius": [
+    69000
+  ],
+  "memory": "total        used        free      shared  buff/cache   available\nMem:           2004         143         179          14        1681        1610\nSwap:          3038           0        3037",
+  "architecture": "i686",
+  "kernel": "4.4.0-210-generic",
+  "preferences": "Package: wordcraft-vaio gridcraft-vaio pdfcraft-vaio deckcraft-vaio vectorcraft-vaio designcraft-vaio figcraft-vaio artcraft-launcher-vaio\nPin: origin \"kennvanhauen.github.io\"\nPin-Priority: 500\n\nPackage: *\nPin: origin \"kennvanhauen.github.io\"\nPin-Priority: -1\n",
+  "leftover_test_listeners": []
+}

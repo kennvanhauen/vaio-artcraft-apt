@@ -1,0 +1,64 @@
+{
+  "profile": "/tmp/vaio-figcraft-test/recovery-22738",
+  "automatic_copy_seconds": 8.04,
+  "passed": true,
+  "restored": {
+    "name": "Untitled",
+    "textEdit": null,
+    "path": null,
+    "currentPage": 1,
+    "dirty": true,
+    "styles": [],
+    "selection": [],
+    "colorProfile": "srgb",
+    "variables": 0,
+    "history": {
+      "undo": [],
+      "redo": 0
+    },
+    "pages": [
+      {
+        "background": "#F5F5F5",
+        "id": 1,
+        "name": "Page 1",
+        "type": "PAGE",
+        "children": [
+          {
+            "textAutoResize": "height",
+            "name": "Original draft",
+            "x": 0.0,
+            "type": "TEXT",
+            "fontStyle": "Regular",
+            "fontFamily": "Inter",
+            "y": 0.0,
+            "letterSpacing": "0%",
+            "height": 15.0,
+            "textAlign": "left",
+            "sizing": {
+              "vertical": "hug",
+              "horizontal": "fixed"
+            },
+            "fontSize": 12.0,
+            "lineHeight": "Auto",
+            "absoluteBounds": {
+              "width": 360.0,
+              "x": 0.0,
+              "height": 15.0,
+              "y": 0.0
+            },
+            "characters": "Original unsaved FigCraft draft",
+            "id": 2,
+            "width": 360.0,
+            "fills": [
+              {
+                "type": "solid",
+                "color": "#000000"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "images": 0
+  }
+}

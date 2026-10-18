@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "test_groups": 69,
+  "tests_passed": 2798,
+  "tests_failed": 0,
+  "tests_ignored": 8,
+  "host": "macOS arm64",
+  "upstream_revision": "a0d1162976fac1e4a8b8fd49a3948e9d6bad6f40",
+  "temporary_directory": "/private/tmp",
+  "full_ci": "not green: seven unchanged collapsible_match Clippy style errors; WASM target absent",
+  "separate_checks": [
+    "owned-file rustfmt",
+    "asset attribution",
+    "layering",
+    "native i386 GUI Clippy -D warnings -A clippy::collapsible_match",
+    "actual VAIO headless and desktop workflows"
+  ]
+}

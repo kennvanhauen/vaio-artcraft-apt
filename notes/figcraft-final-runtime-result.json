@@ -1,0 +1,14 @@
+{
+  "temperatures_millicelsius": [
+    57000
+  ],
+  "control_listeners": [],
+  "observed_at": "2026-10-19 00:04:05 BST",
+  "memory": "              total        used        free      shared  buff/cache   available\nMem:           2004         138         185          14        1680        1614\nSwap:          3038           0        3037\n",
+  "thermal_throttle_counts": {
+    "/sys/devices/system/cpu/cpu1/thermal_throttle/core_throttle_count": 0,
+    "/sys/devices/system/cpu/cpu0/thermal_throttle/core_throttle_count": 0
+  },
+  "passed": true,
+  "uptime": "00:04:05 up  1:50,  1 user,  load average: 1.02, 1.24, 0.86"
+}

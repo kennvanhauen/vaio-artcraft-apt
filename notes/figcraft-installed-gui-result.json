@@ -1,0 +1,2370 @@
+{
+  "editing_later_idle": {
+    "rss_kib": 112132,
+    "cpu_percent_one_logical_cpu": 0.0
+  },
+  "initial": {
+    "name": "Untitled",
+    "styles": [
+      {
+        "name": "Club/Primary",
+        "type": "paint",
+        "id": "S:1"
+      }
+    ],
+    "variables": 1,
+    "colorProfile": "srgb",
+    "currentPage": 1,
+    "images": 0,
+    "path": "/tmp/vaio-figcraft-test/repair-club.figcraft",
+    "dirty": false,
+    "pages": [
+      {
+        "name": "Page 1",
+        "flows": [
+          {
+            "name": "Workshop booking",
+            "start": 2,
+            "description": ""
+          }
+        ],
+        "type": "PAGE",
+        "id": 1,
+        "children": [
+          {
+            "name": "Repair Club \u2014 Home",
+            "fills": [
+              {
+                "type": "solid",
+                "color": "#F6F2E9"
+              }
+            ],
+            "width": 320.0,
+            "id": 2,
+            "absoluteBounds": {
+              "x": 0.0,
+              "y": 0.0,
+              "height": 480.0,
+              "width": 320.0
+            },
+            "y": 0.0,
+            "type": "FRAME",
+            "children": [
+              {
+                "letterSpacing": "0%",
+                "width": 280.0,
+                "id": 3,
+                "absoluteBounds": {
+                  "x": 20.0,
+                  "y": 22.0,
+                  "height": 27.0,
+                  "width": 280.0
+                },
+                "fontStyle": "Bold",
+                "sizing": {
+                  "horizontal": "fixed",
+                  "vertical": "hug"
+                },
+                "textAutoResize": "height",
+                "height": 27.0,
+                "lineHeight": "Auto",
+                "name": "Heading",
+                "fills": [
+                  {
+                    "type": "solid",
+                    "color": "#155366"
+                  }
+                ],
+                "fontSize": 22.0,
+                "fontFamily": "Inter",
+                "x": 20.0,
+                "characters": "THE REPAIR CLUB",
+                "y": 22.0,
+                "type": "TEXT",
+                "constraints": {
+                  "horizontal": "left",
+                  "vertical": "top"
+                },
+                "textAlign": "left"
+              },
+              {
+                "letterSpacing": "0%",
+                "width": 280.0,
+                "id": 4,
+                "absoluteBounds": {
+                  "x": 20.0,
+                  "y": 65.0,
+                  "height": 17.0,
+                  "width": 280.0
+                },
+                "fontStyle": "Regular",
+                "sizing": {
+                  "horizontal": "fixed",
+                  "vertical": "hug"
+                },
+                "textAutoResize": "height",
+                "height": 17.0,
+                "lineHeight": "Auto",
+                "name": "Subtitle",
+                "fills": [
+                  {
+                    "type": "solid",
+                    "color": "#334155"
+                  }
+                ],
+                "fontSize": 14.0,
+                "fontFamily": "Inter",
+                "x": 20.0,
+                "characters": "Make, mend, and share.",
+                "y": 65.0,
+                "type": "TEXT",
+                "constraints": {
+                  "horizontal": "left",
+                  "vertical": "top"
+                },
+                "textAlign": "left"
+              },
+              {
+                "cornerRadius": 12.0,
+                "width": 280.0,
+                "id": 5,
+                "fills": [
+                  {
+                    "type": "solid",
+                    "color": "#FFFFFF"
+                  }
+                ],
+                "constraints": {
+                  "horizontal": "left",
+                  "vertical": "top"
+                },
+                "sizing": {
+                  "horizontal": "fixed",
+                  "vertical": "fixed"
+                },
+                "clip": true,
+                "height": 240.0,
+                "name": "Auto layout sessions",
+                "absoluteBounds": {
+                  "x": 20.0,
+                  "y": 120.0,
+                  "height": 240.0,
+                  "width": 280.0
+                },
+                "x": 20.0,
+                "type": "FRAME",
+                "y": 120.0,
+                "children": [
+                  {
+                    "cornerRadius": 8.0,
+                    "width": 256.0,
+                    "sizing": {
+                      "horizontal": "fixed",
+                      "vertical": "fixed"
+                    },
+                    "id": 6,
+                    "fills": [
+                      {
+                        "type": "solid",
+                        "color": "#E5F0ED"
+                      }
+                    ],
+                    "type": "FRAME",
+                    "clip": true,
+                    "height": 56.0,
+                    "name": "Welcome",
+                    "absoluteBounds": {
+                      "x": 32.0,
+                      "y": 132.0,
+                      "height": 56.0,
+                      "width": 256.0
+                    },
+                    "x": 12.0,
+                    "y": 12.0,
+                    "children": [
+                      {
+                        "letterSpacing": "0%",
+                        "width": 230.0,
+                        "id": 7,
+                        "absoluteBounds": {
+                          "x": 42.0,
+                          "y": 142.0,
+                          "height": 32.0,
+                          "width": 230.0
+                        },
+                        "fontStyle": "Regular",
+                        "sizing": {
+                          "horizontal": "fixed",
+                          "vertical": "hug"
+                        },
+                        "height": 32.0,
+                        "lineHeight": "Auto",
+                        "name": "Welcome label",
+                        "fills": [
+                          {
+                            "type": "solid",
+                            "color": "#155366"
+                          }
+                        ],
+                        "fontSize": 13.0,
+                        "fontFamily": "Inter",
+                        "x": 10.0,
+                        "characters": "Welcome\nSaturday 10:00",
+                        "y": 10.0,
+                        "type": "TEXT",
+                        "textAutoResize": "height",
+                        "textAlign": "left"
+                      }
+                    ],
+                    "layout": {
+                      "strokesIncluded": true,
+                      "gap": 8.0,
+                      "wrap": false,
+                      "reverseZ": false,
+                      "crossAlign": "min",
+                      "columnTracks": [],
+                      "padding": [
+                        10.0,
+                        10.0,
+                        10.0,
+                        10.0
+                      ],
+                      "gridColumns": 2,
+                      "gridRows": 2,
+                      "crossGap": 10.0,
+                      "mode": "horizontal",
+                      "mainAlign": "min",
+                      "rowTracks": [],
+                      "contentAlign": "auto"
+                    }
+                  },
+                  {
+                    "cornerRadius": 8.0,
+                    "width": 256.0,
+                    "sizing": {
+                      "horizontal": "fixed",
+                      "vertical": "fixed"
+                    },
+                    "id": 8,
+                    "fills": [
+                      {
+                        "type": "solid",
+                        "color": "#E5F0ED"
+                      }
+                    ],
+                    "type": "FRAME",
+                    "clip": true,
+                    "height": 56.0,
+                    "name": "Make and mend",
+                    "absoluteBounds": {
+                      "x": 32.0,
+                      "y": 200.0,
+                      "height": 56.0,
+                      "width": 256.0
+                    },
+                    "x": 12.0,
+                    "y": 80.0,
+                    "children": [
+                      {
+                        "letterSpacing": "0%",
+                        "width": 230.0,
+                        "id": 9,
+                        "absoluteBounds": {
+                          "x": 42.0,
+                          "y": 210.0,
+                          "height": 32.0,
+                          "width": 230.0
+                        },
+                        "fontStyle": "Regular",
+                        "sizing": {
+                          "horizontal": "fixed",
+                          "vertical": "hug"
+                        },
+                        "height": 32.0,
+                        "lineHeight": "Auto",
+                        "name": "Make and mend label",
+                        "fills": [
+                          {
+                            "type": "solid",
+                            "color": "#155366"
+                          }
+                        ],
+                        "fontSize": 13.0,
+                        "fontFamily": "Inter",
+                        "x": 10.0,
+                        "characters": "Make and mend\nSaturday 10:30",
+                        "y": 10.0,
+                        "type": "TEXT",
+                        "textAutoResize": "height",
+                        "textAlign": "left"
+                      }
+                    ],
+                    "layout": {
+                      "strokesIncluded": true,
+                      "gap": 8.0,
+                      "wrap": false,
+                      "reverseZ": false,
+                      "crossAlign": "min",
+                      "columnTracks": [],
+                      "padding": [
+                        10.0,
+                        10.0,
+                        10.0,
+                        10.0
+                      ],
+                      "gridColumns": 2,
+                      "gridRows": 2,
+                      "crossGap": 10.0,
+                      "mode": "horizontal",
+                      "mainAlign": "min",
+                      "rowTracks": [],
+                      "contentAlign": "auto"
+                    }
+                  },
+                  {
+                    "cornerRadius": 8.0,
+                    "width": 256.0,
+                    "sizing": {
+                      "horizontal": "fixed",
+                      "vertical": "fixed"
+                    },
+                    "id": 10,
+                    "fills": [
+                      {
+                        "type": "solid",
+                        "color": "#E5F0ED"
+                      }
+                    ],
+                    "type": "FRAME",
+                    "clip": true,
+                    "height": 56.0,
+                    "name": "Share results",
+                    "absoluteBounds": {
+                      "x": 32.0,
+                      "y": 268.0,
+                      "height": 56.0,
+                      "width": 256.0
+                    },
+                    "x": 12.0,
+                    "y": 148.0,
+                    "children": [
+                      {
+                        "letterSpacing": "0%",
+                        "width": 230.0,
+                        "id": 11,
+                        "absoluteBounds": {
+                          "x": 42.0,
+                          "y": 278.0,
+                          "height": 32.0,
+                          "width": 230.0
+                        },
+                        "fontStyle": "Regular",
+                        "sizing": {
+                          "horizontal": "fixed",
+                          "vertical": "hug"
+                        },
+                        "height": 32.0,
+                        "lineHeight": "Auto",
+                        "name": "Share results label",
+                        "fills": [
+                          {
+                            "type": "solid",
+                            "color": "#155366"
+                          }
+                        ],
+                        "fontSize": 13.0,
+                        "fontFamily": "Inter",
+                        "x": 10.0,
+                        "characters": "Share results\nSaturday 12:00",
+                        "y": 10.0,
+                        "type": "TEXT",
+                        "textAutoResize": "height",
+                        "textAlign": "left"
+                      }
+                    ],
+                    "layout": {
+                      "strokesIncluded": true,
+                      "gap": 8.0,
+                      "wrap": false,
+                      "reverseZ": false,
+                      "crossAlign": "min",
+                      "columnTracks": [],
+                      "padding": [
+                        10.0,
+                        10.0,
+                        10.0,
+                        10.0
+                      ],
+                      "gridColumns": 2,
+                      "gridRows": 2,
+                      "crossGap": 10.0,
+                      "mode": "horizontal",
+                      "mainAlign": "min",
+                      "rowTracks": [],
+                      "contentAlign": "auto"
+                    }
+                  }
+                ],
+                "layout": {
+                  "strokesIncluded": true,
+                  "gap": 12.0,
+                  "wrap": false,
+                  "reverseZ": false,
+                  "crossAlign": "min",
+                  "columnTracks": [],
+                  "padding": [
+                    12.0,
+                    12.0,
+                    12.0,
+                    12.0
+                  ],
+                  "gridColumns": 2,
+                  "gridRows": 2,
+                  "crossGap": 10.0,
+                  "mode": "vertical",
+                  "mainAlign": "min",
+                  "rowTracks": [],
+                  "contentAlign": "auto"
+                }
+              },
+              {
+                "mainComponent": 12,
+                "sizing": {
+                  "horizontal": "fixed",
+                  "vertical": "fixed"
+                },
+                "styles": {
+                  "text": null,
+                  "effect": null,
+                  "stroke": null,
+                  "fill": "S:1",
+                  "grid": null
+                },
+                "width": 280.0,
+                "interactions": [
+                  {
+                    "actions": [
+                      {
+                        "type": "navigate",
+                        "dest": 16
+                      }
+                    ],
+                    "trigger": {
+                      "type": "onClick"
+                    },
+                    "duration_ms": 300,
+                    "easing": "easeOut",
+                    "transition": {
+                      "type": "instant"
+                    }
+                  }
+                ],
+                "id": 14,
+                "fills": [
+                  {
+                    "type": "solid",
+                    "color": "#155366"
+                  }
+                ],
+                "constraints": {
+                  "horizontal": "left",
+                  "vertical": "top"
+                },
+                "cornerRadius": 10.0,
+                "clip": true,
+                "height": 44.0,
+                "boundVariables": {
+                  "cornerRadius": "VariableID:1"
+                },
+                "name": "Primary button",
+                "absoluteBounds": {
+                  "x": 20.0,
+                  "y": 400.0,
+                  "height": 44.0,
+                  "width": 280.0
+                },
+                "x": 20.0,
+                "type": "INSTANCE",
+                "y": 400.0,
+                "children": [
+                  {
+                    "letterSpacing": "0%",
+                    "width": 240.0,
+                    "id": 15,
+                    "absoluteBounds": {
+                      "x": 32.0,
+                      "y": 412.0,
+                      "height": 18.0,
+                      "width": 240.0
+                    },
+                    "fontStyle": "Regular",
+                    "sizing": {
+                      "horizontal": "fixed",
+                      "vertical": "hug"
+                    },
+                    "height": 18.0,
+                    "lineHeight": "Auto",
+                    "name": "Button label",
+                    "fills": [
+                      {
+                        "type": "solid",
+                        "color": "#FFFFFF"
+                      }
+                    ],
+                    "fontSize": 15.0,
+                    "fontFamily": "Inter",
+                    "x": 12.0,
+                    "characters": "View workshop",
+                    "y": 12.0,
+                    "type": "TEXT",
+                    "textAutoResize": "height",
+                    "textAlign": "left"
+                  }
+                ],
+                "layout": {
+                  "strokesIncluded": true,
+                  "gap": 0.0,
+                  "wrap": false,
+                  "reverseZ": false,
+                  "crossAlign": "min",
+                  "columnTracks": [],
+                  "padding": [
+                    12.0,
+                    12.0,
+                    12.0,
+                    12.0
+                  ],
+                  "gridColumns": 2,
+                  "gridRows": 2,
+                  "crossGap": 10.0,
+                  "mode": "horizontal",
+                  "mainAlign": "min",
+                  "rowTracks": [],
+                  "contentAlign": "auto"
+                },
+                "mainComponentName": "Primary button"
+              }
+            ],
+            "clip": true,
+            "x": 0.0,
+            "height": 480.0
+          },
+          {
+            "cornerRadius": 10.0,
+            "width": 280.0,
+            "clip": true,
+            "id": 12,
+            "fills": [
+              {
+                "type": "solid",
+                "color": "#155366"
+              }
+            ],
+            "sizing": {
+              "horizontal": "fixed",
+              "vertical": "fixed"
+            },
+            "height": 44.0,
+            "boundVariables": {
+              "cornerRadius": "VariableID:1"
+            },
+            "name": "Primary button",
+            "absoluteBounds": {
+              "x": 0.0,
+              "y": 550.0,
+              "height": 44.0,
+              "width": 280.0
+            },
+            "styles": {
+              "text": null,
+              "effect": null,
+              "stroke": null,
+              "fill": "S:1",
+              "grid": null
+            },
+            "x": 0.0,
+            "type": "COMPONENT",
+            "y": 550.0,
+            "children": [
+              {
+                "letterSpacing": "0%",
+                "width": 240.0,
+                "id": 13,
+                "absoluteBounds": {
+                  "x": 12.0,
+                  "y": 562.0,
+                  "height": 18.0,
+                  "width": 240.0
+                },
+                "fontStyle": "Regular",
+                "sizing": {
+                  "horizontal": "fixed",
+                  "vertical": "hug"
+                },
+                "height": 18.0,
+                "lineHeight": "Auto",
+                "name": "Button label",
+                "fills": [
+                  {
+                    "type": "solid",
+                    "color": "#FFFFFF"
+                  }
+                ],
+                "fontSize": 15.0,
+                "fontFamily": "Inter",
+                "x": 12.0,
+                "characters": "View workshop",
+                "y": 12.0,
+                "type": "TEXT",
+                "textAutoResize": "height",
+                "textAlign": "left"
+              }
+            ],
+            "layout": {
+              "strokesIncluded": true,
+              "gap": 0.0,
+              "wrap": false,
+              "reverseZ": false,
+              "crossAlign": "min",
+              "columnTracks": [],
+              "padding": [
+                12.0,
+                12.0,
+                12.0,
+                12.0
+              ],
+              "gridColumns": 2,
+              "gridRows": 2,
+              "crossGap": 10.0,
+              "mode": "horizontal",
+              "mainAlign": "min",
+              "rowTracks": [],
+              "contentAlign": "auto"
+            }
+          },
+          {
+            "name": "Repair Club \u2014 Workshop",
+            "fills": [
+              {
+                "type": "solid",
+                "color": "#F6F2E9"
+              }
+            ],
+            "width": 320.0,
+            "id": 16,
+            "absoluteBounds": {
+              "x": 360.0,
+              "y": 0.0,
+              "height": 480.0,
+              "width": 320.0
+            },
+            "y": 0.0,
+            "type": "FRAME",
+            "children": [
+              {
+                "letterSpacing": "0%",
+                "width": 280.0,
+                "id": 17,
+                "absoluteBounds": {
+                  "x": 380.0,
+                  "y": 25.0,
+                  "height": 28.0,
+                  "width": 280.0
+                },
+                "fontStyle": "Bold",
+                "sizing": {
+                  "horizontal": "fixed",
+                  "vertical": "hug"
+                },
+                "textAutoResize": "height",
+                "height": 28.0,
+                "lineHeight": "Auto",
+                "name": "Workshop title",
+                "fills": [
+                  {
+                    "type": "solid",
+                    "color": "#155366"
+                  }
+                ],
+                "fontSize": 23.0,
+                "fontFamily": "Inter",
+                "x": 20.0,
+                "characters": "MAKE AND MEND",
+                "y": 25.0,
+                "type": "TEXT",
+                "constraints": {
+                  "horizontal": "left",
+                  "vertical": "top"
+                },
+                "textAlign": "left"
+              },
+              {
+                "letterSpacing": "0%",
+                "width": 280.0,
+                "id": 18,
+                "absoluteBounds": {
+                  "x": 380.0,
+                  "y": 95.0,
+                  "height": 126.0,
+                  "width": 280.0
+                },
+                "fontStyle": "Regular",
+                "sizing": {
+                  "horizontal": "fixed",
+                  "vertical": "hug"
+                },
+                "textAutoResize": "height",
+                "height": 126.0,
+                "lineHeight": "Auto",
+                "name": "Workshop description",
+                "fills": [
+                  {
+                    "type": "solid",
+                    "color": "#334155"
+                  }
+                ],
+                "fontSize": 17.0,
+                "fontFamily": "Inter",
+                "x": 20.0,
+                "characters": "Bring a small item.\nLearn one useful skill.\nShare your repair notes.\n\nOriginal VAIO interface-design example.",
+                "y": 95.0,
+                "type": "TEXT",
+                "constraints": {
+                  "horizontal": "left",
+                  "vertical": "top"
+                },
+                "textAlign": "left"
+              },
+              {
+                "width": 280.0,
+                "interactions": [
+                  {
+                    "actions": [
+                      {
+                        "type": "navigate",
+                        "dest": 2
+                      }
+                    ],
+                    "trigger": {
+                      "type": "onClick"
+                    },
+                    "duration_ms": 300,
+                    "easing": "easeOut",
+                    "transition": {
+                      "type": "instant"
+                    }
+                  }
+                ],
+                "id": 19,
+                "fills": [
+                  {
+                    "type": "solid",
+                    "color": "#155366"
+                  }
+                ],
+                "constraints": {
+                  "horizontal": "left",
+                  "vertical": "top"
+                },
+                "type": "FRAME",
+                "clip": true,
+                "height": 44.0,
+                "name": "Back button",
+                "absoluteBounds": {
+                  "x": 380.0,
+                  "y": 400.0,
+                  "height": 44.0,
+                  "width": 280.0
+                },
+                "x": 20.0,
+                "y": 400.0,
+                "children": [
+                  {
+                    "letterSpacing": "0%",
+                    "width": 240.0,
+                    "id": 20,
+                    "absoluteBounds": {
+                      "x": 396.0,
+                      "y": 412.0,
+                      "height": 18.0,
+                      "width": 240.0
+                    },
+                    "fontStyle": "Regular",
+                    "sizing": {
+                      "horizontal": "fixed",
+                      "vertical": "hug"
+                    },
+                    "textAutoResize": "height",
+                    "height": 18.0,
+                    "lineHeight": "Auto",
+                    "name": "Back label",
+                    "fills": [
+                      {
+                        "type": "solid",
+                        "color": "#FFFFFF"
+                      }
+                    ],
+                    "fontSize": 15.0,
+                    "fontFamily": "Inter",
+                    "x": 16.0,
+                    "characters": "Back to sessions",
+                    "y": 12.0,
+                    "type": "TEXT",
+                    "constraints": {
+                      "horizontal": "left",
+                      "vertical": "top"
+                    },
+                    "textAlign": "left"
+                  }
+                ],
+                "cornerRadius": 10.0
+              }
+            ],
+            "clip": true,
+            "x": 360.0,
+            "height": 480.0
+          }
+        ],
+        "background": "#F5F5F5"
+      }
+    ],
+    "history": {
+      "undo": [],
+      "redo": 0
+    },
+    "textEdit": null,
+    "selection": []
+  },
+  "checks": [
+    "OpenGL startup",
+    "GUI text input",
+    "formatting",
+    "undo/redo",
+    "native save/reopen",
+    "prototype forward/back navigation by GUI clicks",
+    "floating prototype preview",
+    "window screenshots"
+  ],
+  "settled_idle": {
+    "rss_kib": 112300,
+    "cpu_percent_one_logical_cpu": 0.0
+  },
+  "private_xcb": [
+    "/usr/lib/figcraft-vaio/lib/libxcb.so.1"
+  ],
+  "preview": {
+    "viewport": null,
+    "gamepad": false,
+    "responsive": null,
+    "deviceFrame": true,
+    "start": 2,
+    "waiting": 0,
+    "zoom": 0.918749988079071,
+    "overlays": [],
+    "inspect": false,
+    "scrollRange": [
+      0.0,
+      0.0
+    ],
+    "hotspotFlash": false,
+    "pan": [
+      0.0,
+      0.0
+    ],
+    "panRange": [
+      0.0,
+      0.0
+    ],
+    "landscape": false,
+    "device": null,
+    "comments": false,
+    "scroll": [
+      0.0,
+      0.0
+    ],
+    "deviceColor": null,
+    "flinging": false,
+    "frameSize": [
+      320.0,
+      480.0
+    ],
+    "inspected": null,
+    "hotspotHints": true,
+    "name": "Repair Club \u2014 Home",
+    "scale": "fit",
+    "history": [],
+    "current": 2,
+    "hotspots": [
+      {
+        "rect": [
+          895.375,
+          515.0,
+          1152.625,
+          555.4249877929688
+        ],
+        "id": 14
+      }
+    ]
+  },
+  "editing_ui": {
+    "stylePicker": null,
+    "rightTab": "Design",
+    "windows": [
+      {
+        "id": 0,
+        "active": "Untitled",
+        "files": [
+          "Untitled"
+        ],
+        "title": "Untitled \u2022 \u2013 FigCraft",
+        "main": true,
+        "focused": true
+      }
+    ],
+    "homeRecents": {
+      "files": [
+        {
+          "name": "gui-edited",
+          "path": "/tmp/vaio-figcraft-test/gui-edited.figcraft",
+          "exists": null,
+          "picture": "none",
+          "selected": false
+        },
+        {
+          "name": "repair-club",
+          "path": "/tmp/vaio-figcraft-test/repair-club.figcraft",
+          "exists": null,
+          "picture": "none",
+          "selected": false
+        }
+      ],
+      "order": "desc",
+      "sort": "modified",
+      "view": "grid"
+    },
+    "window": 0,
+    "renderMs": 37.021265,
+    "textPreview": false,
+    "homeSection": "recents",
+    "mainMenu": false,
+    "home": false,
+    "importReport": null,
+    "online": {
+      "confirmRemove": null,
+      "rename": null,
+      "checking": false,
+      "problems": 0,
+      "open": false,
+      "files": []
+    },
+    "homeSearch": "",
+    "missingFonts": null,
+    "presenter": null,
+    "versionHistory": false,
+    "dark": false,
+    "comments": {
+      "sort": "date",
+      "filter": "open",
+      "search": "",
+      "editing": null,
+      "draft": null,
+      "open": null,
+      "mentions": []
+    },
+    "stylePickerView": "list",
+    "status": {
+      "tool": "move",
+      "document": "Untitled",
+      "zoom": 0.8114478114478114,
+      "dirty": true,
+      "undo": 0,
+      "redo": 0,
+      "path": "/tmp/vaio-figcraft-test/repair-club.figcraft",
+      "selection": [
+        3
+      ],
+      "page": 1,
+      "documents": 1
+    },
+    "framesDrawn": 15,
+    "tabs": [
+      {
+        "name": "Untitled",
+        "live": null
+      }
+    ],
+    "repaintCauses": [
+      {
+        "at": "crates/ui-egui/src/lib.rs:1286",
+        "count": 13
+      },
+      {
+        "at": "apps/figcraft/src/control_server.rs:101",
+        "count": 7
+      },
+      {
+        "at": "crates/ui-egui/src/control.rs:124",
+        "count": 6
+      },
+      {
+        "at": "apps/figcraft/src/main.rs:94",
+        "count": 4
+      },
+      {
+        "at": "/build/vaio-artcraft/.build/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/egui-0.36.2/src/context.rs:4024",
+        "count": 3
+      },
+      {
+        "at": "/build/vaio-artcraft/.build/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/egui-0.36.2/src/context.rs:538",
+        "count": 2
+      },
+      {
+        "at": "crates/ui-egui/src/render_worker.rs:227",
+        "count": 2
+      },
+      {
+        "at": "/build/vaio-artcraft/.build/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/egui-0.36.2/src/containers/area.rs:554",
+        "count": 1
+      },
+      {
+        "at": "/build/vaio-artcraft/.build/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/egui-0.36.2/src/containers/area.rs:642",
+        "count": 1
+      },
+      {
+        "at": "/build/vaio-artcraft/.build/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/egui-0.36.2/src/containers/area.rs:686",
+        "count": 1
+      },
+      {
+        "at": "/build/vaio-artcraft/.build/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/egui-0.36.2/src/containers/scroll_area.rs:1524",
+        "count": 1
+      },
+      {
+        "at": "crates/ui-egui/src/lib.rs:1298",
+        "count": 1
+      }
+    ],
+    "reduceMotion": false,
+    "devFocus": null,
+    "panels": {
+      "leftCollapsed": false,
+      "right": 240.0,
+      "left": 240.0
+    },
+    "canvas": {
+      "previewLatencyMs": null,
+      "quality": "refined",
+      "renderWork": {
+        "pixels": 12878,
+        "kind": "partial"
+      },
+      "rect": [
+        296.0,
+        40.0,
+        1200.0,
+        650.0
+      ],
+      "refineLatencyMs": 259.966343
+    },
+    "devCompare": null,
+    "pendingOpens": 0,
+    "variables": false,
+    "frameMs": 5.426558,
+    "preview": null,
+    "presentOptions": {
+      "comments": false,
+      "hotspotHints": true,
+      "scale": "fit",
+      "deviceFrame": true,
+      "inspect": false
+    },
+    "leftTab": "File",
+    "annotationFilter": "all",
+    "live": {
+      "signals": false,
+      "publishDialog": false,
+      "role": null,
+      "readOnly": null,
+      "local": false,
+      "follow": null,
+      "code": null,
+      "peers": 0,
+      "status": "off",
+      "joinDialog": false,
+      "session": null,
+      "chats": {},
+      "share": null,
+      "spotlighting": false,
+      "cursorsShown": [],
+      "ownerDialog": false,
+      "report": null,
+      "sessions": 0,
+      "spotlight": null,
+      "chat": "",
+      "advanced": false,
+      "joinField": "",
+      "publishInfo": null,
+      "chatBox": null
+    },
+    "branchReview": null,
+    "focus": {
+      "control": "",
+      "region": "canvas",
+      "keyboard": false
+    },
+    "tool": {
+      "tool": "move",
+      "arcHandles": null,
+      "busy": false,
+      "overlay": {
+        "face": [],
+        "pen": [],
+        "arc_hover": null,
+        "guides": [],
+        "drop_target": null,
+        "vector_hover": null,
+        "builder_regions": [],
+        "brush": null,
+        "arc": null,
+        "marquee": null,
+        "measure_box": null,
+        "drop_cell": null,
+        "width_hover": null,
+        "rubber_handle": null,
+        "lasso": [],
+        "rubber": null,
+        "shape": null,
+        "scale": null,
+        "swap_target": null,
+        "builder_remove": false,
+        "insert_line": null,
+        "cursor": "Default",
+        "vector_hover_on": null,
+        "pen_handles": [],
+        "shape_hover": null
+      },
+      "shapeHandles": []
+    },
+    "presenting": false,
+    "colorProfileDialog": null,
+    "cursor": "default",
+    "palette": false,
+    "lastError": null
+  },
+  "passed": true,
+  "editing_idle": {
+    "rss_kib": 112132,
+    "cpu_percent_one_logical_cpu": 14.98
+  },
+  "present_initial": {
+    "stylePicker": null,
+    "rightTab": "Design",
+    "windows": [
+      {
+        "id": 0,
+        "active": "Untitled",
+        "files": [
+          "Untitled"
+        ],
+        "title": "Untitled \u2013 FigCraft",
+        "main": true,
+        "focused": true
+      }
+    ],
+    "homeRecents": {
+      "files": [
+        {
+          "name": "gui-edited",
+          "path": "/tmp/vaio-figcraft-test/gui-edited.figcraft",
+          "exists": null,
+          "picture": "none",
+          "selected": false
+        },
+        {
+          "name": "repair-club",
+          "path": "/tmp/vaio-figcraft-test/repair-club.figcraft",
+          "exists": null,
+          "picture": "none",
+          "selected": false
+        }
+      ],
+      "order": "desc",
+      "sort": "modified",
+      "view": "grid"
+    },
+    "window": 0,
+    "renderMs": 17.912761,
+    "textPreview": false,
+    "homeSection": "recents",
+    "mainMenu": false,
+    "home": false,
+    "importReport": null,
+    "online": {
+      "confirmRemove": null,
+      "rename": null,
+      "checking": false,
+      "problems": 0,
+      "open": false,
+      "files": []
+    },
+    "homeSearch": "",
+    "missingFonts": null,
+    "presenter": {
+      "viewport": null,
+      "gamepad": false,
+      "responsive": null,
+      "deviceFrame": true,
+      "start": 2,
+      "waiting": 0,
+      "zoom": 1.0,
+      "overlays": [],
+      "inspect": false,
+      "scrollRange": [
+        0.0,
+        0.0
+      ],
+      "hotspotFlash": false,
+      "pan": [
+        0.0,
+        0.0
+      ],
+      "panRange": [
+        0.0,
+        0.0
+      ],
+      "landscape": false,
+      "device": null,
+      "comments": false,
+      "scroll": [
+        0.0,
+        0.0
+      ],
+      "deviceColor": null,
+      "flinging": false,
+      "frameSize": [
+        320.0,
+        480.0
+      ],
+      "inspected": null,
+      "hotspotHints": true,
+      "name": "Repair Club \u2014 Home",
+      "scale": "fit",
+      "history": [],
+      "current": 2,
+      "hotspots": [
+        {
+          "rect": [
+            580.0,
+            525.0,
+            860.0,
+            569.0
+          ],
+          "id": 14
+        }
+      ]
+    },
+    "versionHistory": false,
+    "dark": false,
+    "comments": {
+      "sort": "date",
+      "filter": "open",
+      "search": "",
+      "editing": null,
+      "draft": null,
+      "open": null,
+      "mentions": []
+    },
+    "stylePickerView": "list",
+    "status": {
+      "tool": "move",
+      "document": "Untitled",
+      "zoom": 0.8114478114478114,
+      "dirty": false,
+      "undo": 2,
+      "redo": 0,
+      "path": "/tmp/vaio-figcraft-test/gui-edited.figcraft",
+      "selection": [
+        2
+      ],
+      "page": 1,
+      "documents": 1
+    },
+    "framesDrawn": 32,
+    "tabs": [
+      {
+        "name": "Untitled",
+        "live": null
+      }
+    ],
+    "repaintCauses": [
+      {
+        "at": "crates/ui-egui/src/lib.rs:1286",
+        "count": 30
+      },
+      {
+        "at": "apps/figcraft/src/control_server.rs:101",
+        "count": 18
+      },
+      {
+        "at": "crates/ui-egui/src/control.rs:124",
+        "count": 16
+      },
+      {
+        "at": "apps/figcraft/src/main.rs:94",
+        "count": 8
+      },
+      {
+        "at": "/build/vaio-artcraft/.build/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/egui-0.36.2/src/context.rs:4024",
+        "count": 5
+      },
+      {
+        "at": "crates/ui-egui/src/render_worker.rs:227",
+        "count": 5
+      },
+      {
+        "at": "/build/vaio-artcraft/.build/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/egui-0.36.2/src/containers/area.rs:642",
+        "count": 3
+      },
+      {
+        "at": "/build/vaio-artcraft/.build/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/egui-0.36.2/src/context.rs:538",
+        "count": 3
+      },
+      {
+        "at": "/build/vaio-artcraft/.build/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/egui-0.36.2/src/containers/area.rs:554",
+        "count": 2
+      },
+      {
+        "at": "/build/vaio-artcraft/.build/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/egui-0.36.2/src/containers/area.rs:686",
+        "count": 2
+      },
+      {
+        "at": "/build/vaio-artcraft/.build/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/egui-0.36.2/src/containers/scroll_area.rs:1524",
+        "count": 2
+      },
+      {
+        "at": "crates/ui-egui/src/control.rs:138",
+        "count": 2
+      }
+    ],
+    "reduceMotion": false,
+    "devFocus": null,
+    "panels": {
+      "leftCollapsed": false,
+      "right": 240.0,
+      "left": 240.0
+    },
+    "canvas": {
+      "previewLatencyMs": null,
+      "quality": "refined",
+      "renderWork": {
+        "pixels": 12878,
+        "kind": "partial"
+      },
+      "rect": [
+        296.0,
+        40.0,
+        1200.0,
+        650.0
+      ],
+      "refineLatencyMs": 325.479221
+    },
+    "devCompare": null,
+    "pendingOpens": 0,
+    "variables": false,
+    "frameMs": 1.1601949999999999,
+    "preview": null,
+    "presentOptions": {
+      "comments": false,
+      "hotspotHints": true,
+      "scale": "fit",
+      "deviceFrame": true,
+      "inspect": false
+    },
+    "leftTab": "File",
+    "annotationFilter": "all",
+    "live": {
+      "signals": false,
+      "publishDialog": false,
+      "role": null,
+      "readOnly": null,
+      "local": false,
+      "follow": null,
+      "code": null,
+      "peers": 0,
+      "status": "off",
+      "joinDialog": false,
+      "session": null,
+      "chats": {},
+      "share": null,
+      "spotlighting": false,
+      "cursorsShown": [],
+      "ownerDialog": false,
+      "report": null,
+      "sessions": 0,
+      "spotlight": null,
+      "chat": "",
+      "advanced": false,
+      "joinField": "",
+      "publishInfo": null,
+      "chatBox": null
+    },
+    "branchReview": null,
+    "focus": {
+      "control": "",
+      "region": "canvas",
+      "keyboard": false
+    },
+    "tool": {
+      "tool": "move",
+      "arcHandles": null,
+      "busy": false,
+      "overlay": {
+        "face": [],
+        "pen": [],
+        "arc_hover": null,
+        "guides": [],
+        "drop_target": null,
+        "vector_hover": null,
+        "builder_regions": [],
+        "brush": null,
+        "arc": null,
+        "marquee": null,
+        "measure_box": null,
+        "drop_cell": null,
+        "width_hover": null,
+        "rubber_handle": null,
+        "lasso": [],
+        "rubber": null,
+        "shape": null,
+        "scale": null,
+        "swap_target": null,
+        "builder_remove": false,
+        "insert_line": null,
+        "cursor": "Default",
+        "vector_hover_on": null,
+        "pen_handles": [],
+        "shape_hover": null
+      },
+      "shapeHandles": [
+        {
+          "at": [
+            8.714137510888158,
+            8.714137510888158
+          ],
+          "handle": {
+            "corner": 0,
+            "kind": "radius"
+          }
+        },
+        {
+          "at": [
+            311.2858624891118,
+            8.714137510888158
+          ],
+          "handle": {
+            "corner": 1,
+            "kind": "radius"
+          }
+        },
+        {
+          "at": [
+            311.2858624891118,
+            471.2858624891118
+          ],
+          "handle": {
+            "corner": 2,
+            "kind": "radius"
+          }
+        },
+        {
+          "at": [
+            8.714137510888158,
+            471.2858624891118
+          ],
+          "handle": {
+            "corner": 3,
+            "kind": "radius"
+          }
+        }
+      ]
+    },
+    "presenting": true,
+    "colorProfileDialog": null,
+    "cursor": "default",
+    "palette": false,
+    "lastError": null
+  },
+  "reopened": {
+    "name": "Untitled",
+    "styles": [
+      {
+        "name": "Club/Primary",
+        "type": "paint",
+        "id": "S:1"
+      }
+    ],
+    "variables": 1,
+    "colorProfile": "srgb",
+    "currentPage": 1,
+    "images": 0,
+    "path": "/tmp/vaio-figcraft-test/gui-edited.figcraft",
+    "dirty": false,
+    "pages": [
+      {
+        "name": "Page 1",
+        "flows": [
+          {
+            "name": "Workshop booking",
+            "start": 2,
+            "description": ""
+          }
+        ],
+        "type": "PAGE",
+        "id": 1,
+        "children": [
+          {
+            "name": "Repair Club \u2014 Home",
+            "fills": [
+              {
+                "type": "solid",
+                "color": "#F6F2E9"
+              }
+            ],
+            "width": 320.0,
+            "id": 2,
+            "absoluteBounds": {
+              "x": 0.0,
+              "y": 0.0,
+              "height": 480.0,
+              "width": 320.0
+            },
+            "y": 0.0,
+            "type": "FRAME",
+            "children": [
+              {
+                "letterSpacing": "0%",
+                "width": 280.0,
+                "id": 3,
+                "absoluteBounds": {
+                  "x": 20.0,
+                  "y": 22.0,
+                  "height": 24.0,
+                  "width": 280.0
+                },
+                "fontStyle": "Bold",
+                "sizing": {
+                  "horizontal": "fixed",
+                  "vertical": "hug"
+                },
+                "textAutoResize": "height",
+                "height": 24.0,
+                "lineHeight": "Auto",
+                "name": "Heading",
+                "fills": [
+                  {
+                    "type": "solid",
+                    "color": "#155366"
+                  }
+                ],
+                "fontSize": 20.0,
+                "fontFamily": "Inter",
+                "x": 20.0,
+                "characters": "THE REPAIR CLUB \u2014 VAIO",
+                "y": 22.0,
+                "type": "TEXT",
+                "constraints": {
+                  "horizontal": "left",
+                  "vertical": "top"
+                },
+                "textAlign": "left"
+              },
+              {
+                "letterSpacing": "0%",
+                "width": 280.0,
+                "id": 4,
+                "absoluteBounds": {
+                  "x": 20.0,
+                  "y": 65.0,
+                  "height": 17.0,
+                  "width": 280.0
+                },
+                "fontStyle": "Regular",
+                "sizing": {
+                  "horizontal": "fixed",
+                  "vertical": "hug"
+                },
+                "textAutoResize": "height",
+                "height": 17.0,
+                "lineHeight": "Auto",
+                "name": "Subtitle",
+                "fills": [
+                  {
+                    "type": "solid",
+                    "color": "#334155"
+                  }
+                ],
+                "fontSize": 14.0,
+                "fontFamily": "Inter",
+                "x": 20.0,
+                "characters": "Make, mend, and share.",
+                "y": 65.0,
+                "type": "TEXT",
+                "constraints": {
+                  "horizontal": "left",
+                  "vertical": "top"
+                },
+                "textAlign": "left"
+              },
+              {
+                "cornerRadius": 12.0,
+                "width": 280.0,
+                "id": 5,
+                "fills": [
+                  {
+                    "type": "solid",
+                    "color": "#FFFFFF"
+                  }
+                ],
+                "constraints": {
+                  "horizontal": "left",
+                  "vertical": "top"
+                },
+                "sizing": {
+                  "horizontal": "fixed",
+                  "vertical": "fixed"
+                },
+                "clip": true,
+                "height": 240.0,
+                "name": "Auto layout sessions",
+                "absoluteBounds": {
+                  "x": 20.0,
+                  "y": 120.0,
+                  "height": 240.0,
+                  "width": 280.0
+                },
+                "x": 20.0,
+                "type": "FRAME",
+                "y": 120.0,
+                "children": [
+                  {
+                    "cornerRadius": 8.0,
+                    "width": 256.0,
+                    "sizing": {
+                      "horizontal": "fixed",
+                      "vertical": "fixed"
+                    },
+                    "id": 6,
+                    "fills": [
+                      {
+                        "type": "solid",
+                        "color": "#E5F0ED"
+                      }
+                    ],
+                    "type": "FRAME",
+                    "clip": true,
+                    "height": 56.0,
+                    "name": "Welcome",
+                    "absoluteBounds": {
+                      "x": 32.0,
+                      "y": 132.0,
+                      "height": 56.0,
+                      "width": 256.0
+                    },
+                    "x": 12.0,
+                    "y": 12.0,
+                    "children": [
+                      {
+                        "letterSpacing": "0%",
+                        "width": 230.0,
+                        "id": 7,
+                        "absoluteBounds": {
+                          "x": 42.0,
+                          "y": 142.0,
+                          "height": 32.0,
+                          "width": 230.0
+                        },
+                        "fontStyle": "Regular",
+                        "sizing": {
+                          "horizontal": "fixed",
+                          "vertical": "hug"
+                        },
+                        "height": 32.0,
+                        "lineHeight": "Auto",
+                        "name": "Welcome label",
+                        "fills": [
+                          {
+                            "type": "solid",
+                            "color": "#155366"
+                          }
+                        ],
+                        "fontSize": 13.0,
+                        "fontFamily": "Inter",
+                        "x": 10.0,
+                        "characters": "Welcome\nSaturday 10:00",
+                        "y": 10.0,
+                        "type": "TEXT",
+                        "textAutoResize": "height",
+                        "textAlign": "left"
+                      }
+                    ],
+                    "layout": {
+                      "strokesIncluded": true,
+                      "gap": 8.0,
+                      "wrap": false,
+                      "reverseZ": false,
+                      "crossAlign": "min",
+                      "columnTracks": [],
+                      "padding": [
+                        10.0,
+                        10.0,
+                        10.0,
+                        10.0
+                      ],
+                      "gridColumns": 2,
+                      "gridRows": 2,
+                      "crossGap": 10.0,
+                      "mode": "horizontal",
+                      "mainAlign": "min",
+                      "rowTracks": [],
+                      "contentAlign": "auto"
+                    }
+                  },
+                  {
+                    "cornerRadius": 8.0,
+                    "width": 256.0,
+                    "sizing": {
+                      "horizontal": "fixed",
+                      "vertical": "fixed"
+                    },
+                    "id": 8,
+                    "fills": [
+                      {
+                        "type": "solid",
+                        "color": "#E5F0ED"
+                      }
+                    ],
+                    "type": "FRAME",
+                    "clip": true,
+                    "height": 56.0,
+                    "name": "Make and mend",
+                    "absoluteBounds": {
+                      "x": 32.0,
+                      "y": 200.0,
+                      "height": 56.0,
+                      "width": 256.0
+                    },
+                    "x": 12.0,
+                    "y": 80.0,
+                    "children": [
+                      {
+                        "letterSpacing": "0%",
+                        "width": 230.0,
+                        "id": 9,
+                        "absoluteBounds": {
+                          "x": 42.0,
+                          "y": 210.0,
+                          "height": 32.0,
+                          "width": 230.0
+                        },
+                        "fontStyle": "Regular",
+                        "sizing": {
+                          "horizontal": "fixed",
+                          "vertical": "hug"
+                        },
+                        "height": 32.0,
+                        "lineHeight": "Auto",
+                        "name": "Make and mend label",
+                        "fills": [
+                          {
+                            "type": "solid",
+                            "color": "#155366"
+                          }
+                        ],
+                        "fontSize": 13.0,
+                        "fontFamily": "Inter",
+                        "x": 10.0,
+                        "characters": "Make and mend\nSaturday 10:30",
+                        "y": 10.0,
+                        "type": "TEXT",
+                        "textAutoResize": "height",
+                        "textAlign": "left"
+                      }
+                    ],
+                    "layout": {
+                      "strokesIncluded": true,
+                      "gap": 8.0,
+                      "wrap": false,
+                      "reverseZ": false,
+                      "crossAlign": "min",
+                      "columnTracks": [],
+                      "padding": [
+                        10.0,
+                        10.0,
+                        10.0,
+                        10.0
+                      ],
+                      "gridColumns": 2,
+                      "gridRows": 2,
+                      "crossGap": 10.0,
+                      "mode": "horizontal",
+                      "mainAlign": "min",
+                      "rowTracks": [],
+                      "contentAlign": "auto"
+                    }
+                  },
+                  {
+                    "cornerRadius": 8.0,
+                    "width": 256.0,
+                    "sizing": {
+                      "horizontal": "fixed",
+                      "vertical": "fixed"
+                    },
+                    "id": 10,
+                    "fills": [
+                      {
+                        "type": "solid",
+                        "color": "#E5F0ED"
+                      }
+                    ],
+                    "type": "FRAME",
+                    "clip": true,
+                    "height": 56.0,
+                    "name": "Share results",
+                    "absoluteBounds": {
+                      "x": 32.0,
+                      "y": 268.0,
+                      "height": 56.0,
+                      "width": 256.0
+                    },
+                    "x": 12.0,
+                    "y": 148.0,
+                    "children": [
+                      {
+                        "letterSpacing": "0%",
+                        "width": 230.0,
+                        "id": 11,
+                        "absoluteBounds": {
+                          "x": 42.0,
+                          "y": 278.0,
+                          "height": 32.0,
+                          "width": 230.0
+                        },
+                        "fontStyle": "Regular",
+                        "sizing": {
+                          "horizontal": "fixed",
+                          "vertical": "hug"
+                        },
+                        "height": 32.0,
+                        "lineHeight": "Auto",
+                        "name": "Share results label",
+                        "fills": [
+                          {
+                            "type": "solid",
+                            "color": "#155366"
+                          }
+                        ],
+                        "fontSize": 13.0,
+                        "fontFamily": "Inter",
+                        "x": 10.0,
+                        "characters": "Share results\nSaturday 12:00",
+                        "y": 10.0,
+                        "type": "TEXT",
+                        "textAutoResize": "height",
+                        "textAlign": "left"
+                      }
+                    ],
+                    "layout": {
+                      "strokesIncluded": true,
+                      "gap": 8.0,
+                      "wrap": false,
+                      "reverseZ": false,
+                      "crossAlign": "min",
+                      "columnTracks": [],
+                      "padding": [
+                        10.0,
+                        10.0,
+                        10.0,
+                        10.0
+                      ],
+                      "gridColumns": 2,
+                      "gridRows": 2,
+                      "crossGap": 10.0,
+                      "mode": "horizontal",
+                      "mainAlign": "min",
+                      "rowTracks": [],
+                      "contentAlign": "auto"
+                    }
+                  }
+                ],
+                "layout": {
+                  "strokesIncluded": true,
+                  "gap": 12.0,
+                  "wrap": false,
+                  "reverseZ": false,
+                  "crossAlign": "min",
+                  "columnTracks": [],
+                  "padding": [
+                    12.0,
+                    12.0,
+                    12.0,
+                    12.0
+                  ],
+                  "gridColumns": 2,
+                  "gridRows": 2,
+                  "crossGap": 10.0,
+                  "mode": "vertical",
+                  "mainAlign": "min",
+                  "rowTracks": [],
+                  "contentAlign": "auto"
+                }
+              },
+              {
+                "mainComponent": 12,
+                "sizing": {
+                  "horizontal": "fixed",
+                  "vertical": "fixed"
+                },
+                "styles": {
+                  "text": null,
+                  "effect": null,
+                  "stroke": null,
+                  "fill": "S:1",
+                  "grid": null
+                },
+                "width": 280.0,
+                "interactions": [
+                  {
+                    "actions": [
+                      {
+                        "type": "navigate",
+                        "dest": 16
+                      }
+                    ],
+                    "trigger": {
+                      "type": "onClick"
+                    },
+                    "duration_ms": 300,
+                    "easing": "easeOut",
+                    "transition": {
+                      "type": "instant"
+                    }
+                  }
+                ],
+                "id": 14,
+                "fills": [
+                  {
+                    "type": "solid",
+                    "color": "#155366"
+                  }
+                ],
+                "constraints": {
+                  "horizontal": "left",
+                  "vertical": "top"
+                },
+                "cornerRadius": 10.0,
+                "clip": true,
+                "height": 44.0,
+                "boundVariables": {
+                  "cornerRadius": "VariableID:1"
+                },
+                "name": "Primary button",
+                "absoluteBounds": {
+                  "x": 20.0,
+                  "y": 400.0,
+                  "height": 44.0,
+                  "width": 280.0
+                },
+                "x": 20.0,
+                "type": "INSTANCE",
+                "y": 400.0,
+                "children": [
+                  {
+                    "letterSpacing": "0%",
+                    "width": 240.0,
+                    "id": 15,
+                    "absoluteBounds": {
+                      "x": 32.0,
+                      "y": 412.0,
+                      "height": 18.0,
+                      "width": 240.0
+                    },
+                    "fontStyle": "Regular",
+                    "sizing": {
+                      "horizontal": "fixed",
+                      "vertical": "hug"
+                    },
+                    "height": 18.0,
+                    "lineHeight": "Auto",
+                    "name": "Button label",
+                    "fills": [
+                      {
+                        "type": "solid",
+                        "color": "#FFFFFF"
+                      }
+                    ],
+                    "fontSize": 15.0,
+                    "fontFamily": "Inter",
+                    "x": 12.0,
+                    "characters": "View workshop",
+                    "y": 12.0,
+                    "type": "TEXT",
+                    "textAutoResize": "height",
+                    "textAlign": "left"
+                  }
+                ],
+                "layout": {
+                  "strokesIncluded": true,
+                  "gap": 0.0,
+                  "wrap": false,
+                  "reverseZ": false,
+                  "crossAlign": "min",
+                  "columnTracks": [],
+                  "padding": [
+                    12.0,
+                    12.0,
+                    12.0,
+                    12.0
+                  ],
+                  "gridColumns": 2,
+                  "gridRows": 2,
+                  "crossGap": 10.0,
+                  "mode": "horizontal",
+                  "mainAlign": "min",
+                  "rowTracks": [],
+                  "contentAlign": "auto"
+                },
+                "mainComponentName": "Primary button"
+              }
+            ],
+            "clip": true,
+            "x": 0.0,
+            "height": 480.0
+          },
+          {
+            "cornerRadius": 10.0,
+            "width": 280.0,
+            "clip": true,
+            "id": 12,
+            "fills": [
+              {
+                "type": "solid",
+                "color": "#155366"
+              }
+            ],
+            "sizing": {
+              "horizontal": "fixed",
+              "vertical": "fixed"
+            },
+            "height": 44.0,
+            "boundVariables": {
+              "cornerRadius": "VariableID:1"
+            },
+            "name": "Primary button",
+            "absoluteBounds": {
+              "x": 0.0,
+              "y": 550.0,
+              "height": 44.0,
+              "width": 280.0
+            },
+            "styles": {
+              "text": null,
+              "effect": null,
+              "stroke": null,
+              "fill": "S:1",
+              "grid": null
+            },
+            "x": 0.0,
+            "type": "COMPONENT",
+            "y": 550.0,
+            "children": [
+              {
+                "letterSpacing": "0%",
+                "width": 240.0,
+                "id": 13,
+                "absoluteBounds": {
+                  "x": 12.0,
+                  "y": 562.0,
+                  "height": 18.0,
+                  "width": 240.0
+                },
+                "fontStyle": "Regular",
+                "sizing": {
+                  "horizontal": "fixed",
+                  "vertical": "hug"
+                },
+                "height": 18.0,
+                "lineHeight": "Auto",
+                "name": "Button label",
+                "fills": [
+                  {
+                    "type": "solid",
+                    "color": "#FFFFFF"
+                  }
+                ],
+                "fontSize": 15.0,
+                "fontFamily": "Inter",
+                "x": 12.0,
+                "characters": "View workshop",
+                "y": 12.0,
+                "type": "TEXT",
+                "textAutoResize": "height",
+                "textAlign": "left"
+              }
+            ],
+            "layout": {
+              "strokesIncluded": true,
+              "gap": 0.0,
+              "wrap": false,
+              "reverseZ": false,
+              "crossAlign": "min",
+              "columnTracks": [],
+              "padding": [
+                12.0,
+                12.0,
+                12.0,
+                12.0
+              ],
+              "gridColumns": 2,
+              "gridRows": 2,
+              "crossGap": 10.0,
+              "mode": "horizontal",
+              "mainAlign": "min",
+              "rowTracks": [],
+              "contentAlign": "auto"
+            }
+          },
+          {
+            "name": "Repair Club \u2014 Workshop",
+            "fills": [
+              {
+                "type": "solid",
+                "color": "#F6F2E9"
+              }
+            ],
+            "width": 320.0,
+            "id": 16,
+            "absoluteBounds": {
+              "x": 360.0,
+              "y": 0.0,
+              "height": 480.0,
+              "width": 320.0
+            },
+            "y": 0.0,
+            "type": "FRAME",
+            "children": [
+              {
+                "letterSpacing": "0%",
+                "width": 280.0,
+                "id": 17,
+                "absoluteBounds": {
+                  "x": 380.0,
+                  "y": 25.0,
+                  "height": 28.0,
+                  "width": 280.0
+                },
+                "fontStyle": "Bold",
+                "sizing": {
+                  "horizontal": "fixed",
+                  "vertical": "hug"
+                },
+                "textAutoResize": "height",
+                "height": 28.0,
+                "lineHeight": "Auto",
+                "name": "Workshop title",
+                "fills": [
+                  {
+                    "type": "solid",
+                    "color": "#155366"
+                  }
+                ],
+                "fontSize": 23.0,
+                "fontFamily": "Inter",
+                "x": 20.0,
+                "characters": "MAKE AND MEND",
+                "y": 25.0,
+                "type": "TEXT",
+                "constraints": {
+                  "horizontal": "left",
+                  "vertical": "top"
+                },
+                "textAlign": "left"
+              },
+              {
+                "letterSpacing": "0%",
+                "width": 280.0,
+                "id": 18,
+                "absoluteBounds": {
+                  "x": 380.0,
+                  "y": 95.0,
+                  "height": 126.0,
+                  "width": 280.0
+                },
+                "fontStyle": "Regular",
+                "sizing": {
+                  "horizontal": "fixed",
+                  "vertical": "hug"
+                },
+                "textAutoResize": "height",
+                "height": 126.0,
+                "lineHeight": "Auto",
+                "name": "Workshop description",
+                "fills": [
+                  {
+                    "type": "solid",
+                    "color": "#334155"
+                  }
+                ],
+                "fontSize": 17.0,
+                "fontFamily": "Inter",
+                "x": 20.0,
+                "characters": "Bring a small item.\nLearn one useful skill.\nShare your repair notes.\n\nOriginal VAIO interface-design example.",
+                "y": 95.0,
+                "type": "TEXT",
+                "constraints": {
+                  "horizontal": "left",
+                  "vertical": "top"
+                },
+                "textAlign": "left"
+              },
+              {
+                "width": 280.0,
+                "interactions": [
+                  {
+                    "actions": [
+                      {
+                        "type": "navigate",
+                        "dest": 2
+                      }
+                    ],
+                    "trigger": {
+                      "type": "onClick"
+                    },
+                    "duration_ms": 300,
+                    "easing": "easeOut",
+                    "transition": {
+                      "type": "instant"
+                    }
+                  }
+                ],
+                "id": 19,
+                "fills": [
+                  {
+                    "type": "solid",
+                    "color": "#155366"
+                  }
+                ],
+                "constraints": {
+                  "horizontal": "left",
+                  "vertical": "top"
+                },
+                "type": "FRAME",
+                "clip": true,
+                "height": 44.0,
+                "name": "Back button",
+                "absoluteBounds": {
+                  "x": 380.0,
+                  "y": 400.0,
+                  "height": 44.0,
+                  "width": 280.0
+                },
+                "x": 20.0,
+                "y": 400.0,
+                "children": [
+                  {
+                    "letterSpacing": "0%",
+                    "width": 240.0,
+                    "id": 20,
+                    "absoluteBounds": {
+                      "x": 396.0,
+                      "y": 412.0,
+                      "height": 18.0,
+                      "width": 240.0
+                    },
+                    "fontStyle": "Regular",
+                    "sizing": {
+                      "horizontal": "fixed",
+                      "vertical": "hug"
+                    },
+                    "textAutoResize": "height",
+                    "height": 18.0,
+                    "lineHeight": "Auto",
+                    "name": "Back label",
+                    "fills": [
+                      {
+                        "type": "solid",
+                        "color": "#FFFFFF"
+                      }
+                    ],
+                    "fontSize": 15.0,
+                    "fontFamily": "Inter",
+                    "x": 16.0,
+                    "characters": "Back to sessions",
+                    "y": 12.0,
+                    "type": "TEXT",
+                    "constraints": {
+                      "horizontal": "left",
+                      "vertical": "top"
+                    },
+                    "textAlign": "left"
+                  }
+                ],
+                "cornerRadius": 10.0
+              }
+            ],
+            "clip": true,
+            "x": 360.0,
+            "height": 480.0
+          }
+        ],
+        "background": "#F5F5F5"
+      }
+    ],
+    "history": {
+      "undo": [
+        "Set properties",
+        "Edit text"
+      ],
+      "redo": 0
+    },
+    "textEdit": null,
+    "selection": [
+      3
+    ]
+  },
+  "typed": {
+    "letterSpacing": "0%",
+    "width": 280.0,
+    "id": 3,
+    "absoluteBounds": {
+      "x": 20.0,
+      "y": 22.0,
+      "height": 27.0,
+      "width": 280.0
+    },
+    "fontStyle": "Bold",
+    "sizing": {
+      "horizontal": "fixed",
+      "vertical": "hug"
+    },
+    "textAutoResize": "height",
+    "height": 27.0,
+    "lineHeight": "Auto",
+    "name": "Heading",
+    "fills": [
+      {
+        "type": "solid",
+        "color": "#155366"
+      }
+    ],
+    "fontSize": 22.0,
+    "fontFamily": "Inter",
+    "x": 20.0,
+    "characters": "THE REPAIR CLUB \u2014 VAIO",
+    "y": 22.0,
+    "type": "TEXT",
+    "constraints": {
+      "horizontal": "left",
+      "vertical": "top"
+    },
+    "textAlign": "left"
+  }
+}

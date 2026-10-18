@@ -254,3 +254,28 @@ FigCraft remains alpha. External .fig exchange is best effort/experimental;
 its own FIG round trip does not establish external Figma-file fidelity. Its
 plugins are not Figma plugins. Large files, plugins, cloud/team integrations and
 live collaboration remain unverified on this VAIO. No hosted service is set up.
+
+
+FigCraft's pristine host functional suite passed 2,798 tests (eight ignored) with
+canonical `/private/tmp` paths. Full CI still stops at seven pre-existing style
+lint errors; i386 GUI Clippy passed with only `collapsible_match` allowed. Asset
+attribution, layering and owned-file formatting passed. WebAssembly checks were
+not run because the target is absent. See the linked verification record.
+
+
+FigCraft and launcher revision 8 are installed through signed APT. Installed
+headless, GUI text/prototype, native Save As, recovery and package-integrity checks
+passed, including the package-local XCB library and native MIME type. All seven
+launcher Open buttons passed. The origin preference allows these eight package
+names only; no unrelated packages were selected. The ordinary launcher is left
+visible after testing. The [verification record](notes/figcraft-0.7.0-vaio1.md)
+contains measurements and rollback steps.
+
+
+Final normal launcher measured 0% idle CPU and 68.4 MiB RSS, with all seven
+installed versions matching APT candidates. The laptop settled to 57°C, with
+zero exposed core-throttle counts and no swap use. Only the intended normal
+launcher remains from the task; no test listeners, builds or monitors remain.
+Screenshots: [FigCraft editing](notes/figcraft-ui.png) and
+[the seven-app launcher](notes/launcher-seven.png). Measurements are short
+synthetic-workflow checks, not long-term stability guarantees.

@@ -1,9 +1,10 @@
-# FigCraft VAIO port — in progress
+# FigCraft VAIO port — installed and verified
 
 User authorized autonomous FigCraft porting, following the six installed apps.
 Upstream FigCraft 0.7.0 is pinned at `a0d1162976fac1e4a8b8fd49a3948e9d6bad6f40`.
 The VAIO responded over SSH: i686, kernel 4.4.0-210, about 1618 MiB available RAM,
-no swap use, ACPI 53°C. The normal six-app launcher remains open.
+no swap use, ACPI 53°C. The existing six-app launcher was retained until the installed checks completed;
+only its recorded process identity was then closed for the seven-app checks.
 
 Committed AGENTS.md, roadmap/gaps and control/CLI documents were read. Ignored
 `plan/` is absent. The referenced craftrules repository is not available locally;
@@ -18,8 +19,8 @@ Sans/Serif fonts are included under their original OFL notices.
 
 Initial changes select Glow through a separate native feature and fit the window
 to the VAIO. The CPU canvas, engine, plugins, collaboration code and recovery are
-retained. Desktop/headless builds, real-device workflows and practical features
-are being verified before signed APT delivery and a seven-app launcher.
+retained. Desktop/headless builds and real-device workflows passed; signed APT delivery
+and the seven-app launcher update are installed.
 
 Known upstream limits: alpha, best-effort .fig exchange, preview collaboration,
 and its own plugin API rather than Figma plugin compatibility. Nothing here claims
@@ -47,13 +48,13 @@ full Figma parity or validates external real-world Figma files.
 - Pristine upstream full CI stopped at seven pre-existing collapsible_match
   Clippy style errors. Native i386 GUI Clippy passed with warnings denied and only
   that style lint explicitly allowed. Asset attribution and layering pass.
-  Full host functional tests are running separately. WebAssembly target is absent;
+  The canonical-temp host functional rerun passed: 2,798 tests, eight ignored. WebAssembly target is absent;
   WASM checks are not claimed. Upstream source checkouts remain unchanged.
 
-## Planned package change and rollback
+## Package change and rollback
 
-Install figcraft-vaio 0.7.0~vaio1 and upgrade artcraft-launcher-vaio to 0.5.1~vaio8
-through the existing signed APT source and native administrator prompt. Expand
+Installed figcraft-vaio 0.7.0~vaio1 and upgraded artcraft-launcher-vaio to 0.5.1~vaio8
+through the existing signed APT source and native administrator prompt. Expanded
 its origin preference from seven package names to eight, retaining wildcard -1.
 The old preference is backed up outside preferences.d at
 /var/backups/vaio-artcraft/preferences.before-figcraft-20261018. No unrelated
@@ -80,5 +81,55 @@ Xenial dpkg-deb reads it successfully, with the same transfer hash.
 The first pristine host functional run stopped at two error-message assertions
 for dangling symlinks: macOS's /var temporary-directory spelling differed from
 canonical /private/var. Both requests were denied, so this was not an observed
-confinement bypass. A rerun uses the canonical /private/tmp test directory and
-continues all test targets. Actual VAIO MCP outside-root read/write checks passed.
+confinement bypass. The canonical /private/tmp rerun completed all test targets: 2,798 passed,
+zero failed, eight ignored. Actual VAIO MCP outside-root read/write checks passed.
+
+
+## Publication
+
+Signed APT packages and recipes were published in commit
+`16b34e3a09723b5fe2423434c0fbd7abcabd5f48`. GitHub Pages reports built; the live
+InRelease signature and exact Packages bytes match local output. Releases:
+https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/figcraft-0.7.0-vaio1
+and https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/launcher-0.5.1-vaio8.
+The GUI's highest required GLIBC symbol is 2.18 (target has 2.23); actual i386 GUI
+and CLI execution already passed. The native installation subsequently completed successfully (details below).
+
+
+## Native installation
+
+Local administrator authentication completed. The project-source-only signed
+APT transaction installed FigCraft 0.7.0~vaio1 and upgraded launcher 7→8; one new
+package, one upgrade, no removals or unrelated packages. Installer status 0:
+package integrity, desktop entries and application/x-figcraft MIME passed.
+The unchanged scoped key and exact source were checked first; the preference now
+allows the eight expected package names only. Its prior copy remains in the
+recorded /var/backups/vaio-artcraft path. Installed-wrapper headless, GUI, native-dialog, recovery and integrity checks
+passed on 19 October 2026 BST. The record retains its starting date.
+
+
+Installed wrappers preserve all eight expected package versions; FigCraft's loaded
+XCB path is /usr/lib/figcraft-vaio/lib/libxcb.so.1. The native MIME and exact
+8-package origin preference passed. Installed editing samples were 14.98% during
+initial render settling, then 0% settled while editing and 0% after editing,
+112132–112300 KiB RSS (about 109.5–109.7 MiB). An automatic draft copy appeared
+after 8.04 seconds and recovered successfully after the owned-process crash.
+Post-check ACPI temperature was 69°C, with no swap use. This is a short workflow
+measurement, not a sustained-load or thermal-failure test.
+
+
+All seven installed launcher Open buttons passed in suite order: VectorCraft,
+PdfCraft, DesignCraft, FigCraft, WordCraft, DeckCraft, GridCraft. Each child was
+started with an isolated test profile, observed alive and reaped before the next;
+only the owned test launcher/children were closed. The normal updated launcher
+is left visible, measured separately.
+
+
+Final normal launcher: seven installed versions equal APT candidates; all cards
+fit the 1540×650 client at (21,59), inside the 1600×768 display. Its inspected
+screenshot shows all seven installed/up-to-date cards. Seven-second settled idle
+sample: 0% of one logical CPU, 70064 KiB RSS (68.4 MiB). Final ACPI temperature
+fell to 57°C, both exposed core-throttle counts remained zero, available memory
+was about 1614 MiB and swap use zero. No test control listeners remain. Only the
+intended normal launcher remains from this task; there are no background builds or monitors.
+These are short measurements, not a proof against future hardware faults.

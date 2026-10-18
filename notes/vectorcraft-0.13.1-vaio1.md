@@ -66,5 +66,22 @@ only the fixed five application package names; mock transaction tests pass.
 
 Automatic GUI recovery passed: a one-minute idle snapshot appeared after about
 59 seconds; after killing only the isolated test process, a restarted app
-restored and saved the original unsaved text without warnings. Signed installation
-verification follows publication.
+restored and saved the original unsaved text without warnings.
+
+Signed native APT installation passed: exactly the new VectorCraft package and
+launcher revision 6 were changed. Installed CLI/MCP, format/font checks, GUI
+workflow and native Save As were repeated through the package wrappers. Maps
+confirm VectorCraft loads its own private XCB. Installed idle samples were
+0.8% CPU/104.5 MiB RSS while editing and 0.6%/111.8 MiB after reopening. All five
+installed launcher Open buttons passed in an isolated profile.
+
+The prior allowlist is backed up outside APT preferences. Removing VectorCraft
+uses native APT and retains user data; the older launcher package remains in
+the archive pool for rollback. The existing operating system and update
+frontend were retained.
+
+The normal five-card launcher is left visible on the VAIO, entirely within the
+display. Its settled seven-second sample was 0.0% CPU and 67.4 MiB RSS. All five
+installed versions match APT candidates. Final package integrity, binary hashes,
+private-library ownership, native/legacy MIME and scoped-source checks passed.
+No test automation listener or background test terminal remains.

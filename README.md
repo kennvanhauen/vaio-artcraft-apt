@@ -10,7 +10,7 @@ through APT. These are independent hardware adaptations of upstream alpha apps.
 | gridcraft-vaio | 0.8.0~vaio1 | Formulas, GUI edits, recalculation, charts, XLSX save/reopen, CSV/PDF export, native Save As, sorting/filtering, validation, conditional formatting, frozen panes and PivotTables |
 | pdfcraft-vaio | 0.9.0~vaio1 | Viewing/rendering, text extraction, extract/combine/rotate, comments, forms, applied redaction, AES-256 round trip and one-page OCR |
 | deckcraft-vaio | 0.8.0~vaio1 | Three-slide editing, shapes/picture/chart/notes, PPTX round trip, PDF/outline export, silent fullscreen presentation, native Save As and unsaved-draft recovery |
-| vectorcraft-vaio | 0.13.1~vaio1 | Headless CLI/MCP, GUI text editing, layers, shapes, pathfinder, undo/redo, two artboards, native/SVG round trip and broad format export |
+| vectorcraft-vaio | 0.13.1~vaio1 | Headless CLI/MCP, GUI text editing, layers, shapes, pathfinder, undo/redo, two artboards, native/SVG round trip, broad format export, native Save As and draft recovery |
 | artcraft-launcher-vaio | 0.5.1~vaio6 | Five-app APT backend, signed metadata refresh, offline reporting, saved settings and fixed package-operation allowlist |
 
 All five application engines retain their upstream features. This is a practical
@@ -161,3 +161,7 @@ The native build does not need the newer families listed for web-only fetching.
 Selected upstream tests passed (4,043 passed, six ignored). Full upstream CI stops
 at an existing Rust 1.95 Clippy nonminimal_bool warning in patterncmds.rs:494;
 this is not represented as a complete CI/WASM pass.
+
+The [five-app usage guide](notes/VAIO-Apps-Guide.md) explains working formats,
+headless commands, recovery and the verified limits. Installed wrapper and all
+five launcher Open-button checks passed.

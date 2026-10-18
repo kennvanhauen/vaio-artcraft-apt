@@ -1,0 +1,27 @@
+PdfCraft VAIO preview 0.9.0
+
+Open PdfCraft (VAIO preview) from Office or VAIO App Launcher, or open a PDF
+with it through the file manager. Use Open, the page organizer and comment
+tools; Save As preserves a separate copy. pdfcraft-vaio-cli exposes the
+upstream headless tools. Application updates use APT and the existing
+Check & Install Updates frontend, rather than upstream release downloads.
+
+Measured on the Atom VAIO with an original three-page PDF: viewing,
+render-to-PNG, text extraction, extracting/combining pages, page rotation,
+and saved comments passed. Form creation/filling, applied redaction, an AES-256
+password round trip and one-page image OCR also passed. Physical printing, digital signatures, advanced
+forms and large scanned PDFs were not verified.
+Those upstream features are retained; they are not compatibility promises.
+The two hash-verified Ocrs models are included, under CC-BY-SA-4.0. OCR is
+English/Latin-focused and CPU-intensive; the small single-page check passed.
+
+This build selects OpenGL/Glow because the VAIO has no Vulkan support, and its
+initial window fits the VAIO display. Native PDF Save As fills a missing .pdf
+extension and asks before replacing an existing normalized destination.
+It includes a private libxcb, upstream crypto unchanged, and upstream
+permissive font/icon notices. The optional craft-fonts build input is absent,
+so Japanese PDF text authoring is unavailable in this build.
+The original ArtCraft trademark graphics were replaced by plain text labels.
+No control server or MCP server is started by the package.
+
+Removal: sudo apt-get remove pdfcraft-vaio (documents/settings are retained).

@@ -1,0 +1,22 @@
+GridCraft VAIO preview 0.8.0
+
+Open GridCraft (VAIO preview) from Office or VAIO App Launcher. Ctrl+O opens
+a workbook; Ctrl+S saves. Keep a separate copy when editing important files.
+Use the ribbon for formulas, formatting, charts and printing/export to PDF.
+The gridcraft-vaio-cli command provides the upstream headless tools.
+
+Measured on the Atom VAIO with a small synthetic budget: GUI cell editing,
+formulas/recalculation, bold formatting, a column chart, XLSX save/reopen,
+CSV export and PDF export passed. Sorting/filtering, validation, conditional
+formatting, frozen panes and a saved PivotTable total also passed. This is an upstream alpha application,
+not a guarantee of Excel fidelity or large-workbook performance. Macros,
+complex external workbooks and physical printing were not verified.
+
+The Linux i386 build uses Glow and a private libxcb. Native Save As adds
+the suggested extension to bare filenames and asks before overwriting an
+existing normalized target. Explicit typed extensions are retained.
+The original ArtCraft trademarks are not used. Original attribution remains.
+No control server or MCP server is started by the package.
+
+Updates use the existing signed APT source and Check & Install Updates.
+Removal: sudo apt-get remove gridcraft-vaio (documents/settings are retained).

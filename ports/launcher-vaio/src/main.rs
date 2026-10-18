@@ -2,6 +2,7 @@
 #![deny(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
 
 mod apt;
+mod apt_jobs;
 use artcraft_launcher_core::PackageKind;
 use artcraft_launcher_ui_egui::{Host, LauncherUi, Settings};
 use std::time::{Duration, Instant};
@@ -101,7 +102,7 @@ fn main() -> eframe::Result {
             settings.close_to_tray = false;
             settings.preferred_kinds = vec![PackageKind::Deb];
             let mut launcher = LauncherUi::new(&cc.egui_ctx, Box::new(apt::AptBackend::new(cc.egui_ctx.clone())), settings);
-            launcher.retain_apps(&["wordcraft"]);
+            launcher.retain_apps(&["wordcraft", "gridcraft", "pdfcraft"]);
             Ok(Box::new(Shell { launcher, host: Desktop::default(), smoke, start: Instant::now(), shot_requested: false }))
         }),
     )

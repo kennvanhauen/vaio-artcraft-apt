@@ -1,0 +1,75 @@
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -927,6 +927,7 @@
+  "egui-wgpu",
+  "egui-winit",
+  "egui_glow",
++ "glow",
+  "glutin",
+  "glutin-winit",
+  "image",
+--- a/apps/gridcraft/Cargo.toml
++++ b/apps/gridcraft/Cargo.toml
+@@ -52,3 +52,6 @@
+ [[test]]
+ name = "mac_menu_appkit"
+ harness = false
++
++[target.'cfg(all(target_os = "linux", target_arch = "x86"))'.dependencies]
++eframe = { workspace = true, features = ["glow"] }
+--- a/apps/gridcraft/src/main.rs
++++ b/apps/gridcraft/src/main.rs
+@@ -57,7 +57,7 @@
+     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+         self.0.ui(ui);
+     }
+-    fn on_exit(&mut self) {
++    fn on_exit(&mut self, #[cfg(all(target_os = "linux", target_arch = "x86"))] _gl: Option<&eframe::glow::Context>) {
+         print::finish_pending_jobs();
+         save_prefs(&self.0);
+         // macOS (#117): end the process here, before eframe tears the window down. AccessKit's
+@@ -190,7 +190,18 @@
+             for (label, x) in TYPES.iter().filter(|(_, x)| *x == ext).chain(TYPES.iter().filter(|(_, x)| *x != ext)) {
+                 dialog = dialog.add_filter(*label, &[*x]);
+             }
+-            dialog.save_file().and_then(|p| p.to_str().map(str::to_string))
++            let picked = dialog.save_file()?;
++            let mut selected = picked.clone();
++            if selected.extension().is_none_or(|extension| extension.is_empty()) {
++                selected.set_extension(&ext);
++            }
++            if selected != picked && selected.exists() {
++                let answer = rfd::MessageDialog::new().set_title("Replace file?")
++                    .set_description(format!("{} already exists. Replace it?", selected.display()))
++                    .set_buttons(rfd::MessageButtons::YesNo).show();
++                if answer != rfd::MessageDialogResult::Yes { return None; }
++            }
++            selected.to_str().map(str::to_string)
+         })),
+         open_url: Some(Box::new(|url: &str| open_with_system(url))),
+         printers: Some(print::discover()),
+@@ -321,6 +332,13 @@
+         viewport = viewport.with_icon(i);
+     }
+     let options = eframe::NativeOptions { viewport, ..Default::default() };
++    #[cfg(all(target_os = "linux", target_arch = "x86"))]
++    let options = {
++        let mut options = options;
++        options.renderer = eframe::Renderer::Glow;
++        options.viewport = options.viewport.with_inner_size([1100.0, 650.0]);
++        options
++    };
+     // Before eframe creates the wgpu instance: Windows starts on DirectX 12, or OpenGL when
+     // DirectX 12 has no GPU driver, and never touches Vulkan unless asked (see graphics.rs).
+     #[cfg(target_os = "windows")]
+--- a/crates/ui-egui/src/lib.rs
++++ b/crates/ui-egui/src/lib.rs
+@@ -101,7 +101,7 @@
+             ribbon_collapsed: false,
+             formula_bar_expanded: false,
+             status_bar: true,
+-            animations: true,
++            animations: !cfg!(all(target_os = "linux", target_arch = "x86")),
+             autocomplete: true,
+             recent: vec![],
+             keytip_invoke: None,

@@ -1,5 +1,5 @@
 //! Package state comes from dpkg/APT. Only the root-owned APT helper mutates it.
-use artcraft_launcher_core::protocol::{Backend, Capabilities, Command, Event, JobPhase, LatestRelease, Origin, Source};
+use artcraft_launcher_core::protocol::{Backend, Capabilities, Command, Event, LatestRelease, Origin, Source};
 use artcraft_launcher_core::release::{Asset, Release};
 use artcraft_launcher_core::{InstallSource, Installed, Platform, version};
 use std::path::{Path, PathBuf};
@@ -7,7 +7,14 @@ use std::process::Command as Process;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, mpsc};
 
-const PACKAGE: &str = "wordcraft-vaio";
+#[derive(Clone, Copy)]
+pub(crate) struct ManagedApp { pub id: &'static str, pub name: &'static str, pub package: &'static str, pub binary: &'static str }
+pub(crate) const APPS: &[ManagedApp] = &[
+    ManagedApp{id:"wordcraft",name:"WordCraft",package:"wordcraft-vaio",binary:"/usr/bin/wordcraft-vaio"},
+    ManagedApp{id:"gridcraft",name:"GridCraft",package:"gridcraft-vaio",binary:"/usr/bin/gridcraft-vaio"},
+    ManagedApp{id:"pdfcraft",name:"PdfCraft",package:"pdfcraft-vaio",binary:"/usr/bin/pdfcraft-vaio"},
+];
+fn managed(id:&str)->Option<&'static ManagedApp>{APPS.iter().find(|app|app.id==id)}
 const APP: &str = "wordcraft";
 
 fn output(program: &str, args: &[&str]) -> Result<String, String> {
@@ -91,26 +98,35 @@ pub fn refresh() -> Result<serde_json::Value, String> {
     snapshot()
 }
 
-pub fn snapshot() -> Result<serde_json::Value, String> {
-    let installed = output("dpkg-query", &["-W", "-f=${db:Status-Abbrev}\t${Version}\n", PACKAGE])
+pub(crate) fn snapshot_for(app: &ManagedApp) -> Result<serde_json::Value, String> {
+    let installed = output("dpkg-query", &["-W", "-f=${db:Status-Abbrev}\t${Version}\n", app.package])
         .ok()
         .and_then(|line| line.strip_prefix("ii ").and_then(|v| v.split_whitespace().next()).map(str::to_owned));
     let mut args = cache_directory().ok().filter(|cache| cache.join("lists").is_dir()).map(|cache| apt_options(&cache)).unwrap_or_default();
-    args.extend(["policy".to_string(), PACKAGE.to_string()]);
+    args.extend(["policy".to_string(), app.package.to_string()]);
     let refs: Vec<&str> = args.iter().map(String::as_str).collect();
     let policy = output("apt-cache", &refs)?;
     let candidate = policy.lines().find_map(|line| line.trim().strip_prefix("Candidate: ")).filter(|value| *value != "(none)").map(str::to_owned);
-    Ok(serde_json::json!({"package": PACKAGE, "installed": installed, "candidate": candidate,
-        "binary": "/usr/bin/wordcraft-vaio", "updates": "APT", "policy": policy}))
+    Ok(serde_json::json!({"package": app.package, "installed": installed, "candidate": candidate,
+        "binary": app.binary, "updates": "APT", "policy": policy}))
 }
 
-fn state_events() -> Result<Vec<Event>, String> {
-    let snapshot = snapshot()?;
+pub fn snapshot()->Result<serde_json::Value,String>{
+    let apps:Result<Vec<_>,_>=APPS.iter().map(snapshot_for).collect();
+    let apps=apps?;
+    let mut state=apps.first().cloned().unwrap_or(serde_json::json!({}));
+    state["applications"]=serde_json::json!(apps);
+    Ok(state)
+}
+pub(crate) fn state_events() -> Result<Vec<Event>, String> {
+    let mut all=Vec::new();
+    for app in APPS {
+    let snapshot = snapshot_for(app)?;
     let installed = snapshot.get("installed").and_then(|v| v.as_str()).map(|value| Installed {
         version: display_version(value),
         source: InstallSource::Deb,
-        location: "/usr/bin/wordcraft-vaio".into(),
-        package: Some(PACKAGE.into()),
+        location: app.binary.into(),
+        package: Some(app.package.into()),
     });
     let latest = snapshot
         .get("candidate")
@@ -119,15 +135,17 @@ fn state_events() -> Result<Vec<Event>, String> {
             LatestRelease::Found(Release {
                 tag: value.into(),
                 version: display_version(value),
-                name: format!("WordCraft {value}"),
+                name: format!("{} {value}",app.name),
                 html_url: "https://github.com/kennvanhauen/vaio-artcraft-apt/releases".into(),
                 notes: "VAIO preview. Installations and updates use the signed APT archive.".into(),
-                assets: vec![Asset { name: format!("wordcraft-vaio_{value}_i386.deb"), ..Default::default() }],
+                assets: vec![Asset { name: format!("{}_{value}_i386.deb",app.package), ..Default::default() }],
                 ..Default::default()
             })
         })
         .unwrap_or(LatestRelease::None);
-    Ok(vec![Event::Detected { app: APP.into(), installed }, Event::Latest { app: APP.into(), latest, from: Origin::Apt }])
+    all.extend(vec![Event::Detected { app: app.id.into(), installed }, Event::Latest { app: app.id.into(), latest, from: Origin::Apt }]);
+    }
+    Ok(all)
 }
 
 pub struct AptBackend {
@@ -135,12 +153,13 @@ pub struct AptBackend {
     receiver: mpsc::Receiver<Event>,
     context: egui::Context,
     query_busy: Arc<AtomicBool>,
-    job_busy: Arc<AtomicBool>,
+    work: crate::apt_jobs::Queue,
 }
 impl AptBackend {
     pub fn new(context: egui::Context) -> Self {
         let (sender, receiver) = mpsc::channel();
-        Self { sender, receiver, context, query_busy: Arc::new(AtomicBool::new(false)), job_busy: Arc::new(AtomicBool::new(false)) }
+        let work=crate::apt_jobs::Queue::new(sender.clone(),context.clone());
+        Self { sender, receiver, context, query_busy: Arc::new(AtomicBool::new(false)), work }
     }
     fn query(&self, online: bool) {
         if self.query_busy.swap(true, Ordering::SeqCst) {
@@ -177,71 +196,8 @@ impl AptBackend {
             context.request_repaint();
         });
     }
-    fn job(&self, app: &str, remove: bool) {
-        if app != APP || self.job_busy.swap(true, Ordering::SeqCst) {
-            return;
-        }
-        let sender = self.sender.clone();
-        let context = self.context.clone();
-        let busy = self.job_busy.clone();
-        std::thread::spawn(move || {
-            let phase = if remove { JobPhase::Removing } else { JobPhase::Installing };
-            let _ = sender.send(Event::Progress { app: APP.into(), phase });
-            context.request_repaint();
-            // All privileged executable paths and arguments are fixed. No remote shell scripts,
-            // unverified downloads, mutable user helper files or interpolated input.
-            let command = if remove {
-                "/usr/bin/uxterm -T 'VAIO App Launcher - APT' -e /usr/lib/artcraft-launcher-vaio/apt-action remove wordcraft-vaio"
-            } else {
-                "/usr/bin/uxterm -T 'VAIO App Launcher - APT' -e /usr/lib/artcraft-launcher-vaio/apt-action install wordcraft-vaio"
-            };
-            let expected = snapshot().ok().and_then(|state| state.get("candidate").and_then(|v| v.as_str()).map(str::to_owned));
-            let result = Process::new("/usr/bin/gksu")
-                .args([
-                    "-S",
-                    "-m",
-                    "VAIO App Launcher will use APT for the WordCraft preview. Review and confirm the package operation in the terminal.",
-                    command,
-                ])
-                .status()
-                .map_err(|error| error.to_string())
-                .and_then(|status| {
-                    if status.success() {
-                        Ok("APT operation completed".to_string())
-                    } else {
-                        Err("APT operation was cancelled or failed. See the APT terminal output.".into())
-                    }
-                });
-            let result = result.and_then(|message| {
-                let state = snapshot()?;
-                let installed = state.get("installed").and_then(|value| value.as_str());
-                let completed = if remove {
-                    installed.is_none()
-                } else {
-                    installed.is_some_and(|actual| {
-                        expected.as_deref().is_none_or(|candidate| {
-                            Process::new("/usr/bin/dpkg")
-                                .args(["--compare-versions", actual, "ge", candidate])
-                                .status()
-                                .is_ok_and(|status| status.success())
-                        })
-                    })
-                };
-                if completed {
-                    Ok(message)
-                } else {
-                    Err("The requested package change was not completed. Your existing package state was retained.".into())
-                }
-            });
-            if let Ok(events) = state_events() {
-                for event in events {
-                    let _ = sender.send(event);
-                }
-            }
-            let _ = sender.send(Event::JobFinished { app: APP.into(), result });
-            busy.store(false, Ordering::SeqCst);
-            context.request_repaint();
-        });
+    fn job(&self,id:&str,remove:bool){
+        if let Some(app)=managed(id){self.work.enqueue(*app,remove);}
     }
 }
 fn now() -> i64 {
@@ -254,18 +210,16 @@ impl Backend for AptBackend {
             Command::Detect => self.query(false),
             Command::Install { app } => self.job(&app, false),
             Command::Uninstall { app } => self.job(&app, true),
-            Command::Launch { app } if app == APP => match Process::new("/usr/bin/wordcraft-vaio").spawn() {
-                Ok(mut child) => {
-                    std::thread::spawn(move || {
-                        let _ = child.wait();
-                    });
+            Command::Launch { app } => {
+                if let Some(managed)=managed(&app){
+                    match Process::new(managed.binary).spawn(){
+                        Ok(mut child)=>{std::thread::spawn(move ||{let _=child.wait();});}
+                        Err(error)=>{let _=self.sender.send(Event::JobFinished{app,result:Err(error.to_string())});}
+                    }
                 }
-                Err(error) => {
-                    let _ = self.sender.send(Event::JobFinished { app, result: Err(error.to_string()) });
-                }
-            },
-            Command::Reveal { app } if app == APP => {
-                let _ = Process::new("xdg-open").arg("/usr/share/doc/wordcraft-vaio").spawn();
+            }
+            Command::Reveal { app } => {
+                if let Some(managed)=managed(&app){if let Ok(mut child)=Process::new("xdg-open").arg(format!("/usr/share/doc/{}",managed.package)).spawn(){std::thread::spawn(move||{let _=child.wait();});}}
             }
             Command::FetchScreenshots { app } => {
                 // The small VAIO build does not download catalog pictures.

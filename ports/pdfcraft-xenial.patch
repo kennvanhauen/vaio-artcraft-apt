@@ -1,0 +1,167 @@
+--- a/apps/pdfcraft/src/main.rs
++++ b/apps/pdfcraft/src/main.rs
+@@ -311,7 +311,7 @@
+ fn native_options(integrated: bool, app_frame: bool, renderer: eframe::Renderer) -> eframe::NativeOptions {
+     let mut viewport = egui::ViewportBuilder::default()
+         .with_title("PdfCraft")
+-        .with_inner_size([1440.0, 920.0])
++        .with_inner_size(if cfg!(all(target_os = "linux", target_arch = "x86")) { [1100.0, 650.0] } else { [1440.0, 920.0] })
+         .with_min_inner_size([820.0, 520.0])
+         .with_drag_and_drop(true)
+         // Wayland app id: matches packaging/linux/ai.storyteller.pdfcraft.desktop.
+--- a/crates/ui-egui/src/widgets.rs
++++ b/crates/ui-egui/src/widgets.rs
+@@ -499,24 +499,14 @@
+     cancel
+ }
+ 
+-/// The ArtCraft wordmark (Storyteller's brand, docs/brand/; not open source), sized to `height`.
++/// Plain project identification in this unofficial hardware build; no ArtCraft mark.
+ pub fn artcraft_logo(ui: &mut egui::Ui, height: f32) -> Response {
+-    let dark = ui.visuals().dark_mode;
+-    let (uri, bytes): (&str, &'static [u8]) = if dark {
+-        ("bytes://artcraft-logo-white.svg", include_bytes!("../../../docs/brand/artcraft-logo-white.svg"))
+-    } else {
+-        ("bytes://artcraft-logo.svg", include_bytes!("../../../docs/brand/artcraft-logo.svg"))
+-    };
+-    ui.add(egui::Image::from_bytes(uri, bytes).max_height(height).alt_text("ArtCraft"))
+-}
+-
+-/// The ArtCraft mark (brand blue, works on light and dark), `size` points square.
++    ui.add(egui::Label::new(egui::RichText::new("PdfCraft").size(height)))
++}
++
++/// A plain PDF label replaces the restricted upstream brand image.
+ pub fn artcraft_mark(ui: &mut egui::Ui, size: f32) -> Response {
+-    ui.add(
+-        egui::Image::from_bytes("bytes://artcraft-mark.svg", include_bytes!("../../../docs/brand/artcraft-mark.svg"))
+-            .fit_to_exact_size(vec2(size, size))
+-            .alt_text("ArtCraft"),
+-    )
++    ui.add(egui::Label::new(egui::RichText::new("PDF").strong().size(size * 0.5)))
+ }
+ 
+ /// Buttons for every community link (`pdfcraft_engine::links`), Discord first and prominent.
+--- a/crates/ocr/src/lib.rs
++++ b/crates/ocr/src/lib.rs
+@@ -69,7 +69,10 @@
+         if let Some(exe) = std::env::current_exe().ok().and_then(|e| e.parent().map(Path::to_path_buf)) {
+             dirs.extend(Self::dirs_beside_exe(&exe));
+         }
++        #[cfg(not(all(target_os = "linux", target_arch = "x86")))]
+         dirs.push(Path::new(env!("CARGO_MANIFEST_DIR")).join("../../assets/models"));
++        #[cfg(all(target_os = "linux", target_arch = "x86"))]
++        dirs.push(PathBuf::from("/usr/share/pdfcraft/models"));
+         dirs
+     }
+ 
+--- a/crates/ui-egui/src/pickers.rs
++++ b/crates/ui-egui/src/pickers.rs
+@@ -52,6 +52,8 @@
+     Folder(rfd::AsyncFileDialog),
+     /// Choose where to save a file.
+     Save(rfd::AsyncFileDialog),
++    /// A PDF destination: Xenial Zenity needs explicit extension normalization.
++    SavePdf(rfd::AsyncFileDialog),
+ }
+ 
+ /// What to do with the chosen paths, on a later frame.
+@@ -206,6 +208,28 @@
+                 let pick = d.save_file();
+                 self.pickers.spawn(target, ctx, async move { one(pick.await) }, then)
+             }
++            Ask::SavePdf(d) => {
++                let pick = d.save_file();
++                self.pickers.spawn(target, ctx, async move {
++                    let Some(handle) = pick.await else { return Vec::new() };
++                    let picked = handle.path().to_path_buf();
++                    #[cfg(all(target_os = "linux", target_arch = "x86"))]
++                    {
++                        let path = pdf_save_path(&picked);
++                        // Zenity confirmed only the typed filename, before .pdf was appended.
++                        if path != picked && path.exists() {
++                            let answer = rfd::AsyncMessageDialog::new().set_title("Replace file?")
++                                .set_description(format!("{} already exists. Replace it?", path.display()))
++                                .set_level(rfd::MessageLevel::Warning)
++                                .set_buttons(rfd::MessageButtons::YesNo).show().await;
++                            if answer != rfd::MessageDialogResult::Yes { return Vec::new() }
++                        }
++                        return vec![path];
++                    }
++                    #[cfg(not(all(target_os = "linux", target_arch = "x86")))]
++                    vec![picked]
++                }, then)
++            }
+             Ask::Files(d) => {
+                 let pick = d.pick_files();
+                 self.pickers.spawn(
+@@ -402,3 +426,25 @@
+         assert!(!app.pickers.showing.load(Ordering::SeqCst));
+     }
+ }
++
++#[cfg(any(test, all(target_os = "linux", target_arch = "x86")))]
++fn pdf_save_path(picked: &std::path::Path) -> PathBuf {
++    let mut path = picked.to_path_buf();
++    if path.extension().is_none_or(|extension| extension.is_empty()) {
++        path.set_extension("pdf");
++    }
++    path
++}
++
++#[cfg(test)]
++mod vaio_save_tests {
++    use super::pdf_save_path;
++    use std::path::Path;
++    #[test]
++    fn native_pdf_names_keep_typed_extensions_and_fill_missing_ones() {
++        assert_eq!(pdf_save_path(Path::new("/tmp/report")), Path::new("/tmp/report.pdf"));
++        assert_eq!(pdf_save_path(Path::new("/tmp/report.")), Path::new("/tmp/report.pdf"));
++        assert_eq!(pdf_save_path(Path::new("/tmp/report.PDF")), Path::new("/tmp/report.PDF"));
++        assert_eq!(pdf_save_path(Path::new("/tmp/report.custom")), Path::new("/tmp/report.custom"));
++    }
++}
+--- a/crates/ui-egui/src/editing.rs
++++ b/crates/ui-egui/src/editing.rs
+@@ -627,7 +627,7 @@
+                     let name = if name.to_ascii_lowercase().ends_with(".pdf") { name } else { format!("{name}.pdf") };
+                     let dialog = rfd::AsyncFileDialog::new().add_filter("PDF", &["pdf"]).set_file_name(name);
+                     // The bytes are taken once the user has chosen, so edits made meanwhile are saved too.
+-                    self.ask_one(crate::pickers::Ask::Save(dialog), None, move |app, dest| {
++                    self.ask_one(crate::pickers::Ask::SavePdf(dialog), None, move |app, dest| {
+                         app.save_doc_to_then(id, &dest.to_string_lossy(), target, Box::new(after));
+                     });
+                     return false;
+--- a/crates/ui-egui/src/print_ui.rs
++++ b/crates/ui-egui/src/print_ui.rs
+@@ -648,7 +648,7 @@
+             None => {
+                 let stem = name.trim_end_matches(".pdf").trim_end_matches(".PDF");
+                 let dialog = rfd::AsyncFileDialog::new().add_filter("PDF", &["pdf"]).set_file_name(format!("{stem} (print).pdf"));
+-                self.ask_one(crate::pickers::Ask::Save(dialog), None, move |app, path| {
++                self.ask_one(crate::pickers::Ask::SavePdf(dialog), None, move |app, path| {
+                     write(app, path);
+                 })
+             }
+--- a/crates/ui-egui/src/create_ui.rs
++++ b/crates/ui-egui/src/create_ui.rs
+@@ -280,7 +280,7 @@
+                 Some(p) => write(self, p),
+                 None => {
+                     let dialog = rfd::AsyncFileDialog::new().add_filter("PDF", &["pdf"]).set_file_name(&name);
+-                    self.ask_one(crate::pickers::Ask::Save(dialog), None, move |app, p| write(app, p.to_string_lossy().into_owned()));
++                    self.ask_one(crate::pickers::Ask::SavePdf(dialog), None, move |app, p| write(app, p.to_string_lossy().into_owned()));
+                 }
+             }
+         }
+--- a/crates/ui-egui/src/sign_ui.rs
++++ b/crates/ui-egui/src/sign_ui.rs
+@@ -480,7 +480,7 @@
+                 // the pick is dropped (with a notice) if it is edited or switched away from
+                 // meanwhile. Once the picker shows, the dialog closes; an error from here on
+                 // arrives as a notice. If no picker could show, the dialog stays open.
+-                let asked = self.ask_one(crate::pickers::Ask::Save(dialog), Some(doc_id), move |app, path| {
++                let asked = self.ask_one(crate::pickers::Ask::SavePdf(dialog), Some(doc_id), move |app, path| {
+                     if let Err(e) = sign_and_save(app, path)
+                         && !e.is_empty()
+                     {

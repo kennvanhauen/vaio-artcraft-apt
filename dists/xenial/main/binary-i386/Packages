@@ -14,19 +14,51 @@ Size: 43766716
 MD5sum: 20f1b820f2667114bffee5ec22838a42
 SHA256: c4207e366105b636493985a74d20f7fceddcaf1f8152e9da546d74f425fad16f
 
+Package: gridcraft-vaio
+Version: 0.8.0~vaio1
+Architecture: i386
+Section: editors
+Priority: optional
+Maintainer: VAIO local build <vaio@localhost>
+Installed-Size: 51548
+Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa
+Description: GridCraft preview adapted for Ubuntu Xenial i386 on the Sony VAIO
+ Unofficial native 32-bit build using Glow and a private XCB library.
+ APT owns application files; existing user documents and settings are retained.
+Filename: pool/main/gridcraft-vaio_0.8.0~vaio1_i386.deb
+Size: 21860730
+MD5sum: 511ccef963e60136e61b3023328801bd
+SHA256: dca03a831cb13308c1d4da1aa91dbfdb6eb88927759915b3c8b0815bf51cbc0c
+
+Package: pdfcraft-vaio
+Version: 0.9.0~vaio1
+Architecture: i386
+Section: editors
+Priority: optional
+Maintainer: VAIO local build <vaio@localhost>
+Installed-Size: 115796
+Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa
+Description: PdfCraft preview adapted for Ubuntu Xenial i386 on the Sony VAIO
+ Unofficial native 32-bit build using Glow and a private XCB library.
+ APT owns application files; existing user documents and settings are retained.
+Filename: pool/main/pdfcraft-vaio_0.9.0~vaio1_i386.deb
+Size: 57133696
+MD5sum: 1239fc84b17f0c3a34f99c188aa1adc5
+SHA256: 0d2c56ceaae2376b33f4e5e5a8118ed9f487ec9d78e3abe300c9568092ad0a61
+
 Package: artcraft-launcher-vaio
-Version: 0.5.1~vaio2
+Version: 0.5.1~vaio3
 Architecture: i386
 Section: utils
 Priority: optional
 Maintainer: VAIO local build <vaio@localhost>
-Installed-Size: 14641
+Installed-Size: 14701
 Depends: apt, gksu, xterm, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa
 Description: VAIO App Launcher using native APT-managed application previews
  Unofficial adaptation based on ArtCraft Launcher for Ubuntu Xenial i386.
  Uses Glow, a private XCB library and reduced motion on the Atom VAIO P.
-Filename: pool/main/artcraft-launcher-vaio_0.5.1~vaio2_i386.deb
-Size: 6834178
-MD5sum: 12b5841ebc004cbbffa2897abddf93dc
-SHA256: 45795c5298f3d1f69d77982c5c5a2c5f4dd04af87f3248c9b8e7819950960d05
+Filename: pool/main/artcraft-launcher-vaio_0.5.1~vaio3_i386.deb
+Size: 6862800
+MD5sum: e3791ef44c1bc68d0f3a8fa68b33ee51
+SHA256: d8efe331ebe767340c1df3e940252c0e3eb3d9b457d0b2cede56b688c2385671
 

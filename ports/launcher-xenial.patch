@@ -66,12 +66,11 @@
                  }
 --- a/crates/ui-egui/src/model.rs
 +++ b/crates/ui-egui/src/model.rs
-@@ -39,6 +39,10 @@
+@@ -39,6 +39,9 @@
      /// Whether the latest release has something for `platform`.
      pub fn has_download(&self, platform: Option<Platform>) -> bool {
          let (Some(r), Some(p)) = (self.release(), platform) else { return false };
-+        #[cfg(all(target_os = "linux", target_arch = "x86"))]
-+        if self.app.id == "wordcraft" {
++        if cfg!(all(target_os = "linux", target_arch = "x86")) {
 +            return r.assets.iter().any(|asset| asset.name.ends_with("_i386.deb"));
 +        }
          let stems: Vec<&str> = self.app.stems().collect();

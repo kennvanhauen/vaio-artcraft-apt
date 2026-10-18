@@ -1,24 +1,32 @@
 #!/bin/sh
-# Root-owned, allowlisted APT operations. Never invokes a downloaded helper.
+# Root-owned, fixed allowlist. No downloaded code, shell fragments or autoremove.
 set -eu
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
+export PATH
 if test "$(id -u)" != 0; then
     echo 'Administrator authentication is required.'
     exit 1
 fi
-case "${1-}:${2-}" in
-    install:wordcraft-vaio|remove:wordcraft-vaio) ;;
-    *) echo 'Unsupported package operation'; exit 1 ;;
-esac
+case "${1-}" in install|remove) action=$1; shift;;
+    *) echo 'Unsupported package operation'; exit 1;; esac
+if test "$#" -lt 1 || test "$#" -gt 3; then
+    echo 'Select one to three VAIO application packages.'; exit 1
+fi
+for package do
+    case "$package" in wordcraft-vaio|gridcraft-vaio|pdfcraft-vaio) ;;
+        *) echo 'Unsupported package'; exit 1;; esac
+done
 run_operation() {
-    if test "$1" = install; then
+    if test "$action" = install; then
         apt-get -o Dir::Etc::sourcelist=/etc/apt/sources.list.d/vaio-artcraft.list \
-            -o Dir::Etc::sourceparts=- -o Acquire::Languages=none update || return "$?"
-        apt-get --no-remove --no-install-recommends install wordcraft-vaio
+            -o Dir::Etc::sourceparts=- -o Acquire::Languages=none \
+            -o Acquire::https::Timeout=20 update || return "$?"
+        apt-get --no-remove --no-install-recommends install "$@"
     else
-        apt-get remove wordcraft-vaio
+        apt-get remove "$@"
     fi
 }
-if run_operation "$1"; then
+if run_operation "$@"; then
     echo 'APT operation completed.'
 else
     operation_status=$?

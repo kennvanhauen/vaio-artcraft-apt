@@ -1,11 +1,4 @@
 {
-  "passed": true,
-  "pdfx4_cmyk": {
-    "valid": true,
-    "path": "/tmp/vaio-designcraft-test/pdfx4-cmyk.pdf",
-    "standard": "PDF/X-4",
-    "issues": []
-  },
   "merge": {
     "completed": 7,
     "results": [
@@ -21,40 +14,39 @@
         "story": 10
       },
       {
-        "records": 2,
         "warnings": [],
         "fields": [
           {
             "name": "Name",
             "kind": "text"
           }
-        ]
+        ],
+        "records": 2
       },
       {
         "id": 12
       },
       {
         "records": 2,
-        "missingImages": [],
-        "pages": 2,
         "oversetStories": 0,
-        "warnings": []
+        "warnings": [],
+        "pages": 2,
+        "missingImages": []
       },
       {
-        "bytes": 10332,
-        "path": "/tmp/vaio-designcraft-test/merged.designcraft"
+        "path": "/tmp/vaio-designcraft-test/merged.designcraft",
+        "bytes": 10332
       }
     ]
   },
   "pdfx4": {
-    "valid": false,
     "path": "/tmp/vaio-designcraft-test/pdfx4.pdf",
-    "standard": "PDF/X-4",
+    "valid": false,
     "issues": [
       "RGB fills or strokes on page 1: under a CMYK output intent RGB needs an ICC profile"
-    ]
+    ],
+    "standard": "PDF/X-4"
   },
-  "pdfx4_note": "RGB artwork fails upstream CMYK-output-intent validator; no prepress compliance claim.",
   "checks": [
     "three PPTX slides with editable text/table contents",
     "EPUB text",
@@ -62,5 +54,13 @@
     "PDF/X-4 validator reports RGB compliance limitation",
     "parent-page text",
     "two-record data merge"
-  ]
+  ],
+  "pdfx4_cmyk": {
+    "path": "/tmp/vaio-designcraft-test/pdfx4-cmyk.pdf",
+    "valid": true,
+    "issues": [],
+    "standard": "PDF/X-4"
+  },
+  "pdfx4_note": "RGB artwork fails upstream CMYK-output-intent validator; no prepress compliance claim.",
+  "passed": true
 }

@@ -1,568 +1,217 @@
 {
-  "export_epub": {
-    "path": "/tmp/vaio-designcraft-test/brochure.epub",
-    "bytes": 8795,
-    "warnings": [
-      "original.png: no alt text (Object Export Options); exported as decorative (alt=\"\")"
+  "preflight": {
+    "errors": 0,
+    "warnings": 1,
+    "issues": [
+      {
+        "severity": "warning",
+        "message": "RGB swatch in a print document: Club teal",
+        "kind": "rgbColor"
+      }
     ]
   },
-  "export_idml": {
-    "path": "/tmp/vaio-designcraft-test/brochure.idml",
-    "bytes": 22085
-  },
-  "export_pdf": {
-    "path": "/tmp/vaio-designcraft-test/brochure.pdf",
-    "bytes": 23560,
-    "pages": 3,
-    "warnings": []
-  },
-  "display_variables_absent": true,
-  "timings": [
-    {
-      "action": "initialize",
-      "seconds": 0.006
+  "table": {
+    "options": {
+      "border": {
+        "weight": 1.0,
+        "color": "[Black]",
+        "tint": 1.0,
+        "kind": {
+          "kind": "solid"
+        }
+      },
+      "direction": "leftToRight",
+      "repeatFooter": true,
+      "repeatHeader": true,
+      "spaceBefore": 4.0,
+      "spaceAfter": -4.0
     },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.002
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.004
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.004
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.004
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.15
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.002
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.006
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.004
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.043
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.204
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.005
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.037
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.039
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.073
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.145
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.02
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.015
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.018
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.01
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.016
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.024
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.015
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
-    },
-    {
-      "action": "tools/call",
-      "seconds": 0.003
+    "anchor": 0,
+    "headerRows": 1,
+    "table": 23,
+    "columns": [
+      {
+        "width": 165.0
+      },
+      {
+        "width": 165.0
+      }
+    ],
+    "cells": [
+      {
+        "style": "",
+        "col": 0,
+        "insets": [
+          4.0,
+          4.0,
+          4.0,
+          4.0
+        ],
+        "row": 0,
+        "text": "SESSION",
+        "vj": "top",
+        "fill": "[None]",
+        "colSpan": 1,
+        "rowSpan": 1
+      },
+      {
+        "style": "",
+        "col": 1,
+        "insets": [
+          4.0,
+          4.0,
+          4.0,
+          4.0
+        ],
+        "row": 0,
+        "text": "TIME",
+        "vj": "top",
+        "fill": "[None]",
+        "colSpan": 1,
+        "rowSpan": 1
+      },
+      {
+        "style": "",
+        "col": 0,
+        "insets": [
+          4.0,
+          4.0,
+          4.0,
+          4.0
+        ],
+        "row": 1,
+        "text": "Welcome",
+        "vj": "top",
+        "fill": "[None]",
+        "colSpan": 1,
+        "rowSpan": 1
+      },
+      {
+        "style": "",
+        "col": 1,
+        "insets": [
+          4.0,
+          4.0,
+          4.0,
+          4.0
+        ],
+        "row": 1,
+        "text": "10:00",
+        "vj": "top",
+        "fill": "[None]",
+        "colSpan": 1,
+        "rowSpan": 1
+      },
+      {
+        "style": "",
+        "col": 0,
+        "insets": [
+          4.0,
+          4.0,
+          4.0,
+          4.0
+        ],
+        "row": 2,
+        "text": "Make and mend",
+        "vj": "top",
+        "fill": "[None]",
+        "colSpan": 1,
+        "rowSpan": 1
+      },
+      {
+        "style": "",
+        "col": 1,
+        "insets": [
+          4.0,
+          4.0,
+          4.0,
+          4.0
+        ],
+        "row": 2,
+        "text": "10:30",
+        "vj": "top",
+        "fill": "[None]",
+        "colSpan": 1,
+        "rowSpan": 1
+      },
+      {
+        "style": "",
+        "col": 0,
+        "insets": [
+          4.0,
+          4.0,
+          4.0,
+          4.0
+        ],
+        "row": 3,
+        "text": "Share results",
+        "vj": "top",
+        "fill": "[None]",
+        "colSpan": 1,
+        "rowSpan": 1
+      },
+      {
+        "style": "",
+        "col": 1,
+        "insets": [
+          4.0,
+          4.0,
+          4.0,
+          4.0
+        ],
+        "row": 3,
+        "text": "12:00",
+        "vj": "top",
+        "fill": "[None]",
+        "colSpan": 1,
+        "rowSpan": 1
+      }
+    ],
+    "rows": [
+      {
+        "mode": "atLeast",
+        "height": 3.0,
+        "kind": "header"
+      },
+      {
+        "mode": "atLeast",
+        "height": 3.0,
+        "kind": "body"
+      },
+      {
+        "mode": "atLeast",
+        "height": 3.0,
+        "kind": "body"
+      },
+      {
+        "mode": "atLeast",
+        "height": 3.0,
+        "kind": "body"
+      }
+    ],
+    "style": "",
+    "footerRows": 0,
+    "story": 22,
+    "range": {
+      "r0": 0,
+      "c0": 0,
+      "r1": 0,
+      "c1": 0
     }
-  ],
-  "export_html": {
-    "path": "/tmp/vaio-designcraft-test/brochure.html",
-    "bytes": 11148,
-    "warnings": []
   },
-  "reopen_designcraft": {
-    "stories": 5,
-    "pages": 3
-  },
-  "original": {
-    "settings": {
-      "intent": "print",
-      "pageWidth": 420.0,
-      "facingPages": false,
-      "pageHeight": 595.0
+  "initialize": {
+    "instructions": "DesignCraft is a page-layout app (an InDesign clone). Coordinates are points in spread space (y down; on a single-page spread the page's top-left is (0,0); a default Letter page is 612\u00d7792). Every action is a command: find ids and parameters with list_commands and run them with execute (or several with batch). Typical flow: new_document \u2192 execute frame.create {rect:[x0,y0,x1,y1], content:\"text\", text:\"\u2026\"} \u2192 set_story_text / execute type.char / style.paragraph.apply \u2192 render_page to look at the result. inspect_document lists pages, items (ids, bounds), stories (overset) and styles. place_image puts a picture on the page. Backend: headless (in-process engine, no window). Community: https://discord.gg/artcraft (Discord), https://getartcraft.com/apps/designcraft (app page), https://github.com/storytold/designcraft (source). The `app.links` command returns these links.",
+    "serverInfo": {
+      "websiteUrl": "https://getartcraft.com/apps/designcraft",
+      "name": "designcraft",
+      "version": "0.9.0",
+      "title": "DesignCraft"
     },
-    "title": "original.designcraft",
-    "spreads": [
-      {
-        "items": [
-          {
-            "hidden": false,
-            "bounds": [
-              30.0,
-              30.0,
-              390.0,
-              100.0
-            ],
-            "columns": 1,
-            "fill": "[None]",
-            "story": 12,
-            "columnRule": false,
-            "kind": "<text frame>",
-            "stroke": {
-              "swatch": "[None]",
-              "weight": 1.0
-            },
-            "layer": 1,
-            "id": 11,
-            "name": "",
-            "locked": false
-          },
-          {
-            "stroke": {
-              "swatch": "[None]",
-              "weight": 1.0
-            },
-            "hidden": false,
-            "bounds": [
-              30.0,
-              110.0,
-              390.0,
-              290.0
-            ],
-            "layer": 1,
-            "asset": 13,
-            "id": 14,
-            "fill": "[None]",
-            "kind": "<image>",
-            "name": "",
-            "locked": false
-          },
-          {
-            "hidden": false,
-            "bounds": [
-              30.0,
-              310.0,
-              390.0,
-              550.0
-            ],
-            "columns": 1,
-            "fill": "[None]",
-            "story": 16,
-            "columnRule": false,
-            "kind": "<text frame>",
-            "stroke": {
-              "swatch": "[None]",
-              "weight": 1.0
-            },
-            "layer": 1,
-            "id": 15,
-            "name": "",
-            "locked": false
-          }
-        ],
-        "index": 0,
-        "pages": [
-          {
-            "bounds": [
-              0.0,
-              0.0,
-              420.0,
-              595.0
-            ],
-            "columns": 1,
-            "side": "single",
-            "parent": "A-Parent",
-            "margins": {
-              "top": 30.0,
-              "outside": 30.0,
-              "bottom": 30.0,
-              "inside": 30.0
-            },
-            "index": 0,
-            "name": "1"
-          }
-        ]
-      },
-      {
-        "items": [
-          {
-            "hidden": false,
-            "bounds": [
-              30.0,
-              30.0,
-              200.0,
-              270.0
-            ],
-            "columns": 1,
-            "fill": "[None]",
-            "story": 18,
-            "columnRule": false,
-            "kind": "<text frame>",
-            "stroke": {
-              "swatch": "[None]",
-              "weight": 1.0
-            },
-            "layer": 1,
-            "id": 17,
-            "name": "",
-            "locked": false
-          },
-          {
-            "hidden": false,
-            "bounds": [
-              220.0,
-              30.0,
-              390.0,
-              270.0
-            ],
-            "columns": 1,
-            "fill": "[None]",
-            "story": 18,
-            "columnRule": false,
-            "kind": "<text frame>",
-            "stroke": {
-              "swatch": "[None]",
-              "weight": 1.0
-            },
-            "layer": 1,
-            "id": 19,
-            "name": "",
-            "locked": false
-          },
-          {
-            "hidden": false,
-            "bounds": [
-              30.0,
-              300.0,
-              390.0,
-              530.0
-            ],
-            "columns": 1,
-            "fill": "[None]",
-            "story": 22,
-            "columnRule": false,
-            "kind": "<text frame>",
-            "stroke": {
-              "swatch": "[None]",
-              "weight": 1.0
-            },
-            "layer": 1,
-            "id": 21,
-            "name": "",
-            "locked": false
-          }
-        ],
-        "index": 1,
-        "pages": [
-          {
-            "bounds": [
-              0.0,
-              0.0,
-              420.0,
-              595.0
-            ],
-            "columns": 1,
-            "side": "single",
-            "parent": "A-Parent",
-            "margins": {
-              "top": 30.0,
-              "outside": 30.0,
-              "bottom": 30.0,
-              "inside": 30.0
-            },
-            "index": 1,
-            "name": "2"
-          }
-        ]
-      },
-      {
-        "items": [
-          {
-            "hidden": false,
-            "bounds": [
-              30.0,
-              30.0,
-              390.0,
-              350.0
-            ],
-            "columns": 1,
-            "fill": "[None]",
-            "story": 25,
-            "columnRule": false,
-            "kind": "<text frame>",
-            "stroke": {
-              "swatch": "[None]",
-              "weight": 1.0
-            },
-            "layer": 1,
-            "id": 24,
-            "name": "",
-            "locked": false
-          }
-        ],
-        "index": 2,
-        "pages": [
-          {
-            "bounds": [
-              0.0,
-              0.0,
-              420.0,
-              595.0
-            ],
-            "columns": 1,
-            "side": "single",
-            "parent": "A-Parent",
-            "margins": {
-              "top": 30.0,
-              "outside": 30.0,
-              "bottom": 30.0,
-              "inside": 30.0
-            },
-            "index": 2,
-            "name": "3"
-          }
-        ]
-      }
-    ],
-    "pageCount": 3,
-    "stories": [
-      {
-        "frames": [
-          11
-        ],
-        "length": 15,
-        "paragraphs": 1,
-        "lines": 1,
-        "id": 12,
-        "preview": "THE REPAIR CLUB",
-        "overset": false
-      },
-      {
-        "frames": [
-          15
-        ],
-        "length": 144,
-        "paragraphs": 3,
-        "lines": 3,
-        "id": 16,
-        "preview": "Make, mend, and share.\nAn original three-page brochure created on the Sony VAIO.",
-        "overset": false
-      },
-      {
-        "frames": [
-          17,
-          19
-        ],
-        "length": 561,
-        "paragraphs": 2,
-        "lines": 20,
-        "id": 18,
-        "preview": "A PRACTICAL WORKSHOP\nWork together, keep good notes, and pass on what you learn.",
-        "overset": false
-      },
-      {
-        "frames": [
-          21
-        ],
-        "length": 4,
-        "paragraphs": 2,
-        "lines": 2,
-        "id": 22,
-        "preview": "\ue009\n",
-        "overset": false
-      },
-      {
-        "frames": [
-          24
-        ],
-        "length": 46,
-        "paragraphs": 2,
-        "lines": 2,
-        "id": 25,
-        "preview": "Original imported copy.\nMake, mend, and share.",
-        "overset": false
-      }
-    ],
-    "swatches": [
-      "[None]",
-      "[Registration]",
-      "[Paper]",
-      "[Black]",
-      "C=100 M=0 Y=0 K=0",
-      "C=0 M=100 Y=0 K=0",
-      "C=0 M=0 Y=100 K=0",
-      "C=0 M=100 Y=100 K=0",
-      "C=100 M=0 Y=100 K=0",
-      "C=100 M=100 Y=0 K=0",
-      "C=15 M=100 Y=100 K=0",
-      "C=75 M=5 Y=100 K=0",
-      "C=100 M=90 Y=10 K=0",
-      "Club teal"
-    ],
-    "tool": "selection",
-    "selection": {
-      "items": [
-        24
-      ],
-      "content": false
+    "capabilities": {
+      "resources": {},
+      "tools": {}
     },
-    "canUndo": true,
-    "layers": [
-      {
-        "id": 1,
-        "color": [
-          43,
-          155,
-          255
-        ],
-        "showGuides": true,
-        "printable": true,
-        "visible": true,
-        "suppressWrapWhenHidden": false,
-        "name": "Layer 1",
-        "locked": false
-      }
-    ],
-    "dirty": false,
-    "activeLayer": 1,
-    "path": "/tmp/vaio-designcraft-test/original.designcraft",
-    "parents": [
-      {
-        "items": 0,
-        "label": "A-Parent",
-        "basedOn": null,
-        "id": 3
-      }
-    ],
-    "paragraphStyles": [
-      "[No Paragraph Style]",
-      "[Basic Paragraph]",
-      "Club heading",
-      "Club body"
-    ],
-    "characterStyles": [
-      "[None]"
-    ]
+    "protocolVersion": "2025-03-26"
   },
   "checks": [
     "no-display MCP",
@@ -580,236 +229,587 @@
     "independent PDF text",
     "read/write root confinement"
   ],
-  "initialize": {
-    "protocolVersion": "2025-03-26",
-    "capabilities": {
-      "tools": {},
-      "resources": {}
-    },
-    "serverInfo": {
-      "version": "0.9.0",
-      "title": "DesignCraft",
-      "name": "designcraft",
-      "websiteUrl": "https://getartcraft.com/apps/designcraft"
-    },
-    "instructions": "DesignCraft is a page-layout app (an InDesign clone). Coordinates are points in spread space (y down; on a single-page spread the page's top-left is (0,0); a default Letter page is 612\u00d7792). Every action is a command: find ids and parameters with list_commands and run them with execute (or several with batch). Typical flow: new_document \u2192 execute frame.create {rect:[x0,y0,x1,y1], content:\"text\", text:\"\u2026\"} \u2192 set_story_text / execute type.char / style.paragraph.apply \u2192 render_page to look at the result. inspect_document lists pages, items (ids, bounds), stories (overset) and styles. place_image puts a picture on the page. Backend: headless (in-process engine, no window). Community: https://discord.gg/artcraft (Discord), https://getartcraft.com/apps/designcraft (app page), https://github.com/storytold/designcraft (source). The `app.links` command returns these links."
+  "export_epub": {
+    "path": "/tmp/vaio-designcraft-test/brochure.epub",
+    "warnings": [
+      "original.png: no alt text (Object Export Options); exported as decorative (alt=\"\")"
+    ],
+    "bytes": 8797
   },
-  "export_pptx": {
-    "path": "/tmp/vaio-designcraft-test/brochure.pptx",
-    "bytes": 336691,
-    "slides": 3,
-    "warnings": []
-  },
-  "table": {
-    "options": {
-      "direction": "leftToRight",
-      "border": {
-        "color": "[Black]",
-        "tint": 1.0,
-        "weight": 1.0,
-        "kind": {
-          "kind": "solid"
-        }
-      },
-      "spaceAfter": -4.0,
-      "repeatFooter": true,
-      "repeatHeader": true,
-      "spaceBefore": 4.0
-    },
-    "style": "",
-    "columns": [
+  "original": {
+    "activeLayer": 1,
+    "canUndo": true,
+    "pageCount": 3,
+    "path": "/tmp/vaio-designcraft-test/original.designcraft",
+    "title": "original.designcraft",
+    "tool": "selection",
+    "spreads": [
       {
-        "width": 165.0
+        "index": 0,
+        "items": [
+          {
+            "name": "",
+            "columnRule": false,
+            "id": 11,
+            "hidden": false,
+            "locked": false,
+            "stroke": {
+              "weight": 1.0,
+              "swatch": "[None]"
+            },
+            "fill": "[None]",
+            "kind": "<text frame>",
+            "columns": 1,
+            "layer": 1,
+            "story": 12,
+            "bounds": [
+              30.0,
+              30.0,
+              390.0,
+              100.0
+            ]
+          },
+          {
+            "name": "",
+            "layer": 1,
+            "id": 14,
+            "stroke": {
+              "weight": 1.0,
+              "swatch": "[None]"
+            },
+            "fill": "[None]",
+            "locked": false,
+            "asset": 13,
+            "hidden": false,
+            "kind": "<image>",
+            "bounds": [
+              30.0,
+              110.0,
+              390.0,
+              290.0
+            ]
+          },
+          {
+            "name": "",
+            "columnRule": false,
+            "id": 15,
+            "hidden": false,
+            "locked": false,
+            "stroke": {
+              "weight": 1.0,
+              "swatch": "[None]"
+            },
+            "fill": "[None]",
+            "kind": "<text frame>",
+            "columns": 1,
+            "layer": 1,
+            "story": 16,
+            "bounds": [
+              30.0,
+              310.0,
+              390.0,
+              550.0
+            ]
+          }
+        ],
+        "pages": [
+          {
+            "parent": "A-Parent",
+            "name": "1",
+            "side": "single",
+            "columns": 1,
+            "margins": {
+              "outside": 30.0,
+              "inside": 30.0,
+              "top": 30.0,
+              "bottom": 30.0
+            },
+            "index": 0,
+            "bounds": [
+              0.0,
+              0.0,
+              420.0,
+              595.0
+            ]
+          }
+        ]
       },
       {
-        "width": 165.0
+        "index": 1,
+        "items": [
+          {
+            "name": "",
+            "columnRule": false,
+            "id": 17,
+            "hidden": false,
+            "locked": false,
+            "stroke": {
+              "weight": 1.0,
+              "swatch": "[None]"
+            },
+            "fill": "[None]",
+            "kind": "<text frame>",
+            "columns": 1,
+            "layer": 1,
+            "story": 18,
+            "bounds": [
+              30.0,
+              30.0,
+              200.0,
+              270.0
+            ]
+          },
+          {
+            "name": "",
+            "columnRule": false,
+            "id": 19,
+            "hidden": false,
+            "locked": false,
+            "stroke": {
+              "weight": 1.0,
+              "swatch": "[None]"
+            },
+            "fill": "[None]",
+            "kind": "<text frame>",
+            "columns": 1,
+            "layer": 1,
+            "story": 18,
+            "bounds": [
+              220.0,
+              30.0,
+              390.0,
+              270.0
+            ]
+          },
+          {
+            "name": "",
+            "columnRule": false,
+            "id": 21,
+            "hidden": false,
+            "locked": false,
+            "stroke": {
+              "weight": 1.0,
+              "swatch": "[None]"
+            },
+            "fill": "[None]",
+            "kind": "<text frame>",
+            "columns": 1,
+            "layer": 1,
+            "story": 22,
+            "bounds": [
+              30.0,
+              300.0,
+              390.0,
+              530.0
+            ]
+          }
+        ],
+        "pages": [
+          {
+            "parent": "A-Parent",
+            "name": "2",
+            "side": "single",
+            "columns": 1,
+            "margins": {
+              "outside": 30.0,
+              "inside": 30.0,
+              "top": 30.0,
+              "bottom": 30.0
+            },
+            "index": 1,
+            "bounds": [
+              0.0,
+              0.0,
+              420.0,
+              595.0
+            ]
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "items": [
+          {
+            "name": "",
+            "columnRule": false,
+            "id": 24,
+            "hidden": false,
+            "locked": false,
+            "stroke": {
+              "weight": 1.0,
+              "swatch": "[None]"
+            },
+            "fill": "[None]",
+            "kind": "<text frame>",
+            "columns": 1,
+            "layer": 1,
+            "story": 25,
+            "bounds": [
+              30.0,
+              30.0,
+              390.0,
+              350.0
+            ]
+          }
+        ],
+        "pages": [
+          {
+            "parent": "A-Parent",
+            "name": "3",
+            "side": "single",
+            "columns": 1,
+            "margins": {
+              "outside": 30.0,
+              "inside": 30.0,
+              "top": 30.0,
+              "bottom": 30.0
+            },
+            "index": 2,
+            "bounds": [
+              0.0,
+              0.0,
+              420.0,
+              595.0
+            ]
+          }
+        ]
       }
     ],
-    "story": 22,
-    "anchor": 0,
-    "cells": [
-      {
-        "rowSpan": 1,
-        "row": 0,
-        "style": "",
-        "vj": "top",
-        "fill": "[None]",
-        "col": 0,
-        "colSpan": 1,
-        "text": "SESSION",
-        "insets": [
-          4.0,
-          4.0,
-          4.0,
-          4.0
-        ]
-      },
-      {
-        "rowSpan": 1,
-        "row": 0,
-        "style": "",
-        "vj": "top",
-        "fill": "[None]",
-        "col": 1,
-        "colSpan": 1,
-        "text": "TIME",
-        "insets": [
-          4.0,
-          4.0,
-          4.0,
-          4.0
-        ]
-      },
-      {
-        "rowSpan": 1,
-        "row": 1,
-        "style": "",
-        "vj": "top",
-        "fill": "[None]",
-        "col": 0,
-        "colSpan": 1,
-        "text": "Welcome",
-        "insets": [
-          4.0,
-          4.0,
-          4.0,
-          4.0
-        ]
-      },
-      {
-        "rowSpan": 1,
-        "row": 1,
-        "style": "",
-        "vj": "top",
-        "fill": "[None]",
-        "col": 1,
-        "colSpan": 1,
-        "text": "10:00",
-        "insets": [
-          4.0,
-          4.0,
-          4.0,
-          4.0
-        ]
-      },
-      {
-        "rowSpan": 1,
-        "row": 2,
-        "style": "",
-        "vj": "top",
-        "fill": "[None]",
-        "col": 0,
-        "colSpan": 1,
-        "text": "Make and mend",
-        "insets": [
-          4.0,
-          4.0,
-          4.0,
-          4.0
-        ]
-      },
-      {
-        "rowSpan": 1,
-        "row": 2,
-        "style": "",
-        "vj": "top",
-        "fill": "[None]",
-        "col": 1,
-        "colSpan": 1,
-        "text": "10:30",
-        "insets": [
-          4.0,
-          4.0,
-          4.0,
-          4.0
-        ]
-      },
-      {
-        "rowSpan": 1,
-        "row": 3,
-        "style": "",
-        "vj": "top",
-        "fill": "[None]",
-        "col": 0,
-        "colSpan": 1,
-        "text": "Share results",
-        "insets": [
-          4.0,
-          4.0,
-          4.0,
-          4.0
-        ]
-      },
-      {
-        "rowSpan": 1,
-        "row": 3,
-        "style": "",
-        "vj": "top",
-        "fill": "[None]",
-        "col": 1,
-        "colSpan": 1,
-        "text": "12:00",
-        "insets": [
-          4.0,
-          4.0,
-          4.0,
-          4.0
-        ]
-      }
-    ],
-    "table": 23,
-    "rows": [
-      {
-        "height": 3.0,
-        "kind": "header",
-        "mode": "atLeast"
-      },
-      {
-        "height": 3.0,
-        "kind": "body",
-        "mode": "atLeast"
-      },
-      {
-        "height": 3.0,
-        "kind": "body",
-        "mode": "atLeast"
-      },
-      {
-        "height": 3.0,
-        "kind": "body",
-        "mode": "atLeast"
-      }
-    ],
-    "range": {
-      "r1": 0,
-      "c0": 0,
-      "c1": 0,
-      "r0": 0
+    "settings": {
+      "pageWidth": 420.0,
+      "pageHeight": 595.0,
+      "intent": "print",
+      "facingPages": false
     },
-    "headerRows": 1,
-    "footerRows": 0
+    "stories": [
+      {
+        "paragraphs": 1,
+        "overset": false,
+        "frames": [
+          11
+        ],
+        "id": 12,
+        "preview": "THE REPAIR CLUB",
+        "lines": 1,
+        "length": 15
+      },
+      {
+        "paragraphs": 3,
+        "overset": false,
+        "frames": [
+          15
+        ],
+        "id": 16,
+        "preview": "Make, mend, and share.\nAn original three-page brochure created on the Sony VAIO.",
+        "lines": 3,
+        "length": 144
+      },
+      {
+        "paragraphs": 2,
+        "overset": false,
+        "frames": [
+          17,
+          19
+        ],
+        "id": 18,
+        "preview": "A PRACTICAL WORKSHOP\nWork together, keep good notes, and pass on what you learn.",
+        "lines": 20,
+        "length": 561
+      },
+      {
+        "paragraphs": 2,
+        "overset": false,
+        "frames": [
+          21
+        ],
+        "id": 22,
+        "preview": "\ue009\n",
+        "lines": 2,
+        "length": 4
+      },
+      {
+        "paragraphs": 2,
+        "overset": false,
+        "frames": [
+          24
+        ],
+        "id": 25,
+        "preview": "Original imported copy.\nMake, mend, and share.",
+        "lines": 2,
+        "length": 46
+      }
+    ],
+    "characterStyles": [
+      "[None]"
+    ],
+    "parents": [
+      {
+        "label": "A-Parent",
+        "items": 0,
+        "basedOn": null,
+        "id": 3
+      }
+    ],
+    "layers": [
+      {
+        "showGuides": true,
+        "name": "Layer 1",
+        "id": 1,
+        "visible": true,
+        "printable": true,
+        "locked": false,
+        "color": [
+          43,
+          155,
+          255
+        ],
+        "suppressWrapWhenHidden": false
+      }
+    ],
+    "dirty": false,
+    "swatches": [
+      "[None]",
+      "[Registration]",
+      "[Paper]",
+      "[Black]",
+      "C=100 M=0 Y=0 K=0",
+      "C=0 M=100 Y=0 K=0",
+      "C=0 M=0 Y=100 K=0",
+      "C=0 M=100 Y=100 K=0",
+      "C=100 M=0 Y=100 K=0",
+      "C=100 M=100 Y=0 K=0",
+      "C=15 M=100 Y=100 K=0",
+      "C=75 M=5 Y=100 K=0",
+      "C=100 M=90 Y=10 K=0",
+      "Club teal"
+    ],
+    "paragraphStyles": [
+      "[No Paragraph Style]",
+      "[Basic Paragraph]",
+      "Club heading",
+      "Club body"
+    ],
+    "selection": {
+      "content": false,
+      "items": [
+        24
+      ]
+    }
   },
-  "passed": true,
+  "display_variables_absent": true,
+  "export_idml": {
+    "path": "/tmp/vaio-designcraft-test/brochure.idml",
+    "bytes": 22086
+  },
   "reopen_idml": {
     "stories": 5,
     "pages": 3
   },
+  "export_pptx": {
+    "path": "/tmp/vaio-designcraft-test/brochure.pptx",
+    "warnings": [],
+    "slides": 3,
+    "bytes": 336691
+  },
   "thread": {
-    "story": 18,
     "to": 19,
     "from": 17,
-    "pagesAdded": 0,
-    "overset": false
+    "overset": false,
+    "story": 18,
+    "pagesAdded": 0
   },
-  "preflight": {
-    "errors": 0,
-    "warnings": 1,
-    "issues": [
-      {
-        "severity": "warning",
-        "message": "RGB swatch in a print document: Club teal",
-        "kind": "rgbColor"
-      }
-    ]
-  }
+  "export_pdf": {
+    "path": "/tmp/vaio-designcraft-test/brochure.pdf",
+    "warnings": [],
+    "pages": 3,
+    "bytes": 23560
+  },
+  "export_html": {
+    "path": "/tmp/vaio-designcraft-test/brochure.html",
+    "warnings": [],
+    "bytes": 11148
+  },
+  "timings": [
+    {
+      "action": "initialize",
+      "seconds": 0.011
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.004
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.004
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.004
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.187
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.004
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.005
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.078
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.325
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.007
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.04
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.047
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.106
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.186
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.034
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.021
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.017
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.016
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.023
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.041
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.026
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.003
+    },
+    {
+      "action": "tools/call",
+      "seconds": 0.002
+    }
+  ],
+  "reopen_designcraft": {
+    "stories": 5,
+    "pages": 3
+  },
+  "passed": true
 }

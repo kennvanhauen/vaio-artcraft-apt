@@ -1,4 +1,17 @@
-# DesignCraft VAIO port — in progress
+# DesignCraft VAIO port — installed and verified
+
+DesignCraft **0.9.0~vaio1** and launcher **0.5.1~vaio7** are installed through the
+signed GitHub APT archive. Installed headless/GUI workflows, native Save As,
+automatic idle draft recovery and all six launcher Open buttons passed. Final
+package/launcher measurements follow the progress record below.
+
+The port retains the upstream page-layout features and optional open fonts,
+uses Glow, and avoids blinking-caret redraws on the Atom. Installed editing and
+settled samples measured 0% CPU at about 128–132 MiB RSS. This is a practical
+adaptation of upstream pre-alpha software, with documented reflow, interoperability,
+prepress and full-CI limits; it is not InDesign feature-parity certification.
+
+## Scope and progress record
 
 User authorized the DesignCraft port. Upstream 0.9.0 is pinned at
 `ecd7e5d063eb12fa5e61fe61c9b8a77bb3c9110a`. The optional native craft-fonts input
@@ -80,3 +93,106 @@ from the modified executable and replaced by an original page glyph; upstream
 contributor-original app icons and open font assets retain their notices.
 
 Publication and installed checks are pending.
+
+## Rollback
+
+Remove the new app with `sudo apt-get remove designcraft-vaio`; documents and
+profiles remain. Restore the archive preference with:
+
+```sh
+sudo cp -p /var/backups/vaio-artcraft/preferences.before-designcraft-20261018 /etc/apt/preferences.d/vaio-artcraft
+```
+
+The previous launcher package `artcraft-launcher-vaio_0.5.1~vaio6_i386.deb` is
+retained in the public pool and the earlier release. To restore its exact UI,
+install that verified earlier package with native dpkg (`sudo dpkg -i /path/to/that.deb`).
+The new app can also be removed while retaining launcher revision 7. The existing
+software-update frontend, SSH/networking, desktop session and screensaver policy
+are unchanged. The process-scoped caret opt-out requires no rollback operation.
+
+## Publication
+
+Binary/index commit: `3986874a51063c0674a4d83c71ee1fc8f9aacaeb`.
+GitHub release backups:
+
+- https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/designcraft-0.9.0-vaio1
+- https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/launcher-0.5.1-vaio7
+
+GitHub's uploaded DesignCraft asset digest equals the local package SHA-256. The
+signed index contains seven package records with checked relative pool paths,
+lengths and SHA-256 hashes. Local `gpgv` verifies the archive signature. The signing
+home is not in public staging. Pages deployment/live index verification and native
+installation are still pending at this checkpoint.
+
+Pages deployment for the binary/index commit succeeded. The live InRelease and
+seven-package index were fetched over HTTPS and matched local bytes exactly;
+InRelease SHA-256 is `be98032034c786ff6067a166b4e52b0d3e14d54412b05ece2435aa66c75b7bfc`.
+Launcher package SHA-256 is
+`7329c1189987e54e642a4ddde8775fb79209e40811b385f0b1288d8a3cc3b44e`;
+GitHub's release-asset digest also matches it. The six-card launcher preview was
+visually checked at 1540×650, including unobscured version labels and actions.
+Native installation was started through the VAIO's gksu/uxterm prompt.
+
+## Native installation
+
+Installation completed successfully with status 0 through gksu/uxterm. APT fetched
+88.3 MB from the signed Pages archive and installed only DesignCraft 0.9.0~vaio1
+and launcher 0.5.1~vaio7; no removals, dependency changes or unrelated upgrades.
+Package integrity, exact versions, desktop validation and native .designcraft MIME
+identification passed. The archive allowlist now has seven package names; the
+previous preference is backed up outside the preferences directory.
+
+Installed-wrapper headless/GUI, native-dialog/recovery and all-six-Open checks
+are being completed before leaving the normal launcher visible.
+
+Installed wrappers passed the complete no-display headless workflow and the
+independent format/parent/data-merge checks. Installed GUI editing, formatting,
+undo/redo, native reopening and PDF/PNG export passed again. Six-second installed
+samples were 0% CPU during editing (130576 KiB RSS) and after leaving editing
+(134764 KiB). The loaded private XCB path was `/usr/lib/designcraft-vaio/lib/libxcb.so.1`.
+
+Evidence files (original synthetic documents only):
+
+- [Headless workflow](designcraft-headless-result.json)
+- [Format/parent/data-merge checks](designcraft-formats-result.json)
+- [GUI measurements](designcraft-gui-result.json)
+- [Native dialogs](designcraft-native-dialogs-result.json)
+- [Draft recovery](designcraft-recovery-result.json)
+- [Host checks and full-CI limits](designcraft-host-checks-result.json)
+- [Installed summary](designcraft-installed-result.json)
+
+Installed native dialogs passed again. Installed automatic recovery saved after
+27.11 seconds, reopened the original unsaved marker after termination of the
+owned test process, and saved a recovered working copy. The older normal launcher
+is being replaced only after matching its recorded project PID and executable;
+other applications and the graphical session remain running.
+
+All six installed launcher Open actions passed using an isolated launcher/profile
+and only its disposable child processes: VectorCraft, PdfCraft, DesignCraft,
+WordCraft, DeckCraft and GridCraft. The test launcher and its children exited.
+The updated normal six-card launcher is being left visible after final sampling.
+An [original brochure example](https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/designcraft-0.9.0-vaio1/designcraft-brochure-example.zip) is retained
+locally with native/IDML/PDF/EPUB/PPTX/HTML and three rendered pages.
+
+Final installed integrity passed: all seven expected versions, dpkg verification,
+manifest executable hashes, package ownership of private XCB, unchanged scoped
+public key, seven-name APT preference, native MIME type and no leftover test
+control listeners. About 1610 MiB RAM remained available, with no swap use.
+
+The first post-test ACPI sample was 71°C; a later idle read cooled to 56°C.
+Both exposed core-throttle counters were zero. The ACPI passive/critical trip
+points are 90/100°C. These are observed samples, not a retrospective explanation
+for the earlier audio/freezing investigation. No thermal setting was changed.
+
+## Final state
+
+The normal six-card launcher is visible at 1540×650 and fully fits the 1600×768
+screen. All six installed versions equal their signed APT candidates. After settling,
+its seven-second sample measured 0% CPU and 69368 KiB RSS (about 67.7 MiB).
+No test application, monitoring command or administrator terminal is left running.
+The intended normal launcher remains open. SSH remained responsive throughout.
+
+[All six Open results](launcher-six-open-result.json) and
+[final launcher measurements](launcher-six-visible-result.json) supplement the
+installed summary above. Future updates use the existing native Check & Install
+Updates → uCareSystem/APT route and the permanent signed archive.

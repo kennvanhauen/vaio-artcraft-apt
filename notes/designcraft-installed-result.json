@@ -1,0 +1,62 @@
+{
+  "package": "designcraft-vaio",
+  "version": "0.9.0~vaio1",
+  "launcher": "0.5.1~vaio7",
+  "installation": "native signed APT; gksu/uxterm; status 0",
+  "apt_transaction": {
+    "new": [
+      "designcraft-vaio"
+    ],
+    "upgraded": [
+      "artcraft-launcher-vaio"
+    ],
+    "removed": [],
+    "unrelated_changes": []
+  },
+  "headless": "passed full workflow with installed wrapper and no display variables",
+  "gui": "passed installed-wrapper typing/formatting/undo/redo/save-reopen/PDF/PNG",
+  "editing_idle": {
+    "cpu_percent_one_logical_cpu": 0.0,
+    "rss_kib": 130576
+  },
+  "settled_idle": {
+    "cpu_percent_one_logical_cpu": 0.0,
+    "rss_kib": 134764
+  },
+  "private_xcb": "/usr/lib/designcraft-vaio/lib/libxcb.so.1",
+  "snapshot_seconds": 27.11,
+  "native_dialogs": "passed bare filename and normalized overwrite cancellation",
+  "all_six_open": [
+    "vectorcraft",
+    "pdfcraft",
+    "designcraft",
+    "wordcraft",
+    "deckcraft",
+    "gridcraft"
+  ],
+  "final_integrity": [
+    "all seven versions",
+    "dpkg verification",
+    "manifest executable hashes",
+    "package-owned private XCB",
+    "unchanged scoped key",
+    "seven-package APT allowlist",
+    "native MIME",
+    "no test control listeners"
+  ],
+  "passed": true,
+  "available_memory_mib": 1610,
+  "swap_used_mib": 0,
+  "normal_launcher": {
+    "left_visible": true,
+    "fits_screen": true,
+    "rss_kib": 69368,
+    "idle_cpu_percent_one_logical_cpu": 0.0,
+    "window": {
+      "height": 650,
+      "y": 59,
+      "x": 21,
+      "width": 1540
+    }
+  }
+}

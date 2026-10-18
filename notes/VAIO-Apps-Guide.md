@@ -136,10 +136,11 @@ CMYK-output-intent check. This is not independent prepress certification.
 The VAIO build uses Glow and keeps its caret steady to reduce software rendering.
 `DESIGNCRAFT_STATIC_CARET=0 designcraft-vaio` restores blinking for one launch.
 Preferences/recovery default to upstream paths; `DESIGNCRAFT_CONFIG_DIR` selects
-an isolated root containing settings, logs and Recovery. Drafts can postdate the
-latest recovery snapshot; save working copies regularly.
+an isolated root containing settings, logs and Recovery. Automatic idle recovery (30-second default) reopened an unsaved draft after a
+disposable-process crash in testing. Drafts can postdate the latest snapshot; save
+working copies regularly.
 
-The command line is fully headless for these checked workflows:
+The command line runs these checked workflows without a display:
 
 ```sh
 designcraft-vaio-cli run --in Brochure.designcraft --export Brochure.pdf

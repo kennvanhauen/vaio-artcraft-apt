@@ -208,3 +208,17 @@ green: fmt/Clippy passed, but one test lacked a wgpu adapter and one unchanged A
 dialog test clipped a field (2839 tests passed before the stop). VAIO Glow/i686
 Clippy with warnings denied, asset attribution, PDF pin consistency and layering
 passed separately. WebAssembly checks were not run (target absent).
+
+
+### Installed DesignCraft checkpoint
+
+Signed APT installed DesignCraft revision 1 and launcher revision 7, changing only
+those two packages. Installed headless/GUI, native-dialog and idle-draft recovery
+checks passed. All six Open buttons passed. The normal six-card launcher is left
+visible, fits the screen and measured 0% CPU / 67.7 MiB RSS after settling.
+Installed DesignCraft samples measured 0% CPU / about 128–132 MiB. Package hashes,
+private-library ownership, MIME registration, scoped key and seven-package APT
+preference passed; no test control listeners remained. See
+[installed evidence](notes/designcraft-installed-result.json),
+[the final port record and rollback](notes/designcraft-0.9.0-vaio1.md) and
+[the original brochure example](https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/designcraft-0.9.0-vaio1/designcraft-brochure-example.zip).

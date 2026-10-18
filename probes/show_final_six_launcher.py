@@ -32,7 +32,7 @@ def sample():
 time.sleep(55)
 before,rss=sample();at=time.monotonic();time.sleep(7);after,rss=sample();duration=time.monotonic()-at
 state=json.loads(subprocess.check_output(['/usr/bin/vaio-app-launcher','--check'],env=env).decode())
-result={'pid':p.pid,'left_visible':True,'rss_kib':rss,
+result={'process_start_ticks':int(Path('/proc/%d/stat'%p.pid).read_text().rsplit(')',1)[1].split()[19]),'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),'pid':p.pid,'left_visible':True,'rss_kib':rss,
         'idle_cpu_percent_one_logical_cpu':round(100*(after-before)/os.sysconf('SC_CLK_TCK')/duration,2),
         'installed_apps':[{k:app[k] for k in ['package','installed','candidate']} for app in state['applications']]}
 result['passed']=len(state['applications'])==6 and all(app['installed'] and app['installed']==app['candidate'] for app in state['applications'])

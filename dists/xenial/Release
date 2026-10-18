@@ -1,0 +1,16 @@
+Origin: VAIO ArtCraft
+Label: VAIO ArtCraft previews
+Suite: xenial
+Codename: xenial
+Architectures: i386
+Components: main
+Description: Unofficial ArtCraft previews for Ubuntu Xenial i386
+Date: Sun, 18 Oct 2026 15:40:26 GMT
+MD5Sum:
+ 4fd816c1d91dfd523f69a29907364ec1 851 main/binary-i386/Packages
+ 1d882411e0228cb2c7fa7e1cb4f7e3d2 559 main/binary-i386/Packages.gz
+ 52608ca0ec5dea6c5b78c2850ab09913 51 main/binary-i386/Release
+SHA256:
+ 727a55ffda2c87bba8408cc9af661d31d1db456811220f85ca344f11ffe5a75e 851 main/binary-i386/Packages
+ 8911daa8120a746de5fb252d7c98729510b404d6da44f7d57acac3fcc5551e4d 559 main/binary-i386/Packages.gz
+ 8b5b8e1eea0817645ced68a21422690999cdb19ab64c6127115c99570dc1d93b 51 main/binary-i386/Release

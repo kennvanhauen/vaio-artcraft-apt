@@ -9,8 +9,8 @@ import sys
 import tarfile
 
 root = Path(__file__).resolve().parents[1]
-version = sys.argv[1] if len(sys.argv) > 1 else '0.8.0~vaio3'
-if version not in ('0.8.0~vaio1', '0.8.0~vaio2', '0.8.0~vaio3'):
+version = sys.argv[1] if len(sys.argv) > 1 else '0.8.0~vaio4'
+if version not in ('0.8.0~vaio1', '0.8.0~vaio2', '0.8.0~vaio3', '0.8.0~vaio4'):
     raise SystemExit('Unknown preview version')
 files = {}
 
@@ -44,8 +44,10 @@ MimeType=application/vnd.openxmlformats-officedocument.wordprocessingml.document
 add('usr/share/icons/hicolor/scalable/apps/wordcraft-vaio.svg',
     (root / 'upstream/wordcraft/assets/app-icon/wordcraft.svg').read_bytes())
 doc = 'usr/share/doc/wordcraft-vaio/'
-for license_file in ('LICENSE-MIT', 'LICENSE-APACHE'):
+for license_file in ('LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'ATTRIBUTION.md'):
     add(doc+license_file, (root / 'upstream/wordcraft' / license_file).read_bytes())
+for license_file in sorted((root / 'upstream/wordcraft/assets/fonts').glob('OFL-*.txt')):
+    add(doc+license_file.name, license_file.read_bytes())
 add(doc+'libxcb-COPYING', (root / '.build/libxcb-1.17.0/COPYING').read_bytes())
 add(doc+'copyright', b'''WordCraft: https://github.com/storytold/wordcraft
 License: MIT OR Apache-2.0; see LICENSE-MIT and LICENSE-APACHE.

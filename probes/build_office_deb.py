@@ -4,6 +4,7 @@ import gzip
 import hashlib
 import io
 import json
+import lzma
 from pathlib import Path
 import sys
 import tarfile
@@ -11,6 +12,9 @@ import tomllib
 
 root = Path(__file__).resolve().parents[1]
 specs = {
+    'vectorcraft': ('0.13.1~vaio1', 'a466625c8987550635cda951ebf36e08e1e80a56',
+                    'VectorCraft', 'Graphics;VectorGraphics;',
+                    'application/x-vectorcraft;image/svg+xml;'),
     'gridcraft': ('0.8.0~vaio1', 'c30fa3f1cf324603f3bfc0171689b1d4083b40e5',
                   'GridCraft', 'Office;Spreadsheet;',
                   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;text/csv;'),
@@ -61,6 +65,16 @@ Categories={categories}
 MimeType={mime}
 '''
 add('usr/share/applications/'+package+'.desktop', desktop.encode())
+if app == 'vectorcraft':
+    add('usr/share/mime/packages/vectorcraft-vaio.xml', b'''<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-vectorcraft">
+    <comment>VectorCraft illustration</comment>
+    <glob pattern="*.vectorcraft"/>
+    <glob pattern="*.drawcraft"/>
+  </mime-type>
+</mime-info>
+''')
 if app == 'deckcraft':
     add('usr/share/mime/packages/deckcraft-vaio.xml', b'''<?xml version="1.0" encoding="UTF-8"?>
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
@@ -76,7 +90,7 @@ if icon.exists():
 else:
     add('usr/share/icons/hicolor/256x256/apps/'+package+'.png', (source/'assets/app-icon/hicolor/256x256/apps'/('ai.storyteller.'+app+'.png')).read_bytes())
 doc = 'usr/share/doc/'+package+'/'
-for name in ('LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'ATTRIBUTION.md', 'ATTRIBUTION.toml'):
+for name in ('LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'ASSETS.md', 'ATTRIBUTION.md', 'ATTRIBUTION.toml'):
     if (source/name).exists():
         add(doc+name, (source/name).read_bytes())
 for path in sorted((source/'assets').rglob('*.txt')):
@@ -101,7 +115,7 @@ https://github.com/storytold/{app} at {revision}.
 Downstream code is licensed MIT OR Apache-2.0, like the original project.
 Original ArtCraft trademark graphics are not used in this modified release.
 The application icon is upstream contributor-original MIT OR Apache-2.0 artwork;
-see upstream ATTRIBUTION.md. See build.json for optional font input details.
+see upstream ASSETS.md or ATTRIBUTION.md. See build.json for optional font input details.
 A private libxcb 1.17.0 is bundled under its original permissive notices.
 '''.encode())
 metadata = dict(package_version=version, source_revision=revision, rust='1.95.0',
@@ -109,30 +123,33 @@ metadata = dict(package_version=version, source_revision=revision, rust='1.95.0'
                 glibc_target='2.23', renderer='Glow', private_libxcb='1.17.0',
                 binary_sha256=hashes, port_patch_sha256=hashlib.sha256(
                     (root/'ports'/(app+'-xenial.patch')).read_bytes()).hexdigest())
-if app == 'deckcraft':
-    for path in (source/'licenses').rglob('*.txt'):
-        add(doc+str(path.relative_to(source)),path.read_bytes())
+if app in ('deckcraft', 'vectorcraft'):
+    for path in (source/'licenses').rglob('*'):
+        if path.is_file():
+            add(doc+str(path.relative_to(source)),path.read_bytes())
     registry=root/'.build/cargo/registry/src'
     fonts_source=next(registry.glob('*/epaint_default_fonts-0.36.2/fonts'))
     for path in fonts_source.glob('*.txt'):
         add(doc+'egui-font-notices/'+path.name,path.read_bytes())
-    verified=json.loads((root/'.build/deckcraft-fonts-verified.json').read_text())
+    verified=json.loads((root/'.build'/(app+'-fonts-verified.json')).read_text())
     metadata['craft_fonts_revision']=verified['revision']
     metadata['embedded_font_faces']=len(verified['fonts'])
-    add(doc+'craft-fonts/ATTRIBUTION.md', (root/'upstream/craft-fonts/ATTRIBUTION.md').read_bytes())
+    font_root = root/'.build/vectorcraft-fonts' if app == 'vectorcraft' else root/'upstream/craft-fonts'
+    add(doc+'craft-fonts/ATTRIBUTION.md', (font_root/'ATTRIBUTION.md').read_bytes())
     add(doc+'craft-fonts/verified-fonts.json', (json.dumps(verified,indent=2)+'\n').encode())
     for entry in verified['fonts']:
         licence=entry['licence_file']
-        add(doc+'craft-fonts/'+licence,(root/'upstream/craft-fonts'/licence).read_bytes())
+        add(doc+'craft-fonts/'+licence,(font_root/licence).read_bytes())
 add(doc+'build.json', (json.dumps(metadata, indent=2)+'\n').encode())
 depends = ('zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, '
            'libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, '
            'libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa')
 if app == 'deckcraft':depends += ', libasound2 (>= 1.1.0), shared-mime-info, xscreensaver'
+if app == 'vectorcraft':depends += ', shared-mime-info'
 control = f'''Package: {package}
 Version: {version}
 Architecture: i386
-Section: editors
+Section: {'graphics' if app == 'vectorcraft' else 'editors'}
 Priority: optional
 Maintainer: VAIO local build <vaio@localhost>
 Installed-Size: {(sum(len(v[0]) for v in files.values())+1023)//1024}
@@ -164,11 +181,14 @@ def archive(entries, directories=False):
             info.uname = info.gname = 'root'
             info.mtime = 1792281600
             output.addfile(info, io.BytesIO(data))
+    if directories and app == 'vectorcraft':
+        # Xenial dpkg supports XZ; preset 6 keeps decode memory modest on the 2 GB VAIO.
+        return lzma.compress(buffer.getvalue(), format=lzma.FORMAT_XZ, preset=6)
     return gzip.compress(buffer.getvalue(), compresslevel=6, mtime=0)
 
 parts = [('debian-binary', b'2.0\n'),
          ('control.tar.gz', archive({'control': (control, 0o644), 'md5sums': (md5, 0o644)})),
-         ('data.tar.gz', archive(files, True))]
+         ('data.tar.xz' if app == 'vectorcraft' else 'data.tar.gz', archive(files, True))]
 destination = root/'dist'/(package+'_'+version+'_i386.deb')
 with destination.open('wb') as out:
     out.write(b'!<arch>\n')

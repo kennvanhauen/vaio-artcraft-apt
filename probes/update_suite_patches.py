@@ -4,6 +4,7 @@ from pathlib import Path
 import difflib
 root=Path(__file__).resolve().parents[1]
 owned={
+ 'vectorcraft':['Cargo.lock','apps/vectorcraft/Cargo.toml','apps/vectorcraft/src/main.rs'],
  'deckcraft':['Cargo.lock','apps/deckcraft/Cargo.toml','apps/deckcraft/src/main.rs','apps/deckcraft/src/save_names.rs','apps/deckcraft/src/screensaver.rs','crates/ui-egui/src/canvas.rs','crates/ui-egui/src/lib.rs','crates/ui-egui/src/show.rs'],
  'gridcraft':['Cargo.lock','apps/gridcraft/Cargo.toml','apps/gridcraft/src/main.rs','crates/ui-egui/src/lib.rs'],
  'pdfcraft':['Cargo.lock','apps/pdfcraft/src/main.rs','crates/ui-egui/src/widgets.rs','crates/ocr/src/lib.rs','crates/ui-egui/src/pickers.rs','crates/ui-egui/src/editing.rs','crates/ui-egui/src/print_ui.rs','crates/ui-egui/src/create_ui.rs','crates/ui-egui/src/sign_ui.rs'],

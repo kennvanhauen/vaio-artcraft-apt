@@ -1,0 +1,21 @@
+VectorCraft VAIO preview 0.13.1
+
+Open VectorCraft (VAIO preview) from Graphics or VAIO App Launcher. Ctrl+O opens,
+Ctrl+S saves, and Save As chooses another filename. Use .vectorcraft for the native
+editable model; older .drawcraft files remain readable. SVG, PDF and raster export
+provide exchange formats. Keep original files when exchanging complex artwork.
+
+This unofficial build selects OpenGL/Glow for the interface and retains the upstream
+CPU drawing engine, commands and format modules. Its initial window fits the VAIO.
+vectorcraft-vaio-cli provides headless batch conversion and explicit headless MCP;
+the desktop entry does not start an automation server.
+
+Bundled upstream open fonts and eight pinned craft-fonts fallback faces retain their
+original licence and attribution notices. No proprietary application assets are used.
+
+This is upstream alpha software. Very complex illustrations, external proprietary
+format fidelity, physical printing, colour-critical output and third-party plugins
+remain unverified. The VAIO uses software rendering; larger artwork may be slow.
+
+Updates use the signed APT source and the existing Check & Install Updates tool.
+Remove with sudo apt-get remove vectorcraft-vaio; user files/settings are retained.

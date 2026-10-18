@@ -46,22 +46,6 @@ Size: 57133696
 MD5sum: 1239fc84b17f0c3a34f99c188aa1adc5
 SHA256: 0d2c56ceaae2376b33f4e5e5a8118ed9f487ec9d78e3abe300c9568092ad0a61
 
-Package: artcraft-launcher-vaio
-Version: 0.5.1~vaio5
-Architecture: i386
-Section: utils
-Priority: optional
-Maintainer: VAIO local build <vaio@localhost>
-Installed-Size: 14703
-Depends: apt, gksu, xterm, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa
-Description: VAIO App Launcher using native APT-managed application previews
- Unofficial adaptation based on ArtCraft Launcher for Ubuntu Xenial i386.
- Uses Glow, a private XCB library and reduced motion on the Atom VAIO P.
-Filename: pool/main/artcraft-launcher-vaio_0.5.1~vaio5_i386.deb
-Size: 6863058
-MD5sum: cd70dfb08238489a25b0c7881503fe04
-SHA256: 85a168fff5ba26ef08beb62389c7311b3730b8089b7900ff8742fc39ffb81023
-
 Package: deckcraft-vaio
 Version: 0.8.0~vaio1
 Architecture: i386
@@ -77,4 +61,36 @@ Filename: pool/main/deckcraft-vaio_0.8.0~vaio1_i386.deb
 Size: 84682682
 MD5sum: cc09dd9399731374bd097132308f4a41
 SHA256: 3282392ab734cdb9162bc496af0ec17d95e9b050f0200c69b8dffde480110ebd
+
+Package: vectorcraft-vaio
+Version: 0.13.1~vaio1
+Architecture: i386
+Section: graphics
+Priority: optional
+Maintainer: VAIO local build <vaio@localhost>
+Installed-Size: 237669
+Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa, shared-mime-info
+Description: VectorCraft preview adapted for Ubuntu Xenial i386 on the Sony VAIO
+ Unofficial native 32-bit build using Glow and a private XCB library.
+ APT owns application files; existing user documents and settings are retained.
+Filename: pool/main/vectorcraft-vaio_0.13.1~vaio1_i386.deb
+Size: 91267948
+MD5sum: c8fd097e6ab0935377de0cd168635c3f
+SHA256: 1ef5efd1a1a018bf44ee18b673cca32da372ff1aea48ed8add1df9d82aa11504
+
+Package: artcraft-launcher-vaio
+Version: 0.5.1~vaio6
+Architecture: i386
+Section: utils
+Priority: optional
+Maintainer: VAIO local build <vaio@localhost>
+Installed-Size: 14703
+Depends: apt, gksu, xterm, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa
+Description: VAIO App Launcher using native APT-managed application previews
+ Unofficial adaptation based on ArtCraft Launcher for Ubuntu Xenial i386.
+ Uses Glow, a private XCB library and reduced motion on the Atom VAIO P.
+Filename: pool/main/artcraft-launcher-vaio_0.5.1~vaio6_i386.deb
+Size: 6862872
+MD5sum: 5775c29bdd45ad18b41e43c707ac49b0
+SHA256: 4713de60b902ec34b18ff083d4f9bbdae68c3ba807761f07ab449d638b36add9
 

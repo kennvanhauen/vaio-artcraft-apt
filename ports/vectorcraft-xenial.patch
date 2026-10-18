@@ -1,0 +1,45 @@
+--- a/apps/vectorcraft/Cargo.toml
++++ b/apps/vectorcraft/Cargo.toml
+@@ -15,6 +15,7 @@
+ accessibility = ["eframe/accesskit"]
+ # Build with --no-default-features --features windows7 and the win7 Rust target.
+ windows7 = ["eframe/glow"]
++vaio = ["eframe/glow"]
+ 
+ [dependencies]
+ vectorcraft-engine = { workspace = true }
+--- a/apps/vectorcraft/src/main.rs
++++ b/apps/vectorcraft/src/main.rs
+@@ -111,12 +111,12 @@
+             discard_marked_text();
+         }
+     }
+-    #[cfg(not(feature = "windows7"))]
++    #[cfg(not(any(feature = "windows7", feature = "vaio")))]
+     fn on_exit(&mut self) {
+         file_access::unconfined(|| save_prefs(&self.app));
+         end_before_teardown(self.frames);
+     }
+-    #[cfg(feature = "windows7")]
++    #[cfg(any(feature = "windows7", feature = "vaio"))]
+     fn on_exit(&mut self, _gl: Option<&eframe::glow::Context>) {
+         file_access::unconfined(|| save_prefs(&self.app));
+     }
+@@ -642,7 +642,7 @@
+     eframe::NativeOptions {
+         viewport: egui::ViewportBuilder::default()
+             .with_title("VectorCraft")
+-            .with_inner_size(window::DEFAULT_SIZE)
++            .with_inner_size(if cfg!(feature = "vaio") { [1100.0, 650.0] } else { window::DEFAULT_SIZE })
+             .with_min_inner_size(window::MIN_SIZE)
+             .with_drag_and_drop(true)
+             .with_decorations(!custom_titlebar)
+@@ -651,7 +651,7 @@
+             .with_title_shown(false)
+             .with_icon(app_icon())
+             .with_app_id("ai.storyteller.vectorcraft"),
+-        #[cfg(feature = "windows7")]
++        #[cfg(any(feature = "windows7", feature = "vaio"))]
+         renderer: eframe::Renderer::Glow,
+         ..Default::default()
+     }

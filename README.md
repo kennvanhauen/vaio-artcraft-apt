@@ -1,7 +1,7 @@
 # VAIO application ports and signed APT archive
 
-Unofficial native ports of WordCraft, GridCraft, PdfCraft and DeckCraft for Ubuntu 16.04
-Xenial i386 on the Sony VAIO P. The VAIO App Launcher opens and manages all four
+Unofficial native ports of WordCraft, GridCraft, PdfCraft, DeckCraft and VectorCraft for Ubuntu 16.04
+Xenial i386 on the Sony VAIO P. The VAIO App Launcher opens and manages all five
 through APT. These are independent hardware adaptations of upstream alpha apps.
 
 | Package | Version | Ordinary and advanced workflows checked on the VAIO |
@@ -10,9 +10,10 @@ through APT. These are independent hardware adaptations of upstream alpha apps.
 | gridcraft-vaio | 0.8.0~vaio1 | Formulas, GUI edits, recalculation, charts, XLSX save/reopen, CSV/PDF export, native Save As, sorting/filtering, validation, conditional formatting, frozen panes and PivotTables |
 | pdfcraft-vaio | 0.9.0~vaio1 | Viewing/rendering, text extraction, extract/combine/rotate, comments, forms, applied redaction, AES-256 round trip and one-page OCR |
 | deckcraft-vaio | 0.8.0~vaio1 | Three-slide editing, shapes/picture/chart/notes, PPTX round trip, PDF/outline export, silent fullscreen presentation, native Save As and unsaved-draft recovery |
-| artcraft-launcher-vaio | 0.5.1~vaio5 | Four-app APT backend, signed metadata refresh, offline reporting, saved settings and fixed package-operation allowlist |
+| vectorcraft-vaio | 0.13.1~vaio1 | Headless CLI/MCP, GUI text editing, layers, shapes, pathfinder, undo/redo, two artboards, native/SVG round trip and broad format export |
+| artcraft-launcher-vaio | 0.5.1~vaio6 | Five-app APT backend, signed metadata refresh, offline reporting, saved settings and fixed package-operation allowlist |
 
-All four application engines retain their upstream features. This is a practical
+All five application engines retain their upstream features. This is a practical
 port, not a claim that every feature or external file works. Complex documents,
 large workbooks/scans, physical printing, real signing identities, complex scripts
 and external integrations need further validation. PdfCraft's optional Japanese
@@ -35,7 +36,7 @@ The target VAIO uses `/etc/apt/preferences.d/vaio-artcraft` to allow only these
 packages from this archive:
 
 ```
-Package: wordcraft-vaio gridcraft-vaio pdfcraft-vaio deckcraft-vaio artcraft-launcher-vaio
+Package: wordcraft-vaio gridcraft-vaio pdfcraft-vaio deckcraft-vaio vectorcraft-vaio artcraft-launcher-vaio
 Pin: origin "kennvanhauen.github.io"
 Pin-Priority: 500
 
@@ -44,8 +45,8 @@ Pin: origin "kennvanhauen.github.io"
 Pin-Priority: -1
 ```
 
-Refresh APT, then install the five package names above. The four apps appear in
-Office; VAIO App Launcher appears in Utilities/System. Future updates use APT,
+Refresh APT, then install the six package names above. The four office apps appear in
+Office and VectorCraft in Graphics; VAIO App Launcher appears in Utilities/System. Future updates use APT,
 including the VAIO's existing **Check & Install Updates** frontend. Its wider
 system-maintenance operation was not run during targeted package tests.
 
@@ -78,12 +79,13 @@ Pinned upstream revisions:
 - GridCraft: `c30fa3f1cf324603f3bfc0171689b1d4083b40e5`
 - PdfCraft: `98cbd38a8e0f5afe685258aa0fcab0f0012f7a8b`
 - DeckCraft: `cb78440a1618e6a2c1df55dd7bff74719685518c`
+- VectorCraft: `a466625c8987550635cda951ebf36e08e1e80a56`
 - Launcher: `9cef5d2a0f207da50d31547a726057ea40f7e5b4`
 
 Original sources are at https://github.com/storytold/wordcraft,
 https://github.com/storytold/gridcraft, https://github.com/storytold/pdfcraft and
-https://github.com/storytold/craft-launcher and https://github.com/storytold/deckcraft. Pinned source archives accompany
-Releases. Owned downstream patches, lockfiles, helper sources and recipes are
+https://github.com/storytold/craft-launcher and https://github.com/storytold/deckcraft and https://github.com/storytold/vectorcraft. Pinned upstream revisions identify the source; Releases carry source/build
+recipe archives and links. Owned downstream patches, lockfiles, helper sources and recipes are
 in `ports/` and `probes/`. App/license/font/icon notices are included in packages.
 Original ArtCraft trademark graphics are removed from modified UI releases;
 original attribution remains. The replacement launcher icon is contributor-original.
@@ -136,3 +138,26 @@ off for this single-screen VAIO but remains available. Static slides and the
 editor measured 0% CPU in short settled samples, at about 108 MiB RSS. A process-scoped
 XScreenSaver keepalive runs only during a presentation.
 This is not a promise of smooth heavy animation or complete PowerPoint fidelity.
+
+## VectorCraft build and scope
+
+See [the VectorCraft port record](notes/vectorcraft-0.13.1-vaio1.md) for actual
+VAIO checks and limits. Use native `.vectorcraft` working copies; older
+`.drawcraft` files remain readable. The command is `vectorcraft-vaio-cli`;
+`mcp --headless` explicitly selects an in-process session without a display.
+Neither the desktop entry nor launcher starts an automation server.
+
+Clone VectorCraft at its pinned revision under `upstream/vectorcraft`. Run
+`prepare-vectorcraft-fonts.py` for its pinned optional font input, then
+`prepare-vectorcraft-port.py`. `build-vectorcraft.sh --locked` builds the CLI;
+`build-vectorcraft.sh -p vectorcraft --no-default-features --features vaio,accessibility --locked`
+builds both executables with Glow and accessibility. `build_office_deb.py vectorcraft`
+produces an i386 package with an XZ data member (Xenial-compatible). The drawing
+engine remains vello_cpu; only the interface's graphics backend is changed.
+
+The eight optional native font faces and notices are hash-verified; existing
+bundled open fonts retain their upstream ASSETS.md provenance and OFL notices.
+The native build does not need the newer families listed for web-only fetching.
+Selected upstream tests passed (4,043 passed, six ignored). Full upstream CI stops
+at an existing Rust 1.95 Clippy nonminimal_bool warning in patterncmds.rs:494;
+this is not represented as a complete CI/WASM pass.

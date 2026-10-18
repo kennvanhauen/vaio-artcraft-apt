@@ -78,6 +78,15 @@
      }
 --- a/crates/ui-egui/src/views.rs
 +++ b/crates/ui-egui/src/views.rs
+@@ -56,7 +56,7 @@
+ /// The footer drops its platform label rather than leave the status less room than this.
+ const FOOTER_MIN_STATUS_W: f32 = 300.0;
+ 
+-const CARD_MIN_W: f32 = 320.0;
++const CARD_MIN_W: f32 = 288.0;
+ const CARD_H: f32 = 280.0;
+ /// The card's top strip: number tab and links.
+ const STRIP_H: f32 = 40.0;
 @@ -77,10 +77,9 @@
              if bar == TitleBar::MacOs {
                  ui.add_space(TRAFFIC_LIGHTS_W);

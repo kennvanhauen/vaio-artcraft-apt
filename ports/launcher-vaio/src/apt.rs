@@ -10,6 +10,7 @@ use std::sync::{Arc, mpsc};
 #[derive(Clone, Copy)]
 pub(crate) struct ManagedApp { pub id: &'static str, pub name: &'static str, pub package: &'static str, pub binary: &'static str }
 pub(crate) const APPS: &[ManagedApp] = &[
+    ManagedApp{id:"vectorcraft",name:"VectorCraft",package:"vectorcraft-vaio",binary:"/usr/bin/vectorcraft-vaio"},
     ManagedApp{id:"wordcraft",name:"WordCraft",package:"wordcraft-vaio",binary:"/usr/bin/wordcraft-vaio"},
     ManagedApp{id:"gridcraft",name:"GridCraft",package:"gridcraft-vaio",binary:"/usr/bin/gridcraft-vaio"},
     ManagedApp{id:"pdfcraft",name:"PdfCraft",package:"pdfcraft-vaio",binary:"/usr/bin/pdfcraft-vaio"},

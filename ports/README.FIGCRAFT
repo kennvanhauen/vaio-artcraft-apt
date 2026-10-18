@@ -1,0 +1,28 @@
+FigCraft VAIO preview 0.7.0 revision 1
+
+Open FigCraft (VAIO preview) from Graphics or VAIO App Launcher.
+Use .figcraft for working files; File > Save As chooses a new filename.
+Frames, text, auto layout, components, variables, prototypes and exports retain
+upstream engines. This build uses Glow to present its CPU-rendered canvas on the
+VAIO's existing OpenGL driver, with a private package-local libxcb library.
+
+Headless: figcraft-vaio-cli --help
+Example: figcraft-vaio-cli convert Design.figcraft Design.png
+MCP: figcraft-vaio-cli mcp --automation-read-root DIR --automation-write-root DIR
+Desktop --control PORT is opt-in, loopback only and has no authentication.
+Normal launches do not start automation or collaboration listeners. Explicit
+sharing is needed for live sessions; no public hosting is set up by this port.
+
+Keep native originals. Upstream is alpha; .fig import is best effort and export
+experimental. Its own plugins differ from Figma plugins. Cloud/team features,
+large designs and real-world external-file fidelity are not validated here.
+Open font assets retain their notices; 56 native faces are hash verified.
+
+APT manages installation and updates through the existing native frontend.
+Remove with sudo apt-get remove figcraft-vaio; user files/settings are retained.
+Preferences and recovery live under ~/.config/FigCraft by default. XDG_CONFIG_HOME
+selects another parent for an isolated profile.
+
+Linux i386 uses a steady caret; FIGCRAFT_STATIC_CARET=0 opts out for one launch.
+Bare-name Save As refuses a normalized path that already exists; enter the full
+filename to use the native chooser overwrite confirmation.

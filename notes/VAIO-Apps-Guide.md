@@ -1,8 +1,8 @@
 # Using the VAIO ports
 
-Open **VAIO App Launcher** in Utilities/System. Its six cards open WordCraft,
-GridCraft, PdfCraft, DeckCraft, VectorCraft and DesignCraft. The five office apps also appear
-under Office; VectorCraft appears under Graphics. The launcher
+Open **VAIO App Launcher** in Utilities/System. Its seven cards open WordCraft,
+GridCraft, PdfCraft, DeckCraft, VectorCraft, DesignCraft and FigCraft. The five office apps also appear
+under Office; VectorCraft and FigCraft appear under Graphics. The launcher
 checks signed APT metadata. Applications remain usable during a slow check.
 Install/update/remove operations use local administrator authentication and APT.
 The usual **Check & Install Updates** frontend also updates these packages.
@@ -152,6 +152,41 @@ The MCP server is in-process unless `--connect PORT` is requested. Explicit root
 confine its file access. Desktop `--control PORT` is opt-in, loopback only and has
 no authentication; enable it only while needed. It is not confined by CLI roots.
 The normal desktop and launcher start no automation listener.
+
+## FigCraft
+
+Use FigCraft for interface screens, reusable components and interactive prototypes.
+Save working files as `.figcraft`. SVG imports remain useful for exchanging vector
+artwork; keep originals when trying experimental `.fig` exchange.
+
+- Use frames for screens, with text and shapes inside. Auto layout arranges rows
+  and columns with padding and gaps. Components/instances share reusable controls;
+  styles and variables provide shared values.
+- Connect screen interactions in Prototype and use Present to try navigation.
+  Close in the presentation toolbar returns to editing. Floating preview is also
+  available. These were checked with an original two-screen example on this VAIO.
+- Native Save As adds `.figcraft` to a bare filename. If that normalized name
+  already exists, it refuses the save; enter the complete filename to use the
+  system chooser's ordinary overwrite confirmation.
+- SVG, PDF, PNG, JPG, WebP, JSON and experimental FIG exports were checked.
+  Native reopen, SVG vector round trip and its own FIG text round trip passed.
+  These checks do not establish fidelity for external Figma files.
+- Linux i386 uses a steady text caret to avoid costly idle redraw. One-launch
+  opt-out: `FIGCRAFT_STATIC_CARET=0 figcraft-vaio`. Draft recovery retains upstream
+  automatic snapshots under `~/.config/FigCraft/Recovery`; an unsaved disposable
+  draft recovered successfully after a test-process crash.
+
+Headless operation does not require a desktop:
+
+```sh
+figcraft-vaio-cli convert Screen.figcraft Screen.pdf
+figcraft-vaio-cli mcp --automation-read-root /path/to/work --automation-write-root /path/to/work
+```
+
+The package embeds 56 verified open-font faces. Its plugin API is its own, not
+Figma's. Collaboration code is retained, but no hosted service is set up and
+normal launches start no control/MCP server. Large designs, external files,
+plugins and live collaboration still need workflow-specific validation.
 
 ## Practical scope
 

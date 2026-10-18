@@ -1,0 +1,127 @@
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -1094,6 +1094,7 @@
+  "egui-wgpu",
+  "egui-winit",
+  "egui_glow",
++ "glow",
+  "glutin",
+  "glutin-winit",
+  "image",
+--- a/apps/figcraft/Cargo.toml
++++ b/apps/figcraft/Cargo.toml
+@@ -10,6 +10,11 @@
+ [lints]
+ workspace = true
+ 
++[features]
++default = ["wgpu"]
++wgpu = ["eframe/wgpu"]
++vaio = ["eframe/glow"]
++
+ [dependencies]
+ figcraft-engine = { workspace = true }
+ figcraft-ui-egui = { workspace = true }
+@@ -17,7 +22,7 @@
+ figcraft-format = { workspace = true }
+ figcraft-text = { workspace = true }
+ egui = { workspace = true }
+-eframe = { workspace = true, features = ["default_fonts", "wgpu", "accesskit", "wayland", "x11"] }
++eframe = { workspace = true, features = ["default_fonts", "accesskit", "wayland", "x11"] }
+ serde_json = { workspace = true }
+ log = { workspace = true }
+ rfd = { workspace = true }
+--- a/apps/figcraft/src/main.rs
++++ b/apps/figcraft/src/main.rs
+@@ -20,6 +20,7 @@
+ mod args;
+ mod control_server;
+ mod gamepad;
++#[cfg(not(feature = "vaio"))]
+ mod graphics;
+ #[cfg(target_os = "linux")]
+ mod linux_window;
+@@ -31,7 +32,7 @@
+ mod apple_events_tests;
+ #[cfg(test)]
+ mod args_tests;
+-#[cfg(test)]
++#[cfg(all(test, not(feature = "vaio")))]
+ mod graphics_tests;
+ #[cfg(test)]
+ mod recovery_online_tests;
+@@ -107,7 +108,7 @@
+         services::parented(frame, || with_app(|fig| figcraft_ui_egui::windows::guard(fig, &ctx, |fig| fig.ui(ui))));
+     }
+ 
+-    fn on_exit(&mut self) {
++    fn on_exit(&mut self, #[cfg(feature = "vaio")] _gl: Option<&eframe::glow::Context>) {
+         // With the app out of reach (busy), its recovery copies stay for the next start.
+         let copies = recovery::lock(&self.recovery).take();
+         with_app(|fig| services::shutdown(fig, services::config_dir().as_deref(), copies));
+@@ -221,7 +222,7 @@
+     let mut viewport = egui::ViewportBuilder::default()
+         .with_title("FigCraft")
+         .with_app_id("ai.storyteller.figcraft")
+-        .with_inner_size([1440.0, 900.0])
++        .with_inner_size(if cfg!(feature = "vaio") { [1440.0, 650.0] } else { [1440.0, 900.0] })
+         .with_min_inner_size([800.0, 500.0])
+         .with_drag_and_drop(true);
+     // Start frameless on Linux; the app creator checks the actual display backend
+@@ -231,8 +232,20 @@
+     if let Some(icon) = icon {
+         viewport = viewport.with_icon(icon);
+     }
+-    let mut options = eframe::NativeOptions { viewport, renderer: eframe::Renderer::Wgpu, ..Default::default() };
+-    graphics::configure(&mut options.wgpu_options);
++    let options = eframe::NativeOptions {
++        viewport,
++        #[cfg(feature = "vaio")]
++        renderer: eframe::Renderer::Glow,
++        #[cfg(not(feature = "vaio"))]
++        renderer: eframe::Renderer::Wgpu,
++        ..Default::default()
++    };
++    #[cfg(not(feature = "vaio"))]
++    let options = {
++        let mut options = options;
++        graphics::configure(&mut options.wgpu_options);
++        options
++    };
+     figcraft_ui_egui::windows::install(fig);
+     #[cfg(target_os = "linux")]
+     let linux_display = linux_window::display_socket();
+--- a/crates/ui-egui/src/dialogs.rs
++++ b/crates/ui-egui/src/dialogs.rs
+@@ -130,9 +130,7 @@
+         });
+     });
+     ui.add_space(12.0);
+-    ui.label(tr(
+-        "Interface design and prototyping. A free, open-source, clean-room design tool written from scratch in Rust, part of the ArtCraft Crafting Apps.",
+-    ));
++    ui.label(tr("Unofficial VAIO adaptation of FigCraft by the ArtCraft team. Interface design and prototyping, built in Rust."));
+     ui.add_space(8.0);
+     ui.hyperlink_to("getartcraft.com/apps/figcraft", "https://getartcraft.com/apps/figcraft");
+     ui.hyperlink_to(tr("Join us on Discord"), "https://discord.gg/artcraft");
+--- a/crates/ui-egui/src/canvas.rs
++++ b/crates/ui-egui/src/canvas.rs
+@@ -1111,11 +1111,16 @@
+             }
+         }
+         let caret = preedit.map(|p| p.cursor).unwrap_or(te.caret);
+-        let blink = (painter.ctx().input(|i| i.time) * 2.0) as i64 % 2 == 0;
++        // llvmpipe on the Atom makes caret-only frames disproportionately expensive.
++        // Keep normal editing/IME behavior, with a visible steady caret on Linux i386.
++        let steady = cfg!(all(target_os = "linux", target_arch = "x86")) && std::env::var("FIGCRAFT_STATIC_CARET").as_deref() != Ok("0");
++        let blink = steady || (painter.ctx().input(|i| i.time) * 2.0) as i64 % 2 == 0;
+         if blink || a != b {
+             painter.line_segment(text.caret(app, caret, zoom), stroke(t.text, 1.0));
+         }
+-        painter.ctx().request_repaint_after(std::time::Duration::from_millis(500));
++        if !steady {
++            painter.ctx().request_repaint_after(std::time::Duration::from_millis(500));
++        }
+     }
+     // Smart guides and measurements (their labels kept clear of the size label).
+     crate::measure_overlay::draw(app, painter, t, size_label);

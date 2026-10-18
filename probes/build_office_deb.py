@@ -12,6 +12,8 @@ import tomllib
 
 root = Path(__file__).resolve().parents[1]
 specs = {
+    'figcraft': ('0.7.0~vaio1', 'a0d1162976fac1e4a8b8fd49a3948e9d6bad6f40',
+                 'FigCraft', 'Graphics;2DGraphics;', 'application/x-figcraft;image/svg+xml;'),
     'designcraft': ('0.9.0~vaio1', 'ecd7e5d063eb12fa5e61fe61c9b8a77bb3c9110a',
                     'DesignCraft', 'Office;Publishing;',
                     'application/x-designcraft;application/vnd.adobe.indesign-idml-package;'),
@@ -46,6 +48,8 @@ for name in (app, app+'-cli'):
     hashes[name] = hashlib.sha256(data).hexdigest()
     add('usr/lib/'+package+'/bin/'+name, data, 0o755)
     wrapper = '#!/bin/sh\n'
+    if app == 'figcraft':
+        wrapper += 'export FIGCRAFT_STATIC_CARET="${FIGCRAFT_STATIC_CARET:-1}"\n'
     if app == 'designcraft':
         wrapper += 'export DESIGNCRAFT_STATIC_CARET="${DESIGNCRAFT_STATIC_CARET:-1}"\n'
     if app == 'pdfcraft':
@@ -70,6 +74,8 @@ Categories={categories}
 MimeType={mime}
 '''
 add('usr/share/applications/'+package+'.desktop', desktop.encode())
+if app == 'figcraft':
+    add('usr/share/mime/packages/figcraft-vaio.xml', b'<?xml version="1.0" encoding="UTF-8"?>\n<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info"><mime-type type="application/x-figcraft"><comment>FigCraft interface design</comment><glob pattern="*.figcraft"/></mime-type></mime-info>\n')
 if app == 'designcraft':
     add('usr/share/mime/packages/designcraft-vaio.xml', b'''<?xml version="1.0" encoding="UTF-8"?>
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
@@ -137,7 +143,7 @@ metadata = dict(package_version=version, source_revision=revision, rust='1.95.0'
                 glibc_target='2.23', renderer='Glow', private_libxcb='1.17.0',
                 binary_sha256=hashes, port_patch_sha256=hashlib.sha256(
                     (root/'ports'/(app+'-xenial.patch')).read_bytes()).hexdigest())
-if app in ('deckcraft', 'vectorcraft', 'designcraft'):
+if app in ('deckcraft', 'vectorcraft', 'designcraft', 'figcraft'):
     for path in (source/'licenses').rglob('*'):
         if path.is_file():
             add(doc+str(path.relative_to(source)),path.read_bytes())
@@ -148,7 +154,7 @@ if app in ('deckcraft', 'vectorcraft', 'designcraft'):
     verified=json.loads((root/'.build'/(app+'-fonts-verified.json')).read_text())
     metadata['craft_fonts_revision']=verified['revision']
     metadata['embedded_font_faces']=len(verified['fonts'])
-    font_root = root/'.build'/(app+'-fonts') if app in ('vectorcraft','designcraft') else root/'upstream/craft-fonts'
+    font_root = root/'.build'/(app+'-fonts') if app in ('vectorcraft','designcraft','figcraft') else root/'upstream/craft-fonts'
     add(doc+'craft-fonts/ATTRIBUTION.md', (font_root/'ATTRIBUTION.md').read_bytes())
     add(doc+'craft-fonts/verified-fonts.json', (json.dumps(verified,indent=2)+'\n').encode())
     for entry in verified['fonts']:
@@ -159,7 +165,7 @@ depends = ('zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6
            'libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, '
            'libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa')
 if app == 'deckcraft':depends += ', libasound2 (>= 1.1.0), shared-mime-info, xscreensaver'
-if app in ('vectorcraft','designcraft'):depends += ', shared-mime-info'
+if app in ('vectorcraft','designcraft','figcraft'):depends += ', shared-mime-info'
 control = f'''Package: {package}
 Version: {version}
 Architecture: i386
@@ -195,14 +201,14 @@ def archive(entries, directories=False):
             info.uname = info.gname = 'root'
             info.mtime = 1792281600
             output.addfile(info, io.BytesIO(data))
-    if directories and app in ('vectorcraft','designcraft'):
+    if directories and app in ('vectorcraft','designcraft','figcraft'):
         # Xenial dpkg supports XZ; preset 6 keeps decode memory modest on the 2 GB VAIO.
         return lzma.compress(buffer.getvalue(), format=lzma.FORMAT_XZ, preset=6)
     return gzip.compress(buffer.getvalue(), compresslevel=6, mtime=0)
 
 parts = [('debian-binary', b'2.0\n'),
          ('control.tar.gz', archive({'control': (control, 0o644), 'md5sums': (md5, 0o644)})),
-         ('data.tar.xz' if app in ('vectorcraft','designcraft') else 'data.tar.gz', archive(files, True))]
+         ('data.tar.xz' if app in ('vectorcraft','designcraft','figcraft') else 'data.tar.gz', archive(files, True))]
 destination = root/'dist'/(package+'_'+version+'_i386.deb')
 with destination.open('wb') as out:
     out.write(b'!<arch>\n')

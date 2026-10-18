@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "editing_idle": {
+    "cpu_percent_one_logical_cpu": 94.83,
+    "rss_kib": 111820
+  },
+  "settled_idle": {
+    "cpu_percent_one_logical_cpu": 0.0,
+    "rss_kib": 111716
+  },
+  "checks": [
+    "OpenGL startup",
+    "GUI text input",
+    "formatting",
+    "undo/redo",
+    "native save/reopen",
+    "prototype forward/back navigation by GUI clicks",
+    "floating prototype preview",
+    "window screenshots"
+  ],
+  "note": "Initial measurement before steady-caret adaptation; preview check strengthened afterwards."
+}

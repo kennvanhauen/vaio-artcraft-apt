@@ -1,7 +1,7 @@
 # VAIO application ports and signed APT archive
 
-Unofficial native ports of WordCraft, GridCraft, PdfCraft, DeckCraft, VectorCraft and DesignCraft for Ubuntu 16.04
-Xenial i386 on the Sony VAIO P. The VAIO App Launcher opens and manages all six
+Unofficial native ports of WordCraft, GridCraft, PdfCraft, DeckCraft, VectorCraft, DesignCraft and FigCraft for Ubuntu 16.04
+Xenial i386 on the Sony VAIO P. The VAIO App Launcher opens and manages all seven
 through APT. These are independent hardware adaptations of upstream alpha apps.
 
 | Package | Version | Ordinary and advanced workflows checked on the VAIO |
@@ -12,9 +12,10 @@ through APT. These are independent hardware adaptations of upstream alpha apps.
 | deckcraft-vaio | 0.8.0~vaio1 | Three-slide editing, shapes/picture/chart/notes, PPTX round trip, PDF/outline export, silent fullscreen presentation, native Save As and unsaved-draft recovery |
 | vectorcraft-vaio | 0.13.1~vaio1 | Headless CLI/MCP, GUI text editing, layers, shapes, pathfinder, undo/redo, two artboards, native/SVG round trip, broad format export, native Save As and draft recovery |
 | designcraft-vaio | 0.9.0~vaio1 | Three-page styles/images/threading/table/RTF workflow, GUI editing, native/IDML round trip, PDF/PNG/EPUB/PPTX/HTML/text export, parent pages, data merge, native Save As and automatic idle recovery |
-| artcraft-launcher-vaio | 0.5.1~vaio7 | Six-app APT backend, signed metadata refresh, offline reporting, saved settings and fixed package-operation allowlist |
+| figcraft-vaio | 0.7.0~vaio1 | Two-screen UI design, auto layout, components/instances, styles/variables, GUI text editing, prototype click navigation/preview, native/SVG/own-FIG round trips, seven exports, native Save As and idle draft recovery |
+| artcraft-launcher-vaio | 0.5.1~vaio8 | Seven-app APT backend, signed metadata refresh, offline reporting, saved settings and fixed package-operation allowlist |
 
-All six application engines retain their upstream features. This is a practical
+All seven application engines retain their upstream features. This is a practical
 port, not a claim that every feature or external file works. Complex documents,
 large workbooks/scans, physical printing, real signing identities, complex scripts
 and external integrations need further validation. PdfCraft's optional Japanese
@@ -37,7 +38,7 @@ The target VAIO uses `/etc/apt/preferences.d/vaio-artcraft` to allow only these
 packages from this archive:
 
 ```
-Package: wordcraft-vaio gridcraft-vaio pdfcraft-vaio deckcraft-vaio vectorcraft-vaio designcraft-vaio artcraft-launcher-vaio
+Package: wordcraft-vaio gridcraft-vaio pdfcraft-vaio deckcraft-vaio vectorcraft-vaio designcraft-vaio figcraft-vaio artcraft-launcher-vaio
 Pin: origin "kennvanhauen.github.io"
 Pin-Priority: 500
 
@@ -46,8 +47,8 @@ Pin: origin "kennvanhauen.github.io"
 Pin-Priority: -1
 ```
 
-Refresh APT, then install the seven package names above. The five office apps appear in
-Office and VectorCraft in Graphics; VAIO App Launcher appears in Utilities/System. Future updates use APT,
+Refresh APT, then install the eight package names above. The five office apps appear in
+Office and VectorCraft/FigCraft in Graphics; VAIO App Launcher appears in Utilities/System. Future updates use APT,
 including the VAIO's existing **Check & Install Updates** frontend. Its wider
 system-maintenance operation was not run during targeted package tests.
 
@@ -82,11 +83,12 @@ Pinned upstream revisions:
 - DeckCraft: `cb78440a1618e6a2c1df55dd7bff74719685518c`
 - VectorCraft: `a466625c8987550635cda951ebf36e08e1e80a56`
 - DesignCraft: `ecd7e5d063eb12fa5e61fe61c9b8a77bb3c9110a`
+- FigCraft: `a0d1162976fac1e4a8b8fd49a3948e9d6bad6f40`
 - Launcher: `9cef5d2a0f207da50d31547a726057ea40f7e5b4`
 
 Original sources are at https://github.com/storytold/wordcraft,
 https://github.com/storytold/gridcraft, https://github.com/storytold/pdfcraft and
-https://github.com/storytold/craft-launcher and https://github.com/storytold/deckcraft and https://github.com/storytold/vectorcraft and https://github.com/storytold/designcraft. Pinned upstream revisions identify the source; Releases carry source/build
+https://github.com/storytold/craft-launcher and https://github.com/storytold/deckcraft and https://github.com/storytold/vectorcraft and https://github.com/storytold/designcraft and https://github.com/storytold/figcraft. Pinned upstream revisions identify the source; Releases carry source/build
 recipe archives and links. Owned downstream patches, lockfiles, helper sources and recipes are
 in `ports/` and `probes/`. App/license/font/icon notices are included in packages.
 Original ArtCraft trademark graphics are removed from modified UI releases;
@@ -222,3 +224,33 @@ preference passed; no test control listeners remained. See
 [installed evidence](notes/designcraft-installed-result.json),
 [the final port record and rollback](notes/designcraft-0.9.0-vaio1.md) and
 [the original brochure example](https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/designcraft-0.9.0-vaio1/designcraft-brochure-example.zip).
+
+
+## FigCraft build and scope
+
+See [the FigCraft record](notes/figcraft-0.7.0-vaio1.md) and
+[usage guide](notes/VAIO-Apps-Guide.md). The desktop uses Glow and retains the
+CPU canvas, 562-command engine, metered WASM plugin interpreter and collaboration
+code. Linux i386 defaults to a steady caret; `FIGCRAFT_STATIC_CARET=0` opts out.
+No control/MCP/collaboration listener starts during an ordinary launch.
+
+Clone the pinned upstream revision into `upstream/figcraft`, then run:
+
+```sh
+python3 probes/prepare-figcraft-fonts.py
+python3 probes/prepare-figcraft-port.py
+sh probes/build-figcraft.sh --locked
+FIGCRAFT_BUILD=gui sh probes/build-figcraft.sh --locked
+python3 probes/build_office_deb.py figcraft
+```
+
+The craft-fonts input is pinned at
+`43913056ce82a3fdad0ef69f6b88d1dc922a8104`: both native and Latin manifests, all 56
+embedded faces and their notices are checked against the pinned Git tree. The
+large opt-in Hans font is omitted, following upstream native defaults. XZ
+compression keeps the full GUI/CLI package within GitHub's file-size limit.
+
+FigCraft remains alpha. External .fig exchange is best effort/experimental;
+its own FIG round trip does not establish external Figma-file fidelity. Its
+plugins are not Figma plugins. Large files, plugins, cloud/team integrations and
+live collaboration remain unverified on this VAIO. No hosted service is set up.

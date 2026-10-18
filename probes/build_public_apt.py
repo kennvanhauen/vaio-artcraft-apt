@@ -42,10 +42,17 @@ repo = args.output.resolve()
 binary = repo / 'dists/xenial/main/binary-i386'
 binary.mkdir(parents=True, exist_ok=True)
 url = ('https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/'
-       + args.tag + '/' + args.package.name)
+       + args.tag + '/' + args.package.name.replace('~', '.'))
 index = (control.rstrip()+'\nFilename: '+url+'\nSize: '+str(len(content))
          +'\nMD5sum: '+hashlib.md5(content).hexdigest()
          +'\nSHA256: '+hashlib.sha256(content).hexdigest()+'\n\n')
+# Preserve other package names when publishing another application.
+previous = binary / 'Packages'
+package_name = next(line for line in control.splitlines() if line.startswith('Package: '))
+if previous.exists():
+    records = [record for record in previous.read_text().strip().split('\n\n')
+               if record and not record.startswith(package_name+'\n')]
+    index = ''.join(record+'\n\n' for record in records)+index
 (binary / 'Packages').write_text(index)
 (binary / 'Packages.gz').write_bytes(gzip.compress(index.encode(), mtime=0))
 (binary / 'Release').write_text('Archive: xenial\nComponent: main\nArchitecture: i386\n')

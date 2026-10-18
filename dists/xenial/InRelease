@@ -8,26 +8,26 @@ Codename: xenial
 Architectures: i386
 Components: main
 Description: Unofficial ArtCraft previews for Ubuntu Xenial i386
-Date: Sun, 18 Oct 2026 22:54:34 GMT
+Date: Sun, 18 Oct 2026 23:41:12 GMT
 MD5Sum:
- 8932a3274efdc11a4c78649e8c320c96 6492 main/binary-i386/Packages
- 2a32e34f469f6130c8ab626f5ab10649 1496 main/binary-i386/Packages.gz
+ 556edbac1c36531cd51155032d47363f 7304 main/binary-i386/Packages
+ a8baefa6bf422f4a44d753cbd95f69d3 1592 main/binary-i386/Packages.gz
  52608ca0ec5dea6c5b78c2850ab09913 51 main/binary-i386/Release
 SHA256:
- 678a38a41dda43a11e03092deeaaa735153ff5b52cb78227203212aaba0bedef 6492 main/binary-i386/Packages
- 4b612fbd22b5df91d93b6fadd14ed69c00ff012b07d1edec3015ca582f28ac47 1496 main/binary-i386/Packages.gz
+ c5607d2dbcc168c58ae0a49065473dcd50b1e866f834b7ebbbb010c0c402a9b4 7304 main/binary-i386/Packages
+ cae8ff0759d08c93526143c4a9c92cd2f34a30f4e0f06a1a2fc23f6ae1f7e3fa 1592 main/binary-i386/Packages.gz
  8b5b8e1eea0817645ced68a21422690999cdb19ab64c6127115c99570dc1d93b 51 main/binary-i386/Release
 -----BEGIN PGP SIGNATURE-----
 
-iQGzBAEBCAAdFiEERBYWxlqrabmW42e9oH8n7A8ST4cFAmrVTioACgkQoH8n7A8S
-T4cYWAv+NnqUR6RgLx1N1Az5jEGQygMqmPyMryaxaGliUXH8GV8s00h1N6CIUPVa
-pMwAbI+c4o/l6muUHrOlXvWwR6NYOvBUt7gYqS4dbk9s5bcCgA3NpRlITxVpaK9W
-vaKOZGhauJYIl6dxyf6N96nwmeF85Dk/lfWaPfOIDYjpJ9p5eIw/7EvDeAakCv2w
-CqouslK0xW/Uev2ZPeoTzjYScAioA4eqkfe1rqmrUtWYzr2RZZvyXmoPvv7AkFUd
-F0UbEMYW7t+H7WMATO3XSOJ3RFwUkoF3gUnV5EsJNnwIIj7hYrUnKfl6Z+028/g1
-eoqhoT4PRSCQfpeVno6ikzLnWaBiOdetSNOWSfWS4GFvqq+9xalMKmrgn7zxF7mz
-12KcMLolI71rLIDwbmPPgQZB0+s6Vhx6m0n7nmejsiX6AOrmB5R9du2WUPk35axg
-DtTxTO6fa4+sWIkAMd2hl/Ax5v3UeRDC2+GD+Tc0jHGAemd97Equa+QqxCFX4oO7
-jFMLDO4/
-=dFdS
+iQGzBAEBCAAdFiEERBYWxlqrabmW42e9oH8n7A8ST4cFAmrVWRgACgkQoH8n7A8S
+T4enVwv/R0AOTMXDkQxTOynkUgFyA8+rwAFvzFHZ3zLjx9k5417GU42VWlJUZ/Oe
++v1Qhzab2LJnrR95DKbSrXptDv6lme6k68sexEIY5L8Ol3tZ8EAU9FqrTbazVrEl
+TLEmQMtROiVGT4hPuYXcG12RvFqJtbUppdxjD4b4KGh3P3hmMTj9sFqphsXTEgrH
+zLUqQ9OgkoYtJyWVgBaBL4y59eU9vKPiRCkLPXzU0r4YabUfjIc5xNgTspBFnsG8
+7RWy4TBZA9heoRvc4hOBSzHPuG9DE2h0Jjv3962ZjNewOaIKdofP4Wim/NDGZIGG
+7TZsVzSSQ+OuiNA8Nyhaa+i2yIu4V6n7I5i1FXqpHTUJnngCvlom61QlFUhk5jLq
+yBVrBPwdqTVbrt3+/r1uNW3WDQbYckp1cThSTSfRRacXbAKEyi17b+3fvP2Bgza6
+Zh1YDSyHw6feLAWYv/N9OCQRBkZr3Gy4JIKSRgj6eZuMngqekd9SqTsyn4y8mbtv
+mvlpsNaU
+=TARV
 -----END PGP SIGNATURE-----

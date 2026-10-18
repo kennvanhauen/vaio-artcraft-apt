@@ -1,8 +1,8 @@
 # Using the VAIO ports
 
-Open **VAIO App Launcher** in Utilities/System. Its seven cards open WordCraft,
-GridCraft, PdfCraft, DeckCraft, VectorCraft, DesignCraft and FigCraft. The five office apps also appear
-under Office; VectorCraft and FigCraft appear under Graphics. The launcher
+Open **VAIO App Launcher** in Utilities/System. Its eight cards open WordCraft,
+GridCraft, PdfCraft, DeckCraft, VectorCraft, DesignCraft, FigCraft and CADCraft. The five office apps also appear
+under Office; VectorCraft, FigCraft and CADCraft appear under Graphics. The launcher
 checks signed APT metadata. Applications remain usable during a slow check.
 Install/update/remove operations use local administrator authentication and APT.
 The usual **Check & Install Updates** frontend also updates these packages.
@@ -187,6 +187,45 @@ The package embeds 56 verified open-font faces. Its plugin API is its own, not
 Figma's. Collaboration code is retained, but no hosted service is set up and
 normal launches start no control/MCP server. Large designs, external files,
 plugins and live collaboration still need workflow-specific validation.
+
+## CADCraft
+
+Use CADCraft for small 2D drawings. Prefer DXF working copies and keep originals:
+upstream is pre-alpha and saving DWG can discard unsupported content. Its own
+small DWG round trip passed here; external-file fidelity remains unverified.
+This app does not provide a complete 3D modeler or full AutoCAD parity.
+
+- Draft with tool palettes or the command line: `LINE`, `CIRCLE`, `RECTANG`,
+  dimensions and layers. Set units deliberately. A 120×80 mm original plate
+  exercised rounded corners, four block inserts, layers, two dimensions, a
+  horizontal constraint, TEXT/MTEXT, a LISP expression, move and undo/redo.
+- At a text prompt, enter the complete line separately from the command and its
+  numeric arguments. Spaces in a combined command sequence otherwise act as
+  Enter. Zoom Extents frames the drawing; palette contents can be scrolled.
+- Native Save As appends the suggested `.dxf` or `.dwg` suffix to a bare name.
+  If that normalized path exists, a native Yes/No question protects it. Enter a
+  complete suffix for SVG, PNG or PDF export; explicit suffixes remain unchanged.
+- DXF save/reopen, SVG/PDF/PNG output, paper-space viewport and an A4 PDF plot
+  passed on the real VAIO. Physical plotters, professional exchange files and
+  demanding geometry remain unverified.
+- Autosave keeps the upstream ten-minute default (`SAVETIME`), under
+  `~/.config/cadcraft/autosave` unless `SAVEFILEPATH` changes it. Recovery files
+  can take five minutes after a crash to become eligible, owing to a lock lease.
+  Recovered drawings need Save As. An isolated one-minute snapshot and actual Drawing Recovery Open/Save As passed.
+
+Headless operation needs no desktop:
+
+```sh
+cadcraft-vaio-cli info Drawing.dxf
+cadcraft-vaio-cli convert Drawing.dxf Drawing.pdf
+cadcraft-vaio-cli mcp
+```
+
+Desktop `--control PORT` and CLI MCP are opt-in. They have the account's file
+access; the desktop port is loopback only without authentication. Ordinary
+launches start no automation listener. `CADCRAFT_CONFIG_DIR` selects a separate
+settings/workspace/log/autosave profile for tests. The VAIO port keeps upstream's
+CPU drawing path through Glow; no speculative power/kernel settings are applied.
 
 ## Practical scope
 

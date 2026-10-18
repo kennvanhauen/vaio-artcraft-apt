@@ -1,0 +1,29 @@
+CADCraft VAIO preview 0.9.0 revision 1
+
+Unofficial Xenial i386 adaptation; open CADCraft (VAIO preview) from Graphics or
+VAIO App Launcher. The upstream CPU drawing path is presented with Glow on the
+VAIO's software OpenGL, with a private package-local libxcb library. The drafting
+engine, command line, constraints, formats and existing autosave are retained.
+
+Use DXF working copies. Upstream is pre-alpha: saving DWG may discard unsupported
+entities/data, and production/external-file fidelity is unverified. Many command
+options, plotting and geometry operations remain incomplete; this is not a full
+3D modeler or a claim of AutoCAD parity. Do not overwrite valuable originals.
+
+Headless: cadcraft-vaio-cli --help
+Example: cadcraft-vaio-cli convert Drawing.dxf Drawing.pdf
+MCP: cadcraft-vaio-cli mcp
+Desktop automation is opt-in with --control PORT, loopback only without auth.
+Automation runs with the account's file access; use explicit disposable paths.
+Normal launches start no control/MCP listener.
+
+Autosave uses SAVETIME (upstream default 10 minutes) and SAVEFILEPATH, normally
+~/.config/cadcraft/autosave. Drawing Recovery offers stopped sessions after the
+lock lease expires (up to five minutes); opened copies need Save As. Profile and
+workspace data stay under ~/.config/cadcraft unless CADCRAFT_CONFIG_DIR is set.
+
+Seven hash-verified open native fallback fonts and their licences are included,
+following upstream font exclusions; the original CADCraft Stroke font remains.
+acadrust 0.6.4 is an unmodified MPL-2.0 library; see its licence/source notice.
+APT manages installation and updates through the existing native frontend.
+Remove with sudo apt-get remove cadcraft-vaio; user files/settings are retained.

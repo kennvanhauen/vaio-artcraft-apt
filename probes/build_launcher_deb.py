@@ -8,7 +8,7 @@ from pathlib import Path
 import tarfile
 
 root = Path(__file__).resolve().parents[1]
-version = '0.5.1~vaio8'
+version = '0.5.1~vaio9'
 binary = (root / '.build/wordcraft-target/i686-unknown-linux-gnu/release/artcraft-launcher-vaio').read_bytes()
 if binary[:6] != b'\x7fELF\x01\x01' or int.from_bytes(binary[18:20], 'little') != 3:
     raise SystemExit('Not an i386 ELF executable')

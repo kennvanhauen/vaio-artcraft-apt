@@ -1,7 +1,7 @@
 # VAIO application ports and signed APT archive
 
-Unofficial native ports of WordCraft, GridCraft, PdfCraft, DeckCraft, VectorCraft, DesignCraft and FigCraft for Ubuntu 16.04
-Xenial i386 on the Sony VAIO P. The VAIO App Launcher opens and manages all seven
+Unofficial native ports of WordCraft, GridCraft, PdfCraft, DeckCraft, VectorCraft, DesignCraft, FigCraft and CADCraft for Ubuntu 16.04
+Xenial i386 on the Sony VAIO P. The VAIO App Launcher opens and manages all eight
 through APT. These are independent hardware adaptations of upstream alpha apps.
 
 | Package | Version | Ordinary and advanced workflows checked on the VAIO |
@@ -13,9 +13,10 @@ through APT. These are independent hardware adaptations of upstream alpha apps.
 | vectorcraft-vaio | 0.13.1~vaio1 | Headless CLI/MCP, GUI text editing, layers, shapes, pathfinder, undo/redo, two artboards, native/SVG round trip, broad format export, native Save As and draft recovery |
 | designcraft-vaio | 0.9.0~vaio1 | Three-page styles/images/threading/table/RTF workflow, GUI editing, native/IDML round trip, PDF/PNG/EPUB/PPTX/HTML/text export, parent pages, data merge, native Save As and automatic idle recovery |
 | figcraft-vaio | 0.7.0~vaio1 | Two-screen UI design, auto layout, components/instances, styles/variables, GUI text editing, prototype click navigation/preview, native/SVG/own-FIG round trips, seven exports, native Save As and idle draft recovery |
-| artcraft-launcher-vaio | 0.5.1~vaio8 | Seven-app APT backend, signed metadata refresh, offline reporting, saved settings and fixed package-operation allowlist |
+| cadcraft-vaio | 0.9.0~vaio1 | Metric 2D drafting, rounded outline, layers, blocks, constraints, dimensions, TEXT/MTEXT, LISP, interactive editing, DXF save/reopen, own DWG round trip, SVG/PNG/PDF, A4 viewport plot, native Save As and autosave |
+| artcraft-launcher-vaio | 0.5.1~vaio9 | Eight-app APT backend, signed metadata refresh, offline reporting, saved settings and fixed package-operation allowlist |
 
-All seven application engines retain their upstream features. This is a practical
+All eight application engines retain their upstream features. This is a practical
 port, not a claim that every feature or external file works. Complex documents,
 large workbooks/scans, physical printing, real signing identities, complex scripts
 and external integrations need further validation. PdfCraft's optional Japanese
@@ -38,7 +39,7 @@ The target VAIO uses `/etc/apt/preferences.d/vaio-artcraft` to allow only these
 packages from this archive:
 
 ```
-Package: wordcraft-vaio gridcraft-vaio pdfcraft-vaio deckcraft-vaio vectorcraft-vaio designcraft-vaio figcraft-vaio artcraft-launcher-vaio
+Package: wordcraft-vaio gridcraft-vaio pdfcraft-vaio deckcraft-vaio vectorcraft-vaio designcraft-vaio figcraft-vaio cadcraft-vaio artcraft-launcher-vaio
 Pin: origin "kennvanhauen.github.io"
 Pin-Priority: 500
 
@@ -47,8 +48,8 @@ Pin: origin "kennvanhauen.github.io"
 Pin-Priority: -1
 ```
 
-Refresh APT, then install the eight package names above. The five office apps appear in
-Office and VectorCraft/FigCraft in Graphics; VAIO App Launcher appears in Utilities/System. Future updates use APT,
+Refresh APT, then install the nine package names above. The five office apps appear in
+Office and VectorCraft/FigCraft/CADCraft in Graphics; VAIO App Launcher appears in Utilities/System. Future updates use APT,
 including the VAIO's existing **Check & Install Updates** frontend. Its wider
 system-maintenance operation was not run during targeted package tests.
 
@@ -84,11 +85,12 @@ Pinned upstream revisions:
 - VectorCraft: `a466625c8987550635cda951ebf36e08e1e80a56`
 - DesignCraft: `ecd7e5d063eb12fa5e61fe61c9b8a77bb3c9110a`
 - FigCraft: `a0d1162976fac1e4a8b8fd49a3948e9d6bad6f40`
+- CADCraft: `0cc66ad3066e71f2c3d4cacb7de905e79ba1c95b`
 - Launcher: `9cef5d2a0f207da50d31547a726057ea40f7e5b4`
 
 Original sources are at https://github.com/storytold/wordcraft,
 https://github.com/storytold/gridcraft, https://github.com/storytold/pdfcraft and
-https://github.com/storytold/craft-launcher and https://github.com/storytold/deckcraft and https://github.com/storytold/vectorcraft and https://github.com/storytold/designcraft and https://github.com/storytold/figcraft. Pinned upstream revisions identify the source; Releases carry source/build
+https://github.com/storytold/craft-launcher and https://github.com/storytold/deckcraft and https://github.com/storytold/vectorcraft and https://github.com/storytold/designcraft and https://github.com/storytold/figcraft and https://github.com/storytold/cadcraft. Pinned upstream revisions identify the source; Releases carry source/build
 recipe archives and links. Owned downstream patches, lockfiles, helper sources and recipes are
 in `ports/` and `probes/`. App/license/font/icon notices are included in packages.
 Original ArtCraft trademark graphics are removed from modified UI releases;
@@ -279,3 +281,41 @@ launcher remains from the task; no test listeners, builds or monitors remain.
 Screenshots: [FigCraft editing](notes/figcraft-ui.png) and
 [the seven-app launcher](notes/launcher-seven.png). Measurements are short
 synthetic-workflow checks, not long-term stability guarantees.
+
+
+## CADCraft build and scope
+
+[CADCraft verification](notes/cadcraft-0.9.0-vaio1.md) and
+[usage guide](notes/VAIO-Apps-Guide.md). The port keeps the upstream CPU drawing
+fallback and engine, using Glow for the native window. Native Save As adds the
+suggested DXF/DWG suffix and confirms existing normalized paths separately.
+
+```sh
+python3 probes/prepare-cadcraft-fonts.py
+python3 probes/prepare-cadcraft-port.py
+sh probes/build-cadcraft.sh --locked
+CADCRAFT_BUILD=gui sh probes/build-cadcraft.sh --locked
+python3 probes/build_office_deb.py cadcraft
+```
+
+Clone pinned upstream CADCraft into upstream/cadcraft before those commands.
+The craft-fonts input is pinned at a71c20e30af613287c504f7e685ca8fad77752bc;
+seven embedded native faces and notices are verified, following upstream's font
+exclusion policy. The original stroke font remains. The unmodified acadrust 0.6.4
+DWG library is MPL-2.0; its licence and exact corresponding-source download and
+checksum are included in the package. No proprietary CAD assets or drawings
+are used or published.
+
+This is pre-alpha 2D CAD. External DWG saving can discard unsupported content;
+use DXF working copies and preserve originals. Full 3D, external-file fidelity,
+physical plotters and demanding geometry are unverified/incomplete. The real
+VAIO small drawing measured about 0.2–0.3% idle CPU and 113–115 MiB RSS. No power,
+thermal or kernel parameters were changed. Automation is opt-in and has the
+account's file access; ordinary launches start no control/MCP listener.
+
+
+Pristine host functional suite: 2,015 passed, two failed. The MCP connection
+suite then passed all four cases serially; the other failure had no wgpu adapter.
+Full CI still stops at an unchanged xtask style lint. Native i386 Clippy passed
+with warnings denied except two unchanged style lints; assets/layers and the
+save-name regression passed. WebAssembly was not checked (target absent).

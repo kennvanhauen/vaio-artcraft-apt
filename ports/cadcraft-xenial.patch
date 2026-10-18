@@ -1,0 +1,164 @@
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -1093,6 +1093,7 @@
+  "egui-wgpu",
+  "egui-winit",
+  "egui_glow",
++ "glow",
+  "glutin",
+  "glutin-winit",
+  "image",
+--- a/apps/cadcraft/Cargo.toml
++++ b/apps/cadcraft/Cargo.toml
+@@ -7,6 +7,11 @@
+ publish = false
+ default-run = "cadcraft"
+ 
++[features]
++default = ["wgpu"]
++wgpu = ["eframe/wgpu"]
++vaio = ["eframe/glow"]
++
+ [lints]
+ workspace = true
+ 
+@@ -14,7 +19,7 @@
+ cadcraft-engine = { workspace = true }
+ cadcraft-ui-egui = { workspace = true }
+ cadcraft-io = { workspace = true }
+-eframe = { workspace = true, features = ["default_fonts", "wgpu", "accesskit", "wayland", "x11", "links", "persistence"] }
++eframe = { workspace = true, features = ["default_fonts", "accesskit", "wayland", "x11", "links", "persistence"] }
+ egui = { workspace = true }
+ serde_json = { workspace = true }
+ log = { workspace = true }
+--- a/apps/cadcraft/src/main.rs
++++ b/apps/cadcraft/src/main.rs
+@@ -16,11 +16,12 @@
+ 
+ mod control_server;
+ mod desktop_theme;
+-#[cfg(any(target_os = "windows", test))]
++#[cfg(all(not(feature = "vaio"), any(target_os = "windows", test)))]
+ mod graphics;
+ mod logging;
+ #[cfg(target_os = "macos")]
+ mod native_menu;
++mod save_names;
+ mod spacemouse;
+ mod system_animations;
+ mod workspace;
+@@ -94,7 +95,7 @@
+     }
+     /// A normal exit: the workspace is saved, and this run's autosave files are not needed (a
+     /// crash leaves them for recovery).
+-    fn on_exit(&mut self) {
++    fn on_exit(&mut self, #[cfg(feature = "vaio")] _gl: Option<&eframe::glow::Context>) {
+         self.persist_workspace(true);
+         self.cad.shutdown_autosave();
+     }
+@@ -137,11 +138,26 @@
+                 .map(|p| p.to_string_lossy().to_string())
+         })),
+         pick_save: Some(Box::new(|name: &str| {
+-            filters_for_save(name)
++            let chosen = filters_for_save(name)
+                 .iter()
+                 .fold(rfd::FileDialog::new().set_file_name(name), |d, (label, ext)| d.add_filter(i18n::t(label), &[*ext]))
+-                .save_file()
+-                .map(|p| p.to_string_lossy().to_string())
++                .save_file()?;
++            let resolved = save_names::normalized(&chosen, name);
++            // The native chooser confirmed only the entered path. Confirm the actual
++            // destination separately when adding a suffix reveals an existing file.
++            if resolved != chosen
++                && resolved.exists()
++                && rfd::MessageDialog::new()
++                    .set_title("Replace existing drawing?")
++                    .set_description(format!("{} already exists. Replace it?", resolved.display()))
++                    .set_level(rfd::MessageLevel::Warning)
++                    .set_buttons(rfd::MessageButtons::YesNo)
++                    .show()
++                    != rfd::MessageDialogResult::Yes
++            {
++                return None;
++            }
++            Some(resolved.to_string_lossy().to_string())
+         })),
+     }
+ }
+@@ -258,14 +274,18 @@
+         }
+     }
+     install_io();
++    #[cfg(not(feature = "vaio"))]
+     let surface = cadcraft_ui_egui::gpu::surface_config(std::env::var("CADCRAFT_VSYNC").ok().as_deref(), cfg!(all(unix, not(target_os = "macos"))));
+     let mut options = eframe::NativeOptions {
+         // The crosshair is drawn by the app: present without a queue on Linux/BSD, where X11
+         // swapchains hold two frames back under vsync (`CADCRAFT_VSYNC=1` restores vsync).
++        #[cfg(feature = "vaio")]
++        renderer: eframe::Renderer::Glow,
++        #[cfg(not(feature = "vaio"))]
+         wgpu_options: eframe::egui_wgpu::WgpuConfiguration::default().with_surface_config(surface),
+         viewport: egui::ViewportBuilder::default()
+             .with_title("CADCraft")
+-            .with_inner_size([1600.0, 1000.0])
++            .with_inner_size(if cfg!(feature = "vaio") { [1440.0, 650.0] } else { [1600.0, 1000.0] })
+             .with_min_inner_size([900.0, 560.0])
+             .with_drag_and_drop(true)
+             .with_fullsize_content_view(true)
+@@ -286,6 +306,7 @@
+     // Command previews (COPY, MOVE...) of large selections are tessellated by egui, whose index
+     // buffer outgrew wgpu's default 256 MiB cap; the validation error is fatal. Ask for what the
+     // adapter actually supports.
++    #[cfg(not(feature = "vaio"))]
+     if let eframe::egui_wgpu::WgpuSetup::CreateNew(create) = &mut options.wgpu_options.wgpu_setup {
+         let base = std::sync::Arc::clone(&create.device_descriptor);
+         create.device_descriptor = std::sync::Arc::new(move |adapter| {
+@@ -340,9 +361,11 @@
+                 app.session.set_lisp_support_dir(Some(support));
+             }
+             app.integrated_titlebar = cfg!(target_os = "macos");
++            #[cfg(not(feature = "vaio"))]
+             if surface.present_mode == eframe::wgpu::PresentMode::AutoNoVsync {
+                 app.frame_cap = Some(cadcraft_ui_egui::gpu::FrameCap::new(240));
+             }
++            #[cfg(not(feature = "vaio"))]
+             if let Some(rs) = &cc.wgpu_render_state {
+                 app.set_wgpu(rs, eframe::egui_wgpu::depth_format_from_bits(0, STENCIL_BITS));
+             }
+--- a/apps/cadcraft/src/save_names.rs
++++ b/apps/cadcraft/src/save_names.rs
+@@ -0,0 +1,22 @@
++//! Preserve explicit export formats; give bare names the dialog's suggested drawing suffix.
++use std::path::{Path, PathBuf};
++
++pub fn normalized(path: &Path, suggested: &str) -> PathBuf {
++    if path.extension().is_some_and(|e| !e.is_empty()) {
++        return path.to_path_buf();
++    }
++    let ext = Path::new(suggested).extension().and_then(|e| e.to_str()).filter(|e| e.eq_ignore_ascii_case("dwg")).unwrap_or("dxf");
++    path.with_extension(ext)
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++    #[test]
++    fn drawing_names_and_explicit_exports() {
++        assert_eq!(normalized(Path::new("plate"), "Drawing.dxf"), Path::new("plate.dxf"));
++        assert_eq!(normalized(Path::new("plate"), "Drawing.dwg"), Path::new("plate.dwg"));
++        assert_eq!(normalized(Path::new("sheet.pdf"), "Drawing.dxf"), Path::new("sheet.pdf"));
++        assert_eq!(normalized(Path::new("original.DWG"), "Drawing.dxf"), Path::new("original.DWG"));
++    }
++}
+--- a/crates/ui-egui/src/dialogs.rs
++++ b/crates/ui-egui/src/dialogs.rs
+@@ -324,7 +324,7 @@
+                     ui.label(crate::tf!("Version {version}", version = env!("CARGO_PKG_VERSION")));
+                     ui.label(crate::tl!("Computer-aided design and drafting: an open-source, clean-room CAD application written in pure Rust."));
+                     ui.add_space(6.0);
+-                    ui.label(RichText::new(crate::tl!("One of the Crafting Apps by the ArtCraft team and community.")).color(t.text_dim));
++                    ui.label(RichText::new("Unofficial VAIO adaptation based on CADCraft by the ArtCraft team.").color(t.text_dim));
+                     ui.hyperlink_to("getartcraft.com/apps/cadcraft", "https://getartcraft.com/apps/cadcraft");
+                     ui.hyperlink_to(crate::tl!("Join us on Discord"), "https://discord.gg/artcraft");
+                     ui.add_space(6.0);

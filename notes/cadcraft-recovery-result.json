@@ -1,0 +1,104 @@
+{
+  "passed": true,
+  "profile": "/tmp/vaio-cadcraft-test/recovery-26604",
+  "recovery_ui_open_clicked": true,
+  "snapshot": "/tmp/vaio-cadcraft-test/recovery-26604/autosave/Drawing1_26607-1a1515ef937_1.sv$",
+  "automatic_copy_seconds": 61.12,
+  "recover_after": 1792366907.7147644,
+  "restored": {
+    "entities": [
+      {
+        "type": "Text",
+        "handle": "100",
+        "geometry": {
+          "halign": "left",
+          "type": "text",
+          "rotation": 0.0,
+          "style": "Standard",
+          "oblique": 0.0,
+          "widthFactor": 1.0,
+          "valign": "baseline",
+          "height": 5.0,
+          "alignPt": null,
+          "value": "Original unsaved CADCraft VAIO draft",
+          "insert": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          }
+        },
+        "transparency": "ByLayer",
+        "color": "ByLayer",
+        "layer": "0"
+      }
+    ],
+    "selection": [],
+    "counts": {
+      "Text": 1
+    },
+    "currentLayer": "0",
+    "blockEditor": null,
+    "linetypes": [
+      "ByBlock",
+      "ByLayer",
+      "Continuous"
+    ],
+    "extents": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        162.0,
+        5.0
+      ]
+    ],
+    "entityCount": 1,
+    "dirty": true,
+    "path": null,
+    "dimStyles": [
+      "Standard"
+    ],
+    "undo": [],
+    "textStyles": [
+      "Standard"
+    ],
+    "layouts": [
+      "Layout1",
+      "Layout2"
+    ],
+    "view": {
+      "height": 105.90394736842106,
+      "center": [
+        81.0,
+        2.5
+      ]
+    },
+    "space": "Model",
+    "title": "Drawing1",
+    "layers": [
+      {
+        "frozen": false,
+        "locked": false,
+        "on": true,
+        "linetype": "Continuous",
+        "color": "White",
+        "name": "0"
+      },
+      {
+        "frozen": false,
+        "locked": false,
+        "on": true,
+        "linetype": "Continuous",
+        "color": "White",
+        "name": "Defpoints"
+      }
+    ],
+    "blocks": [],
+    "skipped": {
+      "sections": {},
+      "count": 0
+    }
+  },
+  "crashed_at": 1792366604.7126496
+}

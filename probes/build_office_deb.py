@@ -12,6 +12,8 @@ import tomllib
 
 root = Path(__file__).resolve().parents[1]
 specs = {
+    'cadcraft': ('0.9.0~vaio1', '0cc66ad3066e71f2c3d4cacb7de905e79ba1c95b',
+                 'CADCraft', 'Graphics;Engineering;', 'image/vnd.dxf;image/vnd.dwg;'),
     'figcraft': ('0.7.0~vaio1', 'a0d1162976fac1e4a8b8fd49a3948e9d6bad6f40',
                  'FigCraft', 'Graphics;2DGraphics;', 'application/x-figcraft;image/svg+xml;'),
     'designcraft': ('0.9.0~vaio1', 'ecd7e5d063eb12fa5e61fe61c9b8a77bb3c9110a',
@@ -107,6 +109,8 @@ if app == 'deckcraft':
 icon=source/'assets/app-icon'/(app+'.svg')
 if icon.exists():
     add('usr/share/icons/hicolor/scalable/apps/'+package+'.svg', icon.read_bytes())
+elif app == 'cadcraft':
+    add('usr/share/icons/hicolor/256x256/apps/'+package+'.png', (source/'assets/app-icon/cadcraft-256.png').read_bytes())
 else:
     add('usr/share/icons/hicolor/256x256/apps/'+package+'.png', (source/'assets/app-icon/hicolor/256x256/apps'/('ai.storyteller.'+app+'.png')).read_bytes())
 doc = 'usr/share/doc/'+package+'/'
@@ -143,7 +147,7 @@ metadata = dict(package_version=version, source_revision=revision, rust='1.95.0'
                 glibc_target='2.23', renderer='Glow', private_libxcb='1.17.0',
                 binary_sha256=hashes, port_patch_sha256=hashlib.sha256(
                     (root/'ports'/(app+'-xenial.patch')).read_bytes()).hexdigest())
-if app in ('deckcraft', 'vectorcraft', 'designcraft', 'figcraft'):
+if app in ('deckcraft', 'vectorcraft', 'designcraft', 'figcraft', 'cadcraft'):
     for path in (source/'licenses').rglob('*'):
         if path.is_file():
             add(doc+str(path.relative_to(source)),path.read_bytes())
@@ -154,18 +158,22 @@ if app in ('deckcraft', 'vectorcraft', 'designcraft', 'figcraft'):
     verified=json.loads((root/'.build'/(app+'-fonts-verified.json')).read_text())
     metadata['craft_fonts_revision']=verified['revision']
     metadata['embedded_font_faces']=len(verified['fonts'])
-    font_root = root/'.build'/(app+'-fonts') if app in ('vectorcraft','designcraft','figcraft') else root/'upstream/craft-fonts'
+    font_root = root/'.build'/(app+'-fonts') if app in ('vectorcraft','designcraft','figcraft','cadcraft') else root/'upstream/craft-fonts'
     add(doc+'craft-fonts/ATTRIBUTION.md', (font_root/'ATTRIBUTION.md').read_bytes())
     add(doc+'craft-fonts/verified-fonts.json', (json.dumps(verified,indent=2)+'\n').encode())
     for entry in verified['fonts']:
         licence=entry['licence_file']
         add(doc+'craft-fonts/'+licence,(font_root/licence).read_bytes())
+if app == 'cadcraft':
+    dep=next((root/'.build/cargo/registry/src').glob('*/acadrust-0.6.4'))
+    add(doc+'acadrust-MPL-2.0.txt',(dep/'LICENSE').read_bytes())
+    add(doc+'acadrust-SOURCE.txt',b'Unmodified acadrust 0.6.4, Mozilla Public License 2.0.\nCorresponding source: https://crates.io/api/v1/crates/acadrust/0.6.4/download\nRepository: https://github.com/hakanaktt/acadrust\nCrate archive SHA256: 94862189cab6e282ed0433a801a216cd1a712953813284a48fa81c67223e38f6\n')
 add(doc+'build.json', (json.dumps(metadata, indent=2)+'\n').encode())
 depends = ('zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, '
            'libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, '
            'libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa')
 if app == 'deckcraft':depends += ', libasound2 (>= 1.1.0), shared-mime-info, xscreensaver'
-if app in ('vectorcraft','designcraft','figcraft'):depends += ', shared-mime-info'
+if app in ('vectorcraft','designcraft','figcraft','cadcraft'):depends += ', shared-mime-info'
 control = f'''Package: {package}
 Version: {version}
 Architecture: i386
@@ -201,14 +209,14 @@ def archive(entries, directories=False):
             info.uname = info.gname = 'root'
             info.mtime = 1792281600
             output.addfile(info, io.BytesIO(data))
-    if directories and app in ('vectorcraft','designcraft','figcraft'):
+    if directories and app in ('vectorcraft','designcraft','figcraft','cadcraft'):
         # Xenial dpkg supports XZ; preset 6 keeps decode memory modest on the 2 GB VAIO.
         return lzma.compress(buffer.getvalue(), format=lzma.FORMAT_XZ, preset=6)
     return gzip.compress(buffer.getvalue(), compresslevel=6, mtime=0)
 
 parts = [('debian-binary', b'2.0\n'),
          ('control.tar.gz', archive({'control': (control, 0o644), 'md5sums': (md5, 0o644)})),
-         ('data.tar.xz' if app in ('vectorcraft','designcraft','figcraft') else 'data.tar.gz', archive(files, True))]
+         ('data.tar.xz' if app in ('vectorcraft','designcraft','figcraft','cadcraft') else 'data.tar.gz', archive(files, True))]
 destination = root/'dist'/(package+'_'+version+'_i386.deb')
 with destination.open('wb') as out:
     out.write(b'!<arch>\n')

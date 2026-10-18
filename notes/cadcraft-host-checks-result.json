@@ -1,0 +1,27 @@
+{
+  "host": "macOS arm64",
+  "source_revision": "0cc66ad3066e71f2c3d4cacb7de905e79ba1c95b",
+  "test_groups": 297,
+  "tests_passed": 2015,
+  "tests_failed": 2,
+  "tests_ignored": 0,
+  "full_ci_passed": false,
+  "functional_failures": [
+    "MCP closed-port startup check in parallel host run",
+    "GPU viewport stencil: no wgpu adapter available"
+  ],
+  "separate_passes": [
+    "asset attribution",
+    "layering",
+    "owned-file formatting",
+    "save-name regression",
+    "i386 GUI Clippy -D warnings with nonminimal_bool and collapsible_match style exceptions",
+    "real VAIO headless, GUI, native Save As and recovery",
+    "actual VAIO closed-port startup rejection"
+  ],
+  "isolated_mcp_rerun": {
+    "passed": 4,
+    "failed": 0,
+    "test_threads": 1
+  }
+}

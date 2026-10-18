@@ -56,6 +56,8 @@ on the stronger build host; the VAIO is used for runtime checks.
 `probes/build_public_apt.py PACKAGE --tag RELEASE_TAG --output STAGING` signs
 metadata using a private `.build/apt-signing` GPG home (mode 0700). That directory
 is ignored and must never be published. Keep a secure backup outside the public
-repository. Packages are immutable GitHub Release assets; only small signed
-indexes and public source recipes are stored in Git history. No personal laptop
+repository. Packages and signed indexes are served together by Pages because Xenial APT
+1.2 does not support absolute package URLs in indexes. Releases retain binary
+and source backups. The Pages pool retains package files referenced by the
+current index; archive size must remain within GitHub Pages limits. No personal laptop
 logs, documents, SSH configuration or private keys are published.

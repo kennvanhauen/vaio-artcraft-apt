@@ -9,7 +9,7 @@ Depends: libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0
 Description: WordCraft preview adapted for the Sony VAIO P and Ubuntu Xenial
  Experimental native 32-bit build with a software-rendering profile and
  a private compatible XCB library. Package-managed application files only.
-Filename: https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/wordcraft-0.8.0-vaio3/wordcraft-vaio_0.8.0.vaio3_i386.deb
+Filename: pool/main/wordcraft-vaio_0.8.0~vaio3_i386.deb
 Size: 43748424
 MD5sum: 855bbde052327ef37e85be40570583f4
 SHA256: 2ae70287f23e6c4045225f8e9ba24e3e8175303273a09b74366a3d1a72db5722

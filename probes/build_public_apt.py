@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stage public APT metadata; packages are immutable GitHub Release assets.
+"""Stage public APT metadata and packages compatible with Xenial APT 1.2.
 
 The signing home is local, ignored, mode 0700 and never copied to the output.
 No signing credential is uploaded to GitHub. Re-run for each package release.
@@ -13,6 +13,7 @@ import io
 from pathlib import Path
 import subprocess
 import tarfile
+import shutil
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('package', type=Path)
@@ -41,8 +42,9 @@ if not control or '\nArchitecture: i386\n' not in '\n'+control:
 repo = args.output.resolve()
 binary = repo / 'dists/xenial/main/binary-i386'
 binary.mkdir(parents=True, exist_ok=True)
-url = ('https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/'
-       + args.tag + '/' + args.package.name.replace('~', '.'))
+url = 'pool/main/'+args.package.name
+(repo/'pool/main').mkdir(parents=True, exist_ok=True)
+shutil.copy2(args.package, repo/url)
 index = (control.rstrip()+'\nFilename: '+url+'\nSize: '+str(len(content))
          +'\nMD5sum: '+hashlib.md5(content).hexdigest()
          +'\nSHA256: '+hashlib.sha256(content).hexdigest()+'\n\n')

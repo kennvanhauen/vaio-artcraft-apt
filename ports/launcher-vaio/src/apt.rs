@@ -13,6 +13,7 @@ pub(crate) const APPS: &[ManagedApp] = &[
     ManagedApp{id:"wordcraft",name:"WordCraft",package:"wordcraft-vaio",binary:"/usr/bin/wordcraft-vaio"},
     ManagedApp{id:"gridcraft",name:"GridCraft",package:"gridcraft-vaio",binary:"/usr/bin/gridcraft-vaio"},
     ManagedApp{id:"pdfcraft",name:"PdfCraft",package:"pdfcraft-vaio",binary:"/usr/bin/pdfcraft-vaio"},
+    ManagedApp{id:"deckcraft",name:"DeckCraft",package:"deckcraft-vaio",binary:"/usr/bin/deckcraft-vaio"},
 ];
 fn managed(id:&str)->Option<&'static ManagedApp>{APPS.iter().find(|app|app.id==id)}
 const APP: &str = "wordcraft";

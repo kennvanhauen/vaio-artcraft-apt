@@ -93,7 +93,7 @@ fn main() -> eframe::Result {
     let viewport = egui::ViewportBuilder::default()
         .with_app_id("vaio-app-launcher")
         .with_icon(egui::IconData { rgba: pixels, width: 64, height: 64 })
-        .with_inner_size([1100.0, 650.0]);
+        .with_inner_size([1400.0, 650.0]);
     eframe::run_native(
         "VAIO App Launcher",
         eframe::NativeOptions { renderer: eframe::Renderer::Glow, viewport, persist_window: true, ..Default::default() },
@@ -102,7 +102,7 @@ fn main() -> eframe::Result {
             settings.close_to_tray = false;
             settings.preferred_kinds = vec![PackageKind::Deb];
             let mut launcher = LauncherUi::new(&cc.egui_ctx, Box::new(apt::AptBackend::new(cc.egui_ctx.clone())), settings);
-            launcher.retain_apps(&["wordcraft", "gridcraft", "pdfcraft"]);
+            launcher.retain_apps(&["wordcraft", "gridcraft", "pdfcraft", "deckcraft"]);
             Ok(Box::new(Shell { launcher, host: Desktop::default(), smoke, start: Instant::now(), shot_requested: false }))
         }),
     )

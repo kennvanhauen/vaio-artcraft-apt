@@ -1,0 +1,267 @@
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -1315,6 +1315,7 @@
+  "egui-wgpu",
+  "egui-winit",
+  "egui_glow",
++ "glow",
+  "glutin",
+  "glutin-winit",
+  "image",
+--- a/apps/deckcraft/Cargo.toml
++++ b/apps/deckcraft/Cargo.toml
+@@ -31,3 +31,6 @@
+ 
+ [target.'cfg(all(unix, not(target_os = "macos")))'.dependencies]
+ winit = { version = "0.30", default-features = false, features = ["x11"] }
++
++[target.'cfg(all(target_os = "linux", target_arch = "x86"))'.dependencies]
++eframe = { workspace = true, features = ["glow"] }
+--- a/apps/deckcraft/src/main.rs
++++ b/apps/deckcraft/src/main.rs
+@@ -23,23 +23,40 @@
+ mod logging;
+ #[cfg(not(target_arch = "wasm32"))]
+ mod pasteboard;
++mod save_names;
++#[cfg(all(target_os = "linux", target_arch = "x86"))]
++mod screensaver;
+ 
+ use deckcraft_engine::Session;
+ use deckcraft_ui_egui::{Services, SlideApp};
+ 
+-struct App(SlideApp);
++struct App(SlideApp, #[cfg(all(target_os = "linux", target_arch = "x86"))] screensaver::Inhibitor);
++
++impl App {
++    fn new(app: SlideApp) -> Self {
++        Self(
++            app,
++            #[cfg(all(target_os = "linux", target_arch = "x86"))]
++            screensaver::Inhibitor::default(),
++        )
++    }
++}
+ 
+ impl eframe::App for App {
+     fn logic(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+         self.0.logic(ctx);
++        #[cfg(all(target_os = "linux", target_arch = "x86"))]
++        self.1.update(self.0.show.is_some());
+     }
+     fn raw_input_hook(&mut self, _ctx: &egui::Context, raw: &mut egui::RawInput) {
+         self.0.raw_input_hook(raw);
+     }
+     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+         self.0.ui(ui);
+-    }
+-    fn on_exit(&mut self) {
++        #[cfg(all(target_os = "linux", target_arch = "x86"))]
++        self.1.update(self.0.show.is_some());
++    }
++    fn on_exit(&mut self, #[cfg(all(target_os = "linux", target_arch = "x86"))] _gl: Option<&eframe::glow::Context>) {
+         save_prefs(&self.0);
+         // macOS (#279): end the process here, before eframe tears the window down. AccessKit's
+         // macOS adapter subclasses the window's content view and restores its class on teardown;
+@@ -111,7 +128,23 @@
+             };
+             d.pick_file().map(|p| p.to_string_lossy().to_string())
+         })),
+-        pick_save: Some(Box::new(|name: &str| rfd::FileDialog::new().set_file_name(name).save_file().map(|p| p.to_string_lossy().to_string()))),
++        pick_save: Some(Box::new(|name: &str| {
++            let picked = rfd::FileDialog::new().set_file_name(name).save_file()?;
++            let selected = save_names::selected_path(&picked, name);
++            // Zenity confirmed the typed path, before a missing extension was appended.
++            if selected != picked && selected.exists() {
++                let answer = rfd::MessageDialog::new()
++                    .set_title("Replace file?")
++                    .set_description(format!("{} already exists. Replace it?", selected.display()))
++                    .set_level(rfd::MessageLevel::Warning)
++                    .set_buttons(rfd::MessageButtons::YesNo)
++                    .show();
++                if answer != rfd::MessageDialogResult::Yes {
++                    return None;
++                }
++            }
++            selected.to_str().map(str::to_owned)
++        })),
+         read: Some(Box::new(|p: &str| std::fs::read(p).map_err(|e| e.to_string()))),
+         write: Some(Box::new(|p: &str, b: &[u8]| std::fs::write(p, b).map_err(|e| e.to_string()))),
+         clipboard_image: Some(Box::new(pasteboard::image_png)),
+@@ -209,6 +242,11 @@
+             .with_title_shown(false),
+         ..Default::default()
+     };
++    #[cfg(all(target_os = "linux", target_arch = "x86"))]
++    {
++        options.renderer = eframe::Renderer::Glow;
++        options.viewport = options.viewport.with_inner_size([1100.0, 650.0]);
++    }
+     options.viewport = options.viewport.with_app_id(APP_ID);
+     if let Some(icon) = app_icon() {
+         options.viewport = options.viewport.with_icon(icon);
+@@ -264,7 +302,7 @@
+             if show {
+                 app.start_show(0, false);
+             }
+-            Ok(Box::new(App(app)))
++            Ok(Box::new(App::new(app)))
+         }),
+     )
+ }
+@@ -278,7 +316,7 @@
+     #[test]
+     fn on_exit_ends_the_process_on_macos() {
+         if std::env::var_os("DECKCRAFT_TEST_ON_EXIT").is_some() {
+-            let mut app = App(SlideApp::new(Session::new(), Services::default()));
++            let mut app = App::new(SlideApp::new(Session::new(), Services::default()));
+             println!("calling on_exit");
+             eframe::App::on_exit(&mut app);
+             println!("on_exit returned");
+--- a/apps/deckcraft/src/save_names.rs
++++ b/apps/deckcraft/src/save_names.rs
+@@ -0,0 +1,24 @@
++//! Keep the chosen format when older Zenity returns a bare save filename.
++use std::path::{Path, PathBuf};
++pub fn selected_path(picked: &Path, suggested: &str) -> PathBuf {
++    let mut selected = picked.to_path_buf();
++    if selected.extension().is_none_or(|extension| extension.is_empty()) {
++        selected.set_extension(Path::new(suggested).extension().filter(|ext| !ext.is_empty()).unwrap_or(std::ffi::OsStr::new("deckcraft")));
++    }
++    selected
++}
++#[cfg(test)]
++mod tests {
++    use super::*;
++    #[test]
++    fn bare_and_trailing_dot_names_use_the_suggested_format() {
++        assert_eq!(selected_path(Path::new("/tmp/talk"), "draft.pptx"), Path::new("/tmp/talk.pptx"));
++        assert_eq!(selected_path(Path::new("/tmp/talk."), "draft.deckcraft"), Path::new("/tmp/talk.deckcraft"));
++        assert_eq!(selected_path(Path::new("/tmp/export"), "draft.pdf"), Path::new("/tmp/export.pdf"));
++    }
++    #[test]
++    fn explicit_extensions_and_existing_parent_names_are_preserved() {
++        assert_eq!(selected_path(Path::new("/tmp/archive.v1/talk.PPTX"), "draft.deckcraft"), Path::new("/tmp/archive.v1/talk.PPTX"));
++        assert_eq!(selected_path(Path::new("/tmp/archive.v1/talk"), "draft"), Path::new("/tmp/archive.v1/talk.deckcraft"));
++    }
++}
+--- a/apps/deckcraft/src/screensaver.rs
++++ b/apps/deckcraft/src/screensaver.rs
+@@ -0,0 +1,49 @@
++//! Keep this VAIO's existing XScreenSaver awake only while presenting.
++//! Xenial xdg-screensaver selects the installed xautolock backend instead.
++//! The worker belongs to this process; neither settings nor a daemon are changed.
++use std::sync::mpsc::{self, RecvTimeoutError, Sender};
++use std::time::Duration;
++
++#[derive(Default)]
++pub struct Inhibitor {
++    showing: bool,
++    worker: Option<Sender<bool>>,
++}
++
++impl Inhibitor {
++    pub fn update(&mut self, showing: bool) {
++        if showing == self.showing {
++            return;
++        }
++        if self.worker.is_none() {
++            let (sender, receiver) = mpsc::channel::<bool>();
++            std::thread::spawn(move || {
++                let mut active = false;
++                loop {
++                    match receiver.recv_timeout(Duration::from_secs(45)) {
++                        Ok(showing) => active = showing,
++                        Err(RecvTimeoutError::Timeout) => {}
++                        Err(RecvTimeoutError::Disconnected) => break,
++                    }
++                    if active {
++                        match std::process::Command::new("/usr/bin/xscreensaver-command")
++                            .arg("-deactivate")
++                            .stdin(std::process::Stdio::null())
++                            .stdout(std::process::Stdio::null())
++                            .stderr(std::process::Stdio::null())
++                            .status()
++                        {
++                            Ok(status) if status.success() => {}
++                            result => log::warn!("presentation screensaver keepalive: {result:?}"),
++                        }
++                    }
++                }
++            });
++            self.worker = Some(sender);
++        }
++        if let Some(sender) = &self.worker {
++            let _ = sender.send(showing);
++        }
++        self.showing = showing;
++    }
++}
+--- a/crates/ui-egui/src/canvas.rs
++++ b/crates/ui-egui/src/canvas.rs
+@@ -904,8 +904,11 @@
+             painter.line_segment([xf.to_screen(a), xf.to_screen(b)], Stroke::new(if thick { 2.0 } else { 1.0 }, t.caret));
+         }
+         if !ts.is_range() {
+-            let blink = (ui.input(|i| i.time) * 1.6).fract() < 0.6;
+-            ui.ctx().request_repaint_after(std::time::Duration::from_millis(300));
++            let steady = std::env::var_os("DECKCRAFT_STATIC_CARET").is_some_and(|value| value != "0");
++            let blink = steady || (ui.input(|i| i.time) * 1.6).fract() < 0.6;
++            if !steady {
++                ui.ctx().request_repaint_after(std::time::Duration::from_millis(300));
++            }
+             // An empty placeholder shows the caret where typing begins too.
+             if blink && let Some((top, bot)) = deckcraft_engine::cmd::text::caret_line(st, ts) {
+                 // In the colour of the text being typed: a black caret is lost on a dark slide.
+--- a/crates/ui-egui/src/lib.rs
++++ b/crates/ui-egui/src/lib.rs
+@@ -296,7 +296,7 @@
+             zoom: None,
+             sorter_zoom: 1.0,
+             recent: vec![],
+-            presenter_view: true,
++            presenter_view: !cfg!(all(target_os = "linux", target_arch = "x86")),
+             ui_scale: 1.0,
+             format_tab: "fill".into(),
+             smartart_row: 0,
+@@ -1581,12 +1581,19 @@
+             }
+         }
+         // AutoRecover: unsaved presentations are written to the recovery folder periodically.
+-        if self.session.recovery_dir.is_some() && now - self.last_recovery > (self.session.prefs.recovery_minutes * 60.0).max(10.0) {
+-            self.last_recovery = now;
+-            if self.session.documents().iter().any(|d| d.is_dirty())
+-                && let Err(e) = self.session.execute("file.recovery.save", &json!({}))
+-            {
+-                self.set_status(format!("Couldn't save AutoRecover information: {e}"));
++        if self.session.recovery_dir.is_some() {
++            let configured = self.session.prefs.recovery_minutes * 60.0;
++            let interval = if configured.is_finite() { configured.clamp(10.0, 86_400.0) } else { 600.0 };
++            let dirty = self.session.documents().iter().any(|d| d.is_dirty());
++            if now - self.last_recovery > interval {
++                self.last_recovery = now;
++                if dirty && let Err(e) = self.session.execute("file.recovery.save", &json!({})) {
++                    self.set_status(format!("Couldn't save AutoRecover information: {e}"));
++                }
++            }
++            // A steady caret need not paint repeatedly, but unsaved work still needs its timer.
++            if dirty {
++                ctx.request_repaint_after(std::time::Duration::from_secs_f64((interval - (now - self.last_recovery)).max(0.01)));
+             }
+         }
+         // On the web, dropped files can only be read asynchronously: the host reads them and
+--- a/crates/ui-egui/src/show.rs
++++ b/crates/ui-egui/src/show.rs
+@@ -921,7 +921,11 @@
+     } else if now - show.last_move > 2.5 && !show.reading {
+         // Idle first: a still pointer hides also over a clickable shape, such as a playing clip.
+         ctx.set_cursor_icon(egui::CursorIcon::None);
+-        ctx.request_repaint_after(std::time::Duration::from_millis(500));
++        // A still, manually advanced slide has no visual clock to update. Input wakes it.
++        // Keep the existing ticker for timed shows and automatic animation previews.
++        if show.autoplay || show.preview_only || show.state.advance_after(&doc).is_some() {
++            ctx.request_repaint_after(std::time::Duration::from_millis(500));
++        }
+     } else if pointing {
+         ctx.set_cursor_icon(egui::CursorIcon::PointingHand);
+         ctx.request_repaint_after(std::time::Duration::from_millis(500));

@@ -1,0 +1,39 @@
+DeckCraft VAIO preview 0.8.0
+
+Open DeckCraft (VAIO preview) from Office or VAIO App Launcher. Ctrl+O opens,
+Ctrl+S saves, and Save As chooses another filename. The native .deckcraft format
+keeps the application's model; PPTX exchanges presentations with other tools.
+Use the ribbon for slides/layouts, text, shapes, pictures, tables, charts, notes,
+review and transitions. Start a slide show with Present; Escape returns to editing.
+Presenter View is off initially on this single-screen VAIO; enable it in the
+Slide Show controls when needed. Static slides wait for input instead of redrawing
+continuously; timed shows and active animations keep their playback scheduling.
+While presenting, a worker in DeckCraft sends XScreenSaver an awake reminder every
+45 seconds. It stops when the show ends or the process exits. The existing
+five-minute screensaver setting is retained and applies normally while editing.
+PDF export can produce slides, notes pages or handouts. deckcraft-vaio-cli provides
+headless commands; no control or MCP server is enabled by the desktop entry.
+
+The VAIO build selects OpenGL/Glow, fits the screen and defaults to a steady caret.
+This removes the repeated idle repaint cost observed with a blinking text caret.
+Set DECKCRAFT_STATIC_CARET=0 when launching to restore blinking, with higher CPU use.
+Native Save As fills the suggested extension when none is typed, and asks before
+replacing a different, existing normalized destination. Explicit extensions stay.
+
+This package retains upstream media codecs and audio support, but audio output
+is OFF by default because this VAIO previously stalled its HDA audio playback.
+DECKCRAFT_ENABLE_AUDIO=1 deckcraft-vaio opts in for that launch; audio output has
+not been validated on this machine. Silent slides and transitions work normally.
+
+The pinned craft-fonts input supplies 48 allowed font faces with their original
+OFL notices, including Latin presentation fonts, Japanese and Arabic fallback.
+Upstream excludes Adobe-authored families. No proprietary Office fonts are shipped.
+
+Small synthetic decks were checked for editing, PPTX save/reopen, pictures,
+charts, notes, PDF/outline export, rendering and full-screen silent presentation.
+This is upstream alpha software. Complex external PPTX fidelity, heavy animations,
+embedded video, actual audio output, physical printing and second-monitor presenter
+placement remain unverified. Keep an original copy when exchanging complex decks.
+
+Updates use the signed APT source and the existing Check & Install Updates tool.
+Remove with sudo apt-get remove deckcraft-vaio; user files/settings are retained.

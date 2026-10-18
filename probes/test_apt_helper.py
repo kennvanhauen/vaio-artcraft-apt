@@ -21,12 +21,14 @@ exit 0
         return p.returncode,log.read_text().splitlines()
     invalid=[[],['install'],['upgrade','wordcraft-vaio'],['install','bash'],
              ['install','--allow-unauthenticated'],['install','wordcraft-vaio; true'],
-             ['remove','wordcraft-vaio','gridcraft-vaio','pdfcraft-vaio','wordcraft-vaio']]
+             ['remove','wordcraft-vaio','gridcraft-vaio','pdfcraft-vaio','deckcraft-vaio','wordcraft-vaio']]
     for args in invalid:
         status,calls=run(args);assert status!=0 and calls==[],(args,status,calls)
     status,calls=run(['install','wordcraft-vaio'],TEST_UID='1000');assert status!=0 and calls==[]
     status,calls=run(['install','wordcraft-vaio','gridcraft-vaio','pdfcraft-vaio'])
     assert status==0 and len(calls)==2 and calls[-1]=='--no-remove --no-install-recommends install wordcraft-vaio gridcraft-vaio pdfcraft-vaio',calls
+    status,calls=run(['install','wordcraft-vaio','gridcraft-vaio','pdfcraft-vaio','deckcraft-vaio'])
+    assert status==0 and len(calls)==2 and calls[-1].endswith('install wordcraft-vaio gridcraft-vaio pdfcraft-vaio deckcraft-vaio'),calls
     status,calls=run(['remove','gridcraft-vaio','pdfcraft-vaio'])
     assert status==0 and calls==['remove gridcraft-vaio pdfcraft-vaio'],calls
     status,calls=run(['install','pdfcraft-vaio'],TEST_UPDATE_STATUS='42')

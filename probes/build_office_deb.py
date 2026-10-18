@@ -14,6 +14,9 @@ specs = {
     'gridcraft': ('0.8.0~vaio1', 'c30fa3f1cf324603f3bfc0171689b1d4083b40e5',
                   'GridCraft', 'Office;Spreadsheet;',
                   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;text/csv;'),
+    'deckcraft': ('0.8.0~vaio1', 'cb78440a1618e6a2c1df55dd7bff74719685518c',
+                  'DeckCraft', 'Office;Presentation;',
+                  'application/vnd.openxmlformats-officedocument.presentationml.presentation;application/vnd.openxmlformats-officedocument.presentationml.slideshow;application/vnd.openxmlformats-officedocument.presentationml.template;application/x-deckcraft;'),
     'pdfcraft': ('0.9.0~vaio1', '98cbd38a8e0f5afe685258aa0fcab0f0012f7a8b',
                  'PdfCraft', 'Office;Viewer;', 'application/pdf;'),
 }
@@ -38,6 +41,9 @@ for name in (app, app+'-cli'):
     wrapper = '#!/bin/sh\n'
     if app == 'pdfcraft':
         wrapper += 'export PDFCRAFT_RENDERER=gl\n'
+    if app == 'deckcraft':
+        wrapper += 'export DECKCRAFT_STATIC_CARET="${DECKCRAFT_STATIC_CARET:-1}"\n'
+        wrapper += 'if test \"${DECKCRAFT_ENABLE_AUDIO:-0}\" != 1; then export DECKCRAFT_NO_AUDIO=1; else unset DECKCRAFT_NO_AUDIO; fi\n'
     wrapper += 'export LD_LIBRARY_PATH="/usr/lib/'+package+'/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"\n'
     wrapper += 'exec /usr/lib/'+package+'/bin/'+name+' "$@"\n'
     command = package if name == app else package+'-cli'
@@ -55,7 +61,20 @@ Categories={categories}
 MimeType={mime}
 '''
 add('usr/share/applications/'+package+'.desktop', desktop.encode())
-add('usr/share/icons/hicolor/scalable/apps/'+package+'.svg', (source/'assets/app-icon'/(app+'.svg')).read_bytes())
+if app == 'deckcraft':
+    add('usr/share/mime/packages/deckcraft-vaio.xml', b'''<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-deckcraft">
+    <comment>DeckCraft presentation</comment>
+    <glob pattern="*.deckcraft"/>
+  </mime-type>
+</mime-info>
+''')
+icon=source/'assets/app-icon'/(app+'.svg')
+if icon.exists():
+    add('usr/share/icons/hicolor/scalable/apps/'+package+'.svg', icon.read_bytes())
+else:
+    add('usr/share/icons/hicolor/256x256/apps/'+package+'.png', (source/'assets/app-icon/hicolor/256x256/apps'/('ai.storyteller.'+app+'.png')).read_bytes())
 doc = 'usr/share/doc/'+package+'/'
 for name in ('LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'ATTRIBUTION.md', 'ATTRIBUTION.toml'):
     if (source/name).exists():
@@ -82,7 +101,7 @@ https://github.com/storytold/{app} at {revision}.
 Downstream code is licensed MIT OR Apache-2.0, like the original project.
 Original ArtCraft trademark graphics are not used in this modified release.
 The application icon is upstream contributor-original MIT OR Apache-2.0 artwork;
-see assets/app-icon/LICENSE.txt. No optional craft-fonts input is embedded.
+see upstream ATTRIBUTION.md. See build.json for optional font input details.
 A private libxcb 1.17.0 is bundled under its original permissive notices.
 '''.encode())
 metadata = dict(package_version=version, source_revision=revision, rust='1.95.0',
@@ -90,10 +109,26 @@ metadata = dict(package_version=version, source_revision=revision, rust='1.95.0'
                 glibc_target='2.23', renderer='Glow', private_libxcb='1.17.0',
                 binary_sha256=hashes, port_patch_sha256=hashlib.sha256(
                     (root/'ports'/(app+'-xenial.patch')).read_bytes()).hexdigest())
+if app == 'deckcraft':
+    for path in (source/'licenses').rglob('*.txt'):
+        add(doc+str(path.relative_to(source)),path.read_bytes())
+    registry=root/'.build/cargo/registry/src'
+    fonts_source=next(registry.glob('*/epaint_default_fonts-0.36.2/fonts'))
+    for path in fonts_source.glob('*.txt'):
+        add(doc+'egui-font-notices/'+path.name,path.read_bytes())
+    verified=json.loads((root/'.build/deckcraft-fonts-verified.json').read_text())
+    metadata['craft_fonts_revision']=verified['revision']
+    metadata['embedded_font_faces']=len(verified['fonts'])
+    add(doc+'craft-fonts/ATTRIBUTION.md', (root/'upstream/craft-fonts/ATTRIBUTION.md').read_bytes())
+    add(doc+'craft-fonts/verified-fonts.json', (json.dumps(verified,indent=2)+'\n').encode())
+    for entry in verified['fonts']:
+        licence=entry['licence_file']
+        add(doc+'craft-fonts/'+licence,(root/'upstream/craft-fonts'/licence).read_bytes())
 add(doc+'build.json', (json.dumps(metadata, indent=2)+'\n').encode())
 depends = ('zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, '
            'libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, '
            'libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa')
+if app == 'deckcraft':depends += ', libasound2 (>= 1.1.0), shared-mime-info, xscreensaver'
 control = f'''Package: {package}
 Version: {version}
 Architecture: i386

@@ -1,7 +1,7 @@
 # VAIO application ports and signed APT archive
 
-Unofficial native ports of WordCraft, GridCraft and PdfCraft for Ubuntu 16.04
-Xenial i386 on the Sony VAIO P. The VAIO App Launcher opens and manages all three
+Unofficial native ports of WordCraft, GridCraft, PdfCraft and DeckCraft for Ubuntu 16.04
+Xenial i386 on the Sony VAIO P. The VAIO App Launcher opens and manages all four
 through APT. These are independent hardware adaptations of upstream alpha apps.
 
 | Package | Version | Ordinary and advanced workflows checked on the VAIO |
@@ -9,9 +9,10 @@ through APT. These are independent hardware adaptations of upstream alpha apps.
 | wordcraft-vaio | 0.8.0~vaio5 | Four-page editing, formatting, find/replace, tables, pictures, headers/footers, six exports, native dialogs, tracked changes, comments, footnotes, equations, contents, columns, mail merge, proofing and unsaved-draft recovery |
 | gridcraft-vaio | 0.8.0~vaio1 | Formulas, GUI edits, recalculation, charts, XLSX save/reopen, CSV/PDF export, native Save As, sorting/filtering, validation, conditional formatting, frozen panes and PivotTables |
 | pdfcraft-vaio | 0.9.0~vaio1 | Viewing/rendering, text extraction, extract/combine/rotate, comments, forms, applied redaction, AES-256 round trip and one-page OCR |
-| artcraft-launcher-vaio | 0.5.1~vaio4 | Three-app APT backend, signed metadata refresh, offline reporting, saved settings and fixed package-operation allowlist |
+| deckcraft-vaio | 0.8.0~vaio1 | Three-slide editing, shapes/picture/chart/notes, PPTX round trip, PDF/outline export, silent fullscreen presentation, native Save As and unsaved-draft recovery |
+| artcraft-launcher-vaio | 0.5.1~vaio5 | Four-app APT backend, signed metadata refresh, offline reporting, saved settings and fixed package-operation allowlist |
 
-All three application engines retain their upstream features. This is a practical
+All four application engines retain their upstream features. This is a practical
 port, not a claim that every feature or external file works. Complex documents,
 large workbooks/scans, physical printing, real signing identities, complex scripts
 and external integrations need further validation. PdfCraft's optional Japanese
@@ -34,7 +35,7 @@ The target VAIO uses `/etc/apt/preferences.d/vaio-artcraft` to allow only these
 packages from this archive:
 
 ```
-Package: wordcraft-vaio gridcraft-vaio pdfcraft-vaio artcraft-launcher-vaio
+Package: wordcraft-vaio gridcraft-vaio pdfcraft-vaio deckcraft-vaio artcraft-launcher-vaio
 Pin: origin "kennvanhauen.github.io"
 Pin-Priority: 500
 
@@ -43,7 +44,7 @@ Pin: origin "kennvanhauen.github.io"
 Pin-Priority: -1
 ```
 
-Refresh APT, then install the four package names above. The three apps appear in
+Refresh APT, then install the five package names above. The four apps appear in
 Office; VAIO App Launcher appears in Utilities/System. Future updates use APT,
 including the VAIO's existing **Check & Install Updates** frontend. Its wider
 system-maintenance operation was not run during targeted package tests.
@@ -76,11 +77,12 @@ Pinned upstream revisions:
 - WordCraft: `d6f20f93fd22deb441b2216ecfd65acb15ea8b64`
 - GridCraft: `c30fa3f1cf324603f3bfc0171689b1d4083b40e5`
 - PdfCraft: `98cbd38a8e0f5afe685258aa0fcab0f0012f7a8b`
+- DeckCraft: `cb78440a1618e6a2c1df55dd7bff74719685518c`
 - Launcher: `9cef5d2a0f207da50d31547a726057ea40f7e5b4`
 
 Original sources are at https://github.com/storytold/wordcraft,
 https://github.com/storytold/gridcraft, https://github.com/storytold/pdfcraft and
-https://github.com/storytold/craft-launcher. Pinned source archives accompany
+https://github.com/storytold/craft-launcher and https://github.com/storytold/deckcraft. Pinned source archives accompany
 Releases. Owned downstream patches, lockfiles, helper sources and recipes are
 in `ports/` and `probes/`. App/license/font/icon notices are included in packages.
 Original ArtCraft trademark graphics are removed from modified UI releases;
@@ -106,3 +108,31 @@ Xenial APT 1.2 cannot use absolute package URLs in its index. Releases retain ba
 The private `.build/apt-signing` home is never published. Back it up securely;
 renew the key before October 2028. This static archive has no short Valid-Until;
 it is signed again whenever packages change.
+
+
+## DeckCraft build and VAIO profile
+
+DeckCraft uses the same Atom/glibc 2.23 toolchain and Glow, with a steady text
+caret. A controlled same-deck comparison measured about 148% of one logical CPU
+with blinking and 0% with a steady caret. AutoRecover has an explicit dirty-work
+timer so idle repaint suppression does not prevent snapshots. Native Save As
+normalizes missing extensions and confirms existing corrected destinations.
+
+Fetch craft-fonts commit `43913056ce82a3fdad0ef69f6b88d1dc922a8104` into
+`upstream/craft-fonts`, then run `verify-deckcraft-fonts.py`. The upstream font
+policy excludes Adobe-authored families; 48 allowed faces are embedded with
+licence/attribution notices. Run `prepare-deckcraft-sysroot.py` for hash-pinned
+Xenial ALSA headers on the build host, and copy the VAIO's actual
+`/usr/lib/i386-linux-gnu/libasound.so.2.0.0` into that sysroot. No target development
+package is installed. Then `prepare-deckcraft-port.py`,
+`build-deckcraft.sh --locked`, and `build_office_deb.py deckcraft` produce the port.
+The native .deckcraft MIME definition and Office menu entry belong to dpkg.
+
+DeckCraft's audio/media code is retained, but the wrapper defaults audio output
+off because this VAIO previously stalled HDA playback. Set
+`DECKCRAFT_ENABLE_AUDIO=1` for an explicit per-launch opt-in. Output audio and
+embedded-video performance are unverified. Silent manual and timed slideshow operation was tested. Presenter View defaults
+off for this single-screen VAIO but remains available. Static slides and the
+editor measured 0% CPU in short settled samples, at about 108 MiB RSS. A process-scoped
+XScreenSaver keepalive runs only during a presentation.
+This is not a promise of smooth heavy animation or complete PowerPoint fidelity.

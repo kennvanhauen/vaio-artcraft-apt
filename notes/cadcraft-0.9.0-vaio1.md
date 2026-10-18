@@ -103,3 +103,12 @@ failures: an ephemeral closed-port startup assertion and a GPU viewport test
 without a wgpu adapter. Native CPU/Glow drawing and A4 paper-space output passed
 on the VAIO. The isolated serial host MCP rerun passed all four tests; no full CI/WASM
 pass is claimed. Native assets/layers and scoped Clippy checks passed separately.
+
+
+## Publication
+
+Signed binary/recipe commit: 32c80f2563b153a4cff89a4291409d4f90187f25.
+GitHub Pages built successfully; live InRelease signature and exact InRelease/Packages bytes matched local
+output before the native administrator prompt was shown. Releases retain CADCraft 0.9.0 VAIO revision 1
+and launcher 0.5.1 revision 9, plus the pinned source-recipe archive. The original
+upstream checkouts remain unmodified. Private diagnostics/keys are excluded.

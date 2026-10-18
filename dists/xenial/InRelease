@@ -8,26 +8,26 @@ Codename: xenial
 Architectures: i386
 Components: main
 Description: Unofficial ArtCraft previews for Ubuntu Xenial i386
-Date: Sun, 18 Oct 2026 15:49:49 GMT
+Date: Sun, 18 Oct 2026 15:51:31 GMT
 MD5Sum:
- 1177d970f5cb80190920dc57f8c1319c 771 main/binary-i386/Packages
- 0fe09c72b12080fedbe8a96f7c67551b 514 main/binary-i386/Packages.gz
+ de388188bc9cdf0c30191627e63ef4f3 1572 main/binary-i386/Packages
+ c50ba3d790709c592d0981ccdd2675b8 753 main/binary-i386/Packages.gz
  52608ca0ec5dea6c5b78c2850ab09913 51 main/binary-i386/Release
 SHA256:
- b256fe3d2fe8a259b5bdf7321353cab6ebf54805f75be0a76f19462231972b1a 771 main/binary-i386/Packages
- 4b99ba08b85dcbb0092bf2a601016d277a436df188a5d8e524339fc474a03ff3 514 main/binary-i386/Packages.gz
+ b0dd9a61b3ec3143ee50dc1606ea2e57e182921a3fc402cd279f9c1e04c74e58 1572 main/binary-i386/Packages
+ 30c8e2cff1ea4f6f30aa832fd0a8efe03e3812ffabf58e9b38c2e84d7f746645 753 main/binary-i386/Packages.gz
  8b5b8e1eea0817645ced68a21422690999cdb19ab64c6127115c99570dc1d93b 51 main/binary-i386/Release
 -----BEGIN PGP SIGNATURE-----
 
-iQGzBAEBCAAdFiEERBYWxlqrabmW42e9oH8n7A8ST4cFAmrU6p0ACgkQoH8n7A8S
-T4ev+gv8C1t+qL8qt5kFvOo6safuFVdU+6iaveoYY8LmsNnZ/E8RhQsZ9Q5eVe1l
-FoS7AwJMLjsiifRaBDbJmYgJ5DJB0wehOum4P4yDY2TNcu543FrSZOsZ3sed4Ums
-V+BhNEEVzt4aMd+HsRuI75qjR/ME5Q5D2P/XaHX15tlgHssLbgP4lQvtQyFPeZj/
-bYYJmo6pNDPZJaaqDS1AbCypu0urM285BtjYbHgzZbw5WqyxJrKXH64nAc+JC/+I
-pnlnd8hig4ZPT8CJgqWlNZ4+ltLBgGTseaN1wh4cygmJ6IkU+hgmln278f8kgY3D
-x8tM+csV9x5BvZS4nHXn4uvS47xO8bVcCIZFs3fI/EO4s5UsrW5qOCDlm85Vs2uK
-A05muskLQRFX5CxFwmqPzSXY6kkjoOpguFujVeSRKw0j3icDHvVciq5apoYo8iOy
-7z3KNrTxgW/bXE93TIzI9xxDBTVKT/gbiM3mI5ILseRptq4Jd82/jOP6NWRsLE7R
-yH5rvedN
-=6UbG
+iQGzBAEBCAAdFiEERBYWxlqrabmW42e9oH8n7A8ST4cFAmrU6wMACgkQoH8n7A8S
+T4eZ9wv/UQx3ZMlxOQ7fAJHd8sgsX4B22dJ/phcqecbgYrLFk9K47kilJYBCAXHR
+q0B0QeryBkSw+FMXH9XfJIiLYePxo9HgTSuHpuuCcAUu35copeFjfUZ0bH0aaEhf
+anj4OUvUwNXtd7j0gKYgbGUGF6kdKC6+qyVceUw1Bks98A0qdCY/ofDv0yU7ditU
+bmkkh/7j7ea7CRZE81e0kXooZ9OZiVpkT8qJBAWcNtVxhC5KMVvi3leA9lO6PxiS
+RPp9/7EKFwOqDMOzM/CdZNjHE//hgHN4aQqC08T/VlTAhlZ+Ucu+Tw9l540+kvcp
+Z3ViQRR5utf0XHtAVpxmyumFj0ic7VJKwEEDII/+Llvzspt3m8fFgIXcjOLvAytf
+Q8FoloBKvkVew3KDu6CXLqMX4NngCpli8BtCdHAvXOKCWT5COAbZXhGcoqmtMQXC
+MdJSLk1QNDyTeaIk27MdB1fd2qUo1KSxNa5PiZZDamingzu2KDq1hZvgPANK/fF2
++jfWllO+
+=3AJB
 -----END PGP SIGNATURE-----

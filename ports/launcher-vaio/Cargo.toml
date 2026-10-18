@@ -1,0 +1,17 @@
+[package]
+name = "artcraft-launcher-vaio"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+artcraft-launcher-core.workspace = true
+artcraft-launcher-ui-egui.workspace = true
+eframe = { workspace = true, features = ["glow", "default_fonts", "x11", "persistence", "links"] }
+egui.workspace = true
+serde_json.workspace = true
+image = { version = "0.25", default-features = false, features = ["png"] }
+
+[lints]
+workspace = true

@@ -61,3 +61,26 @@ repository. Packages and signed indexes are served together by Pages because Xen
 and source backups. The Pages pool retains package files referenced by the
 current index; archive size must remain within GitHub Pages limits. No personal laptop
 logs, documents, SSH configuration or private keys are published.
+
+## VAIO App Launcher preview
+
+The modified launcher is called **VAIO App Launcher**, based on ArtCraft Launcher
+upstream revision `9cef5d2a0f207da50d31547a726057ea40f7e5b4`. Original ArtCraft
+trademark artwork is removed; a generic tile icon replaces it. The package name
+is `artcraft-launcher-vaio`, command `vaio-app-launcher`. It currently offers only
+the verified WordCraft preview. The original interface is retained, using Glow
+and reduced motion. Install, update and remove go through a root-owned APT helper
+with a visible administrator prompt and terminal confirmation. No user-owned or
+downloaded helper is executed as root. The launcher itself is APT-managed.
+
+Refresh reads the cached APT state. Use the system's existing **Check & Install
+Updates** frontend to refresh repositories. The launcher does not run a system
+upgrade silently. Settings are currently session-only; there is no tray or login
+autostart. Additional applications remain outside this verified preview.
+
+To build, obtain the pinned launcher checkout under `upstream/craft-launcher`,
+then run `probes/prepare-launcher-port.py`, `probes/build-launcher.sh --locked`
+and `python3 probes/build_launcher_deb.py`. It uses the same Atom/i386/glibc 2.23
+toolchain and private XCB as WordCraft. The separate launcher patch and checked
+workspace lockfile are retained under `ports/`. Font licenses, attribution and
+upstream notices are included in the package.

@@ -1,0 +1,31 @@
+#!/bin/sh
+# Root-owned, allowlisted APT operations. Never invokes a downloaded helper.
+set -eu
+if test "$(id -u)" != 0; then
+    echo 'Administrator authentication is required.'
+    exit 1
+fi
+case "${1-}:${2-}" in
+    install:wordcraft-vaio|remove:wordcraft-vaio) ;;
+    *) echo 'Unsupported package operation'; exit 1 ;;
+esac
+run_operation() {
+    if test "$1" = install; then
+        apt-get -o Dir::Etc::sourcelist=/etc/apt/sources.list.d/vaio-artcraft.list \
+            -o Dir::Etc::sourceparts=- -o Acquire::Languages=none update || return "$?"
+        apt-get --no-remove --no-install-recommends install wordcraft-vaio
+    else
+        apt-get remove wordcraft-vaio
+    fi
+}
+if run_operation "$1"; then
+    echo 'APT operation completed.'
+else
+    operation_status=$?
+    echo 'APT operation failed or was cancelled.'
+    printf 'Press Enter to close this window: '
+    read -r answer || true
+    exit "$operation_status"
+fi
+printf 'Press Enter to close this window: '
+read -r answer || true

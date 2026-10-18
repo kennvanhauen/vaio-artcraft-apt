@@ -84,3 +84,22 @@ and `python3 probes/build_launcher_deb.py`. It uses the same Atom/i386/glibc 2.2
 toolchain and private XCB as WordCraft. The separate launcher patch and checked
 workspace lockfile are retained under `ports/`. Font licenses, attribution and
 upstream notices are included in the package.
+
+## Publishing maintenance
+
+Keep the private `.build/apt-signing` directory on the build Mac, mode 0700; it
+is not part of this repository or GitHub Actions. Back it up securely to preserve
+the archive identity. Before October 2028, extend key expiry, publish the updated
+public key and update clients while the old certificate is still valid.
+
+For an update, build a new Debian version, retain its source revision/patch and
+checksums, test it on the VAIO, then regenerate this signed index and publish the
+package under `pool/main/`. APT 1.2 requires a relative Filename here; absolute
+GitHub Release URLs do not work. Publish the source/binary backup to Releases
+too. Keep the preceding package available for clients with a cached older index.
+GitHub Pages builds must finish before testing client downloads. Monitor Pages
+size as more apps/versions are added; this is currently a small two-package
+archive, not an unlimited binary store.
+
+The source recipes and VAIO icon additions use MIT OR Apache-2.0 like the upstream
+code. `ports/launcher-vaio/ATTRIBUTION.md` records the original generic tile icon.

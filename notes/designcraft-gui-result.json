@@ -1,0 +1,1102 @@
+{
+  "private_xcb": [
+    "/usr/lib/wordcraft-vaio/lib/libxcb.so.1"
+  ],
+  "passed": true,
+  "editing_idle": {
+    "cpu_percent_one_logical_cpu": 0.17,
+    "rss_kib": 130728
+  },
+  "typed": {
+    "title": "original.designcraft",
+    "path": "/tmp/vaio-designcraft-test/original.designcraft",
+    "dirty": true,
+    "tool": "type",
+    "pageCount": 3,
+    "selection": {
+      "items": [],
+      "text": {
+        "anchor": 24,
+        "focus": 24,
+        "story": 12
+      },
+      "content": false
+    },
+    "characterStyles": [
+      "[None]"
+    ],
+    "parents": [
+      {
+        "basedOn": null,
+        "id": 3,
+        "label": "A-Parent",
+        "items": 0
+      }
+    ],
+    "activeLayer": 1,
+    "settings": {
+      "intent": "print",
+      "facingPages": false,
+      "pageWidth": 420.0,
+      "pageHeight": 595.0
+    },
+    "canUndo": true,
+    "swatches": [
+      "[None]",
+      "[Registration]",
+      "[Paper]",
+      "[Black]",
+      "C=100 M=0 Y=0 K=0",
+      "C=0 M=100 Y=0 K=0",
+      "C=0 M=0 Y=100 K=0",
+      "C=0 M=100 Y=100 K=0",
+      "C=100 M=0 Y=100 K=0",
+      "C=100 M=100 Y=0 K=0",
+      "C=15 M=100 Y=100 K=0",
+      "C=75 M=5 Y=100 K=0",
+      "C=100 M=90 Y=10 K=0",
+      "Club teal"
+    ],
+    "paragraphStyles": [
+      "[No Paragraph Style]",
+      "[Basic Paragraph]",
+      "Club heading",
+      "Club body"
+    ],
+    "spreads": [
+      {
+        "index": 0,
+        "pages": [
+          {
+            "parent": "A-Parent",
+            "columns": 1,
+            "margins": {
+              "top": 30.0,
+              "outside": 30.0,
+              "bottom": 30.0,
+              "inside": 30.0
+            },
+            "bounds": [
+              0.0,
+              0.0,
+              420.0,
+              595.0
+            ],
+            "side": "single",
+            "index": 0,
+            "name": "1"
+          }
+        ],
+        "items": [
+          {
+            "id": 11,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "layer": 1,
+            "locked": false,
+            "kind": "<text frame>",
+            "fill": "[None]",
+            "columns": 1,
+            "bounds": [
+              30.0,
+              30.0,
+              390.0,
+              100.0
+            ],
+            "columnRule": false,
+            "name": "",
+            "story": 12
+          },
+          {
+            "id": 14,
+            "fill": "[None]",
+            "layer": 1,
+            "locked": false,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "bounds": [
+              30.0,
+              110.0,
+              390.0,
+              290.0
+            ],
+            "asset": 13,
+            "name": "",
+            "kind": "<image>"
+          },
+          {
+            "id": 15,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "layer": 1,
+            "locked": false,
+            "kind": "<text frame>",
+            "fill": "[None]",
+            "columns": 1,
+            "bounds": [
+              30.0,
+              310.0,
+              390.0,
+              550.0
+            ],
+            "columnRule": false,
+            "name": "",
+            "story": 16
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "pages": [
+          {
+            "parent": "A-Parent",
+            "columns": 1,
+            "margins": {
+              "top": 30.0,
+              "outside": 30.0,
+              "bottom": 30.0,
+              "inside": 30.0
+            },
+            "bounds": [
+              0.0,
+              0.0,
+              420.0,
+              595.0
+            ],
+            "side": "single",
+            "index": 1,
+            "name": "2"
+          }
+        ],
+        "items": [
+          {
+            "id": 17,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "layer": 1,
+            "locked": false,
+            "kind": "<text frame>",
+            "fill": "[None]",
+            "columns": 1,
+            "bounds": [
+              30.0,
+              30.0,
+              200.0,
+              270.0
+            ],
+            "columnRule": false,
+            "name": "",
+            "story": 18
+          },
+          {
+            "id": 19,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "layer": 1,
+            "locked": false,
+            "kind": "<text frame>",
+            "fill": "[None]",
+            "columns": 1,
+            "bounds": [
+              220.0,
+              30.0,
+              390.0,
+              270.0
+            ],
+            "columnRule": false,
+            "name": "",
+            "story": 18
+          },
+          {
+            "id": 21,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "layer": 1,
+            "locked": false,
+            "kind": "<text frame>",
+            "fill": "[None]",
+            "columns": 1,
+            "bounds": [
+              30.0,
+              300.0,
+              390.0,
+              530.0
+            ],
+            "columnRule": false,
+            "name": "",
+            "story": 22
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "pages": [
+          {
+            "parent": "A-Parent",
+            "columns": 1,
+            "margins": {
+              "top": 30.0,
+              "outside": 30.0,
+              "bottom": 30.0,
+              "inside": 30.0
+            },
+            "bounds": [
+              0.0,
+              0.0,
+              420.0,
+              595.0
+            ],
+            "side": "single",
+            "index": 2,
+            "name": "3"
+          }
+        ],
+        "items": [
+          {
+            "id": 24,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "layer": 1,
+            "locked": false,
+            "kind": "<text frame>",
+            "fill": "[None]",
+            "columns": 1,
+            "bounds": [
+              30.0,
+              30.0,
+              390.0,
+              350.0
+            ],
+            "columnRule": false,
+            "name": "",
+            "story": 25
+          }
+        ]
+      }
+    ],
+    "layers": [
+      {
+        "id": 1,
+        "showGuides": true,
+        "color": [
+          43,
+          155,
+          255
+        ],
+        "printable": true,
+        "visible": true,
+        "locked": false,
+        "name": "Layer 1",
+        "suppressWrapWhenHidden": false
+      }
+    ],
+    "stories": [
+      {
+        "id": 12,
+        "lines": 1,
+        "length": 24,
+        "paragraphs": 1,
+        "preview": "THE REPAIR CLUB \u2014 VAIO",
+        "frames": [
+          11
+        ],
+        "overset": false
+      },
+      {
+        "id": 16,
+        "lines": 3,
+        "length": 144,
+        "paragraphs": 3,
+        "preview": "Make, mend, and share.\nAn original three-page brochure created on the Sony VAIO.",
+        "frames": [
+          15
+        ],
+        "overset": false
+      },
+      {
+        "id": 18,
+        "lines": 20,
+        "length": 561,
+        "paragraphs": 2,
+        "preview": "A PRACTICAL WORKSHOP\nWork together, keep good notes, and pass on what you learn.",
+        "frames": [
+          17,
+          19
+        ],
+        "overset": false
+      },
+      {
+        "id": 22,
+        "lines": 2,
+        "length": 4,
+        "paragraphs": 2,
+        "preview": "\ue009\n",
+        "frames": [
+          21
+        ],
+        "overset": false
+      },
+      {
+        "id": 25,
+        "lines": 2,
+        "length": 46,
+        "paragraphs": 2,
+        "preview": "Original imported copy.\nMake, mend, and share.",
+        "frames": [
+          24
+        ],
+        "overset": false
+      }
+    ]
+  },
+  "initial": {
+    "title": "original.designcraft",
+    "path": "/tmp/vaio-designcraft-test/original.designcraft",
+    "dirty": false,
+    "tool": "selection",
+    "pageCount": 3,
+    "selection": {
+      "items": [],
+      "content": false
+    },
+    "characterStyles": [
+      "[None]"
+    ],
+    "parents": [
+      {
+        "basedOn": null,
+        "id": 3,
+        "label": "A-Parent",
+        "items": 0
+      }
+    ],
+    "activeLayer": 1,
+    "settings": {
+      "intent": "print",
+      "facingPages": false,
+      "pageWidth": 420.0,
+      "pageHeight": 595.0
+    },
+    "canUndo": false,
+    "swatches": [
+      "[None]",
+      "[Registration]",
+      "[Paper]",
+      "[Black]",
+      "C=100 M=0 Y=0 K=0",
+      "C=0 M=100 Y=0 K=0",
+      "C=0 M=0 Y=100 K=0",
+      "C=0 M=100 Y=100 K=0",
+      "C=100 M=0 Y=100 K=0",
+      "C=100 M=100 Y=0 K=0",
+      "C=15 M=100 Y=100 K=0",
+      "C=75 M=5 Y=100 K=0",
+      "C=100 M=90 Y=10 K=0",
+      "Club teal"
+    ],
+    "paragraphStyles": [
+      "[No Paragraph Style]",
+      "[Basic Paragraph]",
+      "Club heading",
+      "Club body"
+    ],
+    "spreads": [
+      {
+        "index": 0,
+        "pages": [
+          {
+            "parent": "A-Parent",
+            "columns": 1,
+            "margins": {
+              "top": 30.0,
+              "outside": 30.0,
+              "bottom": 30.0,
+              "inside": 30.0
+            },
+            "bounds": [
+              0.0,
+              0.0,
+              420.0,
+              595.0
+            ],
+            "side": "single",
+            "index": 0,
+            "name": "1"
+          }
+        ],
+        "items": [
+          {
+            "id": 11,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "layer": 1,
+            "locked": false,
+            "kind": "<text frame>",
+            "fill": "[None]",
+            "columns": 1,
+            "bounds": [
+              30.0,
+              30.0,
+              390.0,
+              100.0
+            ],
+            "columnRule": false,
+            "name": "",
+            "story": 12
+          },
+          {
+            "id": 14,
+            "fill": "[None]",
+            "layer": 1,
+            "locked": false,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "bounds": [
+              30.0,
+              110.0,
+              390.0,
+              290.0
+            ],
+            "asset": 13,
+            "name": "",
+            "kind": "<image>"
+          },
+          {
+            "id": 15,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "layer": 1,
+            "locked": false,
+            "kind": "<text frame>",
+            "fill": "[None]",
+            "columns": 1,
+            "bounds": [
+              30.0,
+              310.0,
+              390.0,
+              550.0
+            ],
+            "columnRule": false,
+            "name": "",
+            "story": 16
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "pages": [
+          {
+            "parent": "A-Parent",
+            "columns": 1,
+            "margins": {
+              "top": 30.0,
+              "outside": 30.0,
+              "bottom": 30.0,
+              "inside": 30.0
+            },
+            "bounds": [
+              0.0,
+              0.0,
+              420.0,
+              595.0
+            ],
+            "side": "single",
+            "index": 1,
+            "name": "2"
+          }
+        ],
+        "items": [
+          {
+            "id": 17,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "layer": 1,
+            "locked": false,
+            "kind": "<text frame>",
+            "fill": "[None]",
+            "columns": 1,
+            "bounds": [
+              30.0,
+              30.0,
+              200.0,
+              270.0
+            ],
+            "columnRule": false,
+            "name": "",
+            "story": 18
+          },
+          {
+            "id": 19,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "layer": 1,
+            "locked": false,
+            "kind": "<text frame>",
+            "fill": "[None]",
+            "columns": 1,
+            "bounds": [
+              220.0,
+              30.0,
+              390.0,
+              270.0
+            ],
+            "columnRule": false,
+            "name": "",
+            "story": 18
+          },
+          {
+            "id": 21,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "layer": 1,
+            "locked": false,
+            "kind": "<text frame>",
+            "fill": "[None]",
+            "columns": 1,
+            "bounds": [
+              30.0,
+              300.0,
+              390.0,
+              530.0
+            ],
+            "columnRule": false,
+            "name": "",
+            "story": 22
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "pages": [
+          {
+            "parent": "A-Parent",
+            "columns": 1,
+            "margins": {
+              "top": 30.0,
+              "outside": 30.0,
+              "bottom": 30.0,
+              "inside": 30.0
+            },
+            "bounds": [
+              0.0,
+              0.0,
+              420.0,
+              595.0
+            ],
+            "side": "single",
+            "index": 2,
+            "name": "3"
+          }
+        ],
+        "items": [
+          {
+            "id": 24,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "layer": 1,
+            "locked": false,
+            "kind": "<text frame>",
+            "fill": "[None]",
+            "columns": 1,
+            "bounds": [
+              30.0,
+              30.0,
+              390.0,
+              350.0
+            ],
+            "columnRule": false,
+            "name": "",
+            "story": 25
+          }
+        ]
+      }
+    ],
+    "layers": [
+      {
+        "id": 1,
+        "showGuides": true,
+        "color": [
+          43,
+          155,
+          255
+        ],
+        "printable": true,
+        "visible": true,
+        "locked": false,
+        "name": "Layer 1",
+        "suppressWrapWhenHidden": false
+      }
+    ],
+    "stories": [
+      {
+        "id": 12,
+        "lines": 1,
+        "length": 15,
+        "paragraphs": 1,
+        "preview": "THE REPAIR CLUB",
+        "frames": [
+          11
+        ],
+        "overset": false
+      },
+      {
+        "id": 16,
+        "lines": 3,
+        "length": 144,
+        "paragraphs": 3,
+        "preview": "Make, mend, and share.\nAn original three-page brochure created on the Sony VAIO.",
+        "frames": [
+          15
+        ],
+        "overset": false
+      },
+      {
+        "id": 18,
+        "lines": 20,
+        "length": 561,
+        "paragraphs": 2,
+        "preview": "A PRACTICAL WORKSHOP\nWork together, keep good notes, and pass on what you learn.",
+        "frames": [
+          17,
+          19
+        ],
+        "overset": false
+      },
+      {
+        "id": 22,
+        "lines": 2,
+        "length": 4,
+        "paragraphs": 2,
+        "preview": "\ue009\n",
+        "frames": [
+          21
+        ],
+        "overset": false
+      },
+      {
+        "id": 25,
+        "lines": 2,
+        "length": 46,
+        "paragraphs": 2,
+        "preview": "Original imported copy.\nMake, mend, and share.",
+        "frames": [
+          24
+        ],
+        "overset": false
+      }
+    ]
+  },
+  "checks": [
+    "OpenGL startup",
+    "GUI text input",
+    "character formatting",
+    "undo/redo",
+    "native save/reopen",
+    "PDF/PNG export",
+    "window screenshot"
+  ],
+  "settled_idle": {
+    "cpu_percent_one_logical_cpu": 0.0,
+    "rss_kib": 135352
+  },
+  "reopened": {
+    "title": "gui-edited.designcraft",
+    "path": "/tmp/vaio-designcraft-test/gui-edited.designcraft",
+    "dirty": false,
+    "tool": "selection",
+    "pageCount": 3,
+    "selection": {
+      "items": [],
+      "content": false
+    },
+    "characterStyles": [
+      "[None]"
+    ],
+    "parents": [
+      {
+        "basedOn": null,
+        "id": 3,
+        "label": "A-Parent",
+        "items": 0
+      }
+    ],
+    "activeLayer": 1,
+    "settings": {
+      "intent": "print",
+      "facingPages": false,
+      "pageWidth": 420.0,
+      "pageHeight": 595.0
+    },
+    "canUndo": false,
+    "swatches": [
+      "[None]",
+      "[Registration]",
+      "[Paper]",
+      "[Black]",
+      "C=100 M=0 Y=0 K=0",
+      "C=0 M=100 Y=0 K=0",
+      "C=0 M=0 Y=100 K=0",
+      "C=0 M=100 Y=100 K=0",
+      "C=100 M=0 Y=100 K=0",
+      "C=100 M=100 Y=0 K=0",
+      "C=15 M=100 Y=100 K=0",
+      "C=75 M=5 Y=100 K=0",
+      "C=100 M=90 Y=10 K=0",
+      "Club teal"
+    ],
+    "paragraphStyles": [
+      "[No Paragraph Style]",
+      "[Basic Paragraph]",
+      "Club heading",
+      "Club body"
+    ],
+    "spreads": [
+      {
+        "index": 0,
+        "pages": [
+          {
+            "parent": "A-Parent",
+            "columns": 1,
+            "margins": {
+              "top": 30.0,
+              "outside": 30.0,
+              "bottom": 30.0,
+              "inside": 30.0
+            },
+            "bounds": [
+              0.0,
+              0.0,
+              420.0,
+              595.0
+            ],
+            "side": "single",
+            "index": 0,
+            "name": "1"
+          }
+        ],
+        "items": [
+          {
+            "id": 11,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "layer": 1,
+            "locked": false,
+            "kind": "<text frame>",
+            "fill": "[None]",
+            "columns": 1,
+            "bounds": [
+              30.0,
+              30.0,
+              390.0,
+              100.0
+            ],
+            "columnRule": false,
+            "name": "",
+            "story": 12
+          },
+          {
+            "id": 14,
+            "fill": "[None]",
+            "layer": 1,
+            "locked": false,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "bounds": [
+              30.0,
+              110.0,
+              390.0,
+              290.0
+            ],
+            "asset": 13,
+            "name": "",
+            "kind": "<image>"
+          },
+          {
+            "id": 15,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "layer": 1,
+            "locked": false,
+            "kind": "<text frame>",
+            "fill": "[None]",
+            "columns": 1,
+            "bounds": [
+              30.0,
+              310.0,
+              390.0,
+              550.0
+            ],
+            "columnRule": false,
+            "name": "",
+            "story": 16
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "pages": [
+          {
+            "parent": "A-Parent",
+            "columns": 1,
+            "margins": {
+              "top": 30.0,
+              "outside": 30.0,
+              "bottom": 30.0,
+              "inside": 30.0
+            },
+            "bounds": [
+              0.0,
+              0.0,
+              420.0,
+              595.0
+            ],
+            "side": "single",
+            "index": 1,
+            "name": "2"
+          }
+        ],
+        "items": [
+          {
+            "id": 17,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "layer": 1,
+            "locked": false,
+            "kind": "<text frame>",
+            "fill": "[None]",
+            "columns": 1,
+            "bounds": [
+              30.0,
+              30.0,
+              200.0,
+              270.0
+            ],
+            "columnRule": false,
+            "name": "",
+            "story": 18
+          },
+          {
+            "id": 19,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "layer": 1,
+            "locked": false,
+            "kind": "<text frame>",
+            "fill": "[None]",
+            "columns": 1,
+            "bounds": [
+              220.0,
+              30.0,
+              390.0,
+              270.0
+            ],
+            "columnRule": false,
+            "name": "",
+            "story": 18
+          },
+          {
+            "id": 21,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "layer": 1,
+            "locked": false,
+            "kind": "<text frame>",
+            "fill": "[None]",
+            "columns": 1,
+            "bounds": [
+              30.0,
+              300.0,
+              390.0,
+              530.0
+            ],
+            "columnRule": false,
+            "name": "",
+            "story": 22
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "pages": [
+          {
+            "parent": "A-Parent",
+            "columns": 1,
+            "margins": {
+              "top": 30.0,
+              "outside": 30.0,
+              "bottom": 30.0,
+              "inside": 30.0
+            },
+            "bounds": [
+              0.0,
+              0.0,
+              420.0,
+              595.0
+            ],
+            "side": "single",
+            "index": 2,
+            "name": "3"
+          }
+        ],
+        "items": [
+          {
+            "id": 24,
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "hidden": false,
+            "layer": 1,
+            "locked": false,
+            "kind": "<text frame>",
+            "fill": "[None]",
+            "columns": 1,
+            "bounds": [
+              30.0,
+              30.0,
+              390.0,
+              350.0
+            ],
+            "columnRule": false,
+            "name": "",
+            "story": 25
+          }
+        ]
+      }
+    ],
+    "layers": [
+      {
+        "id": 1,
+        "showGuides": true,
+        "color": [
+          43,
+          155,
+          255
+        ],
+        "printable": true,
+        "visible": true,
+        "locked": false,
+        "name": "Layer 1",
+        "suppressWrapWhenHidden": false
+      }
+    ],
+    "stories": [
+      {
+        "id": 12,
+        "lines": 1,
+        "length": 24,
+        "paragraphs": 1,
+        "preview": "THE REPAIR CLUB \u2014 VAIO",
+        "frames": [
+          11
+        ],
+        "overset": false
+      },
+      {
+        "id": 16,
+        "lines": 3,
+        "length": 144,
+        "paragraphs": 3,
+        "preview": "Make, mend, and share.\nAn original three-page brochure created on the Sony VAIO.",
+        "frames": [
+          15
+        ],
+        "overset": false
+      },
+      {
+        "id": 18,
+        "lines": 20,
+        "length": 561,
+        "paragraphs": 2,
+        "preview": "A PRACTICAL WORKSHOP\nWork together, keep good notes, and pass on what you learn.",
+        "frames": [
+          17,
+          19
+        ],
+        "overset": false
+      },
+      {
+        "id": 22,
+        "lines": 2,
+        "length": 4,
+        "paragraphs": 2,
+        "preview": "\ue009\n",
+        "frames": [
+          21
+        ],
+        "overset": false
+      },
+      {
+        "id": 25,
+        "lines": 2,
+        "length": 46,
+        "paragraphs": 2,
+        "preview": "Original imported copy.\nMake, mend, and share.",
+        "frames": [
+          24
+        ],
+        "overset": false
+      }
+    ]
+  }
+}

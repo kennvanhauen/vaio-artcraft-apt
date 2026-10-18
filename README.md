@@ -1,7 +1,7 @@
 # VAIO application ports and signed APT archive
 
-Unofficial native ports of WordCraft, GridCraft, PdfCraft, DeckCraft and VectorCraft for Ubuntu 16.04
-Xenial i386 on the Sony VAIO P. The VAIO App Launcher opens and manages all five
+Unofficial native ports of WordCraft, GridCraft, PdfCraft, DeckCraft, VectorCraft and DesignCraft for Ubuntu 16.04
+Xenial i386 on the Sony VAIO P. The VAIO App Launcher opens and manages all six
 through APT. These are independent hardware adaptations of upstream alpha apps.
 
 | Package | Version | Ordinary and advanced workflows checked on the VAIO |
@@ -11,9 +11,10 @@ through APT. These are independent hardware adaptations of upstream alpha apps.
 | pdfcraft-vaio | 0.9.0~vaio1 | Viewing/rendering, text extraction, extract/combine/rotate, comments, forms, applied redaction, AES-256 round trip and one-page OCR |
 | deckcraft-vaio | 0.8.0~vaio1 | Three-slide editing, shapes/picture/chart/notes, PPTX round trip, PDF/outline export, silent fullscreen presentation, native Save As and unsaved-draft recovery |
 | vectorcraft-vaio | 0.13.1~vaio1 | Headless CLI/MCP, GUI text editing, layers, shapes, pathfinder, undo/redo, two artboards, native/SVG round trip, broad format export, native Save As and draft recovery |
-| artcraft-launcher-vaio | 0.5.1~vaio6 | Five-app APT backend, signed metadata refresh, offline reporting, saved settings and fixed package-operation allowlist |
+| designcraft-vaio | 0.9.0~vaio1 | Three-page styles/images/threading/table/RTF workflow, GUI editing, native/IDML round trip, PDF/PNG/EPUB/PPTX/HTML/text export, parent pages, data merge, native Save As and automatic idle recovery |
+| artcraft-launcher-vaio | 0.5.1~vaio7 | Six-app APT backend, signed metadata refresh, offline reporting, saved settings and fixed package-operation allowlist |
 
-All five application engines retain their upstream features. This is a practical
+All six application engines retain their upstream features. This is a practical
 port, not a claim that every feature or external file works. Complex documents,
 large workbooks/scans, physical printing, real signing identities, complex scripts
 and external integrations need further validation. PdfCraft's optional Japanese
@@ -36,7 +37,7 @@ The target VAIO uses `/etc/apt/preferences.d/vaio-artcraft` to allow only these
 packages from this archive:
 
 ```
-Package: wordcraft-vaio gridcraft-vaio pdfcraft-vaio deckcraft-vaio vectorcraft-vaio artcraft-launcher-vaio
+Package: wordcraft-vaio gridcraft-vaio pdfcraft-vaio deckcraft-vaio vectorcraft-vaio designcraft-vaio artcraft-launcher-vaio
 Pin: origin "kennvanhauen.github.io"
 Pin-Priority: 500
 
@@ -45,7 +46,7 @@ Pin: origin "kennvanhauen.github.io"
 Pin-Priority: -1
 ```
 
-Refresh APT, then install the six package names above. The four office apps appear in
+Refresh APT, then install the seven package names above. The five office apps appear in
 Office and VectorCraft in Graphics; VAIO App Launcher appears in Utilities/System. Future updates use APT,
 including the VAIO's existing **Check & Install Updates** frontend. Its wider
 system-maintenance operation was not run during targeted package tests.
@@ -80,11 +81,12 @@ Pinned upstream revisions:
 - PdfCraft: `98cbd38a8e0f5afe685258aa0fcab0f0012f7a8b`
 - DeckCraft: `cb78440a1618e6a2c1df55dd7bff74719685518c`
 - VectorCraft: `a466625c8987550635cda951ebf36e08e1e80a56`
+- DesignCraft: `ecd7e5d063eb12fa5e61fe61c9b8a77bb3c9110a`
 - Launcher: `9cef5d2a0f207da50d31547a726057ea40f7e5b4`
 
 Original sources are at https://github.com/storytold/wordcraft,
 https://github.com/storytold/gridcraft, https://github.com/storytold/pdfcraft and
-https://github.com/storytold/craft-launcher and https://github.com/storytold/deckcraft and https://github.com/storytold/vectorcraft. Pinned upstream revisions identify the source; Releases carry source/build
+https://github.com/storytold/craft-launcher and https://github.com/storytold/deckcraft and https://github.com/storytold/vectorcraft and https://github.com/storytold/designcraft. Pinned upstream revisions identify the source; Releases carry source/build
 recipe archives and links. Owned downstream patches, lockfiles, helper sources and recipes are
 in `ports/` and `probes/`. App/license/font/icon notices are included in packages.
 Original ArtCraft trademark graphics are removed from modified UI releases;
@@ -165,3 +167,44 @@ this is not represented as a complete CI/WASM pass.
 The [five-app usage guide](notes/VAIO-Apps-Guide.md) explains working formats,
 headless commands, recovery and the verified limits. Installed wrapper and all
 five launcher Open-button checks passed.
+
+
+## DesignCraft build and scope
+
+See [the DesignCraft record](notes/designcraft-0.9.0-vaio1.md) and
+[usage guide](notes/VAIO-Apps-Guide.md). The port retains the upstream page-layout
+engine and uses Glow for the interface. Linux i386 defaults to a steady caret and
+reduced animation; `DESIGNCRAFT_STATIC_CARET=0` opts out for one launch. Idle draft
+recovery has an explicit scheduled wake. No server starts in a normal launch.
+
+Clone the pinned upstream revision into `upstream/designcraft`, then run:
+
+```sh
+python3 probes/prepare-designcraft-fonts.py
+python3 probes/prepare-designcraft-port.py
+sh probes/build-designcraft.sh --locked
+DESIGNCRAFT_BUILD=gui sh probes/build-designcraft.sh --locked
+python3 probes/build_office_deb.py designcraft
+```
+
+The optional craft-fonts input is pinned at
+`a71c20e30af613287c504f7e685ca8fad77752bc`; its eight native faces and notices are
+verified. Existing Source Sans/Serif, Inter and JetBrains Mono open-font assets
+remain, as explicitly allowed by upstream attribution. The modified trademark
+outline is replaced by an original page glyph. XZ package compression is supported
+by Xenial dpkg and keeps the complete GUI/CLI package below GitHub's file limit.
+
+The original three-page brochure passed real-VAIO checks. Initial blinking-caret
+idle use was 150.9% of one logical CPU; the revised six-second samples measured
+0.17% while editing and 0% after leaving editing, about 128–132 MiB RSS. An automatic
+snapshot appeared after 28 seconds and recovered after an owned-process crash.
+These are short synthetic-file checks, not large-document performance promises.
+
+Use explicit pages/manual threading: upstream primary-frame Smart Text Reflow has
+a known page-growth problem. External INDD/IDML fidelity, physical printing and
+professional prepress remain unverified. The CMYK-swatch example passed the built-in
+PDF/X-4 check; RGB fills failed under its CMYK output intent. Host full CI is not
+green: fmt/Clippy passed, but one test lacked a wgpu adapter and one unchanged Arabic
+dialog test clipped a field (2839 tests passed before the stop). VAIO Glow/i686
+Clippy with warnings denied, asset attribution, PDF pin consistency and layering
+passed separately. WebAssembly checks were not run (target absent).

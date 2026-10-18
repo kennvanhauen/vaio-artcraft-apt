@@ -1,0 +1,22 @@
+{
+  "upstream_revision": "ecd7e5d063eb12fa5e61fe61c9b8a77bb3c9110a",
+  "host": "aarch64-apple-darwin",
+  "observed_test_totals": {
+    "passed": 2839,
+    "failed": 2,
+    "ignored": 5
+  },
+  "full_ci_passed": false,
+  "fmt": "passed",
+  "clippy_workspace_all_targets": "passed",
+  "test_failures": [
+    "live_corner_widget_and_diamonds_draw: host wgpu has no adapter",
+    "arabic_new_document_fields_remain_reachable_and_editable: clipped field in unchanged upstream dialog"
+  ],
+  "test_scope_note": "cargo test --workspace stopped at UI library failure; later test executables/doc tests were not run",
+  "vaio_glow_clippy_warnings_as_errors": "passed",
+  "wasm": "not run; wasm32 target absent",
+  "pdf_dependency_pin_check": "passed",
+  "assets": "passed",
+  "layers": "passed (21 crates)"
+}

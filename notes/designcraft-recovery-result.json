@@ -1,0 +1,133 @@
+{
+  "automatic_copy_seconds": 28.11,
+  "profile": "/tmp/vaio-designcraft-test/recovery-13166",
+  "restored": {
+    "selection": {
+      "content": false,
+      "items": []
+    },
+    "paragraphStyles": [
+      "[No Paragraph Style]",
+      "[Basic Paragraph]"
+    ],
+    "title": "Original unsaved VAIO draft",
+    "stories": [
+      {
+        "id": 9,
+        "lines": 1,
+        "paragraphs": 1,
+        "preview": "Original unsaved DesignCraft draft",
+        "frames": [
+          8
+        ],
+        "overset": false,
+        "length": 34
+      }
+    ],
+    "dirty": true,
+    "spreads": [
+      {
+        "pages": [
+          {
+            "margins": {
+              "bottom": 36.0,
+              "top": 36.0,
+              "outside": 36.0,
+              "inside": 36.0
+            },
+            "parent": "A-Parent",
+            "bounds": [
+              0.0,
+              0.0,
+              420.0,
+              595.0
+            ],
+            "columns": 1,
+            "side": "right",
+            "name": "1",
+            "index": 0
+          }
+        ],
+        "items": [
+          {
+            "stroke": {
+              "swatch": "[None]",
+              "weight": 1.0
+            },
+            "kind": "<text frame>",
+            "hidden": false,
+            "id": 8,
+            "columnRule": false,
+            "layer": 1,
+            "bounds": [
+              30.0,
+              30.0,
+              390.0,
+              200.0
+            ],
+            "story": 9,
+            "columns": 1,
+            "locked": false,
+            "fill": "[None]",
+            "name": ""
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "path": null,
+    "activeLayer": 1,
+    "canUndo": false,
+    "parents": [
+      {
+        "basedOn": null,
+        "id": 4,
+        "label": "A-Parent",
+        "items": 0
+      }
+    ],
+    "layers": [
+      {
+        "id": 1,
+        "printable": true,
+        "visible": true,
+        "showGuides": true,
+        "color": [
+          43,
+          155,
+          255
+        ],
+        "locked": false,
+        "suppressWrapWhenHidden": false,
+        "name": "Layer 1"
+      }
+    ],
+    "swatches": [
+      "[None]",
+      "[Registration]",
+      "[Paper]",
+      "[Black]",
+      "C=100 M=0 Y=0 K=0",
+      "C=0 M=100 Y=0 K=0",
+      "C=0 M=0 Y=100 K=0",
+      "C=0 M=100 Y=100 K=0",
+      "C=100 M=0 Y=100 K=0",
+      "C=100 M=100 Y=0 K=0",
+      "C=15 M=100 Y=100 K=0",
+      "C=75 M=5 Y=100 K=0",
+      "C=100 M=90 Y=10 K=0"
+    ],
+    "pageCount": 1,
+    "characterStyles": [
+      "[None]"
+    ],
+    "tool": "selection",
+    "settings": {
+      "pageHeight": 595.0,
+      "facingPages": true,
+      "intent": "print",
+      "pageWidth": 420.0
+    }
+  },
+  "passed": true
+}

@@ -78,15 +78,17 @@
      }
 --- a/crates/ui-egui/src/views.rs
 +++ b/crates/ui-egui/src/views.rs
-@@ -56,7 +56,7 @@
+@@ -56,8 +56,8 @@
  /// The footer drops its platform label rather than leave the status less room than this.
  const FOOTER_MIN_STATUS_W: f32 = 300.0;
  
 -const CARD_MIN_W: f32 = 320.0;
-+const CARD_MIN_W: f32 = 288.0;
- const CARD_H: f32 = 280.0;
+-const CARD_H: f32 = 280.0;
++const CARD_MIN_W: f32 = 460.0;
++const CARD_H: f32 = 235.0;
  /// The card's top strip: number tab and links.
  const STRIP_H: f32 = 40.0;
+ const CARD_PAD: f32 = 20.0;
 @@ -77,10 +77,9 @@
              if bar == TitleBar::MacOs {
                  ui.add_space(TRAFFIC_LIGHTS_W);
@@ -101,6 +103,24 @@
              ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                  if bar == TitleBar::Custom {
                      widgets::window_buttons(ui, h);
+@@ -438,7 +437,7 @@
+         }
+ 
+         let status = entry.status(self.platform, self.caps.manage_apps);
+-        let inner = Rect::from_min_max(egui::pos2(rect.left() + CARD_PAD, strip.bottom() + 18.0), rect.max - vec2(CARD_PAD, CARD_PAD));
++        let inner = Rect::from_min_max(egui::pos2(rect.left() + CARD_PAD, strip.bottom() + 12.0), rect.max - vec2(CARD_PAD, 12.0));
+         // A detached child: the card's contents never move the next card along.
+         let mut child = ui.new_child(egui::UiBuilder::new().max_rect(inner).layout(egui::Layout::top_down(egui::Align::Min)));
+         child.set_clip_rect(rect.intersect(ui.clip_rect()));
+@@ -470,7 +469,7 @@
+                 ui.add(egui::Label::new(RichText::new(tr_ctx(current(), app.id, app.tagline)).font(tagline.clone()).color(t.muted)).truncate());
+             });
+         });
+-        ui.add_space(14.0);
++        ui.add_space(8.0);
+         ui.horizontal(|ui| {
+             let (text, tone) = model::entry_status_text(&entry, &status, self.caps.manage_apps);
+             let r = widgets::badge(ui, &text, widgets::tone_color(&t, tone));
 --- a/crates/ui-egui/src/icons.rs
 +++ b/crates/ui-egui/src/icons.rs
 @@ -24,16 +24,10 @@

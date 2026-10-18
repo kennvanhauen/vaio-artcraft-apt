@@ -1,7 +1,7 @@
 # Using the VAIO ports
 
-Open **VAIO App Launcher** in Utilities/System. Its five cards open WordCraft,
-GridCraft, PdfCraft, DeckCraft and VectorCraft. The four office apps also appear
+Open **VAIO App Launcher** in Utilities/System. Its six cards open WordCraft,
+GridCraft, PdfCraft, DeckCraft, VectorCraft and DesignCraft. The five office apps also appear
 under Office; VectorCraft appears under Graphics. The launcher
 checks signed APT metadata. Applications remain usable during a slow check.
 Install/update/remove operations use local administrator authentication and APT.
@@ -113,6 +113,44 @@ Small-file idle samples were about 1% CPU and 105–112 MiB RAM. Larger artwork,
 heavy effects, arbitrary external AI/PSD/EPS/PDF fidelity, colour-critical output,
 plugins and physical printing remain unverified. All upstream engine modules
 remain included; this is a practical port of alpha software.
+
+## DesignCraft
+
+Use DesignCraft for flyers, brochures and page layout. Work in `.designcraft`;
+Ctrl+O opens, Ctrl+S saves, and File > Save As chooses a new filename. A bare name
+gets `.designcraft`; cancelling the corrected-name overwrite question preserves
+an existing file. IDML provides another editable exchange format.
+
+Use text frames, paragraph/character styles, images, layers, parent pages, tables
+and the Pages panel. A three-page original brochure passed styles, image placement,
+manual text threading, tables, RTF import, native/IDML reopening and GUI editing.
+Parent-page content and two-record data merge passed. PDF, PNG, EPUB, PPTX, HTML,
+plain text and RTF export were checked. Keep originals and inspect exchanged files.
+
+Prefer explicit pages and manual threading. Primary-frame Smart Text Reflow has
+an upstream page-growth problem. Complex external INDD/IDML files, large layouts,
+physical printing and colour-critical prepress remain unverified. A CMYK-swatch
+example passed the built-in PDF/X-4 check; the RGB-swatch example failed its
+CMYK-output-intent check. This is not independent prepress certification.
+
+The VAIO build uses Glow and keeps its caret steady to reduce software rendering.
+`DESIGNCRAFT_STATIC_CARET=0 designcraft-vaio` restores blinking for one launch.
+Preferences/recovery default to upstream paths; `DESIGNCRAFT_CONFIG_DIR` selects
+an isolated root containing settings, logs and Recovery. Drafts can postdate the
+latest recovery snapshot; save working copies regularly.
+
+The command line is fully headless for these checked workflows:
+
+```sh
+designcraft-vaio-cli run --in Brochure.designcraft --export Brochure.pdf
+designcraft-vaio-cli run --in Brochure.designcraft --all-pages rendered-pages
+designcraft-vaio-cli mcp --automation-read-root /path/to/work --automation-write-root /path/to/work
+```
+
+The MCP server is in-process unless `--connect PORT` is requested. Explicit roots
+confine its file access. Desktop `--control PORT` is opt-in, loopback only and has
+no authentication; enable it only while needed. It is not confined by CLI roots.
+The normal desktop and launcher start no automation listener.
 
 ## Practical scope
 

@@ -1,0 +1,524 @@
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -1357,6 +1357,7 @@
+  "egui-wgpu",
+  "egui-winit",
+  "egui_glow",
++ "glow",
+  "glutin",
+  "glutin-winit",
+  "image",
+--- a/apps/designcraft/Cargo.toml
++++ b/apps/designcraft/Cargo.toml
+@@ -10,10 +10,15 @@
+ [lints]
+ workspace = true
+ 
++[features]
++default = ["wgpu"]
++wgpu = ["eframe/wgpu"]
++vaio = ["eframe/glow"]
++
+ [dependencies]
+ designcraft-engine = { workspace = true }
+ designcraft-ui-egui = { workspace = true }
+-eframe = { workspace = true, features = ["default_fonts", "wgpu", "accesskit", "wayland", "x11", "links"] }
++eframe = { workspace = true, features = ["default_fonts", "accesskit", "wayland", "x11", "links"] }
+ egui = { workspace = true }
+ serde = { workspace = true }
+ serde_json = { workspace = true }
+--- a/apps/designcraft/src/main.rs
++++ b/apps/designcraft/src/main.rs
+@@ -16,7 +16,9 @@
+ #[cfg(target_os = "macos")]
+ mod apple_events;
+ mod control_server;
++#[cfg(not(feature = "vaio"))]
+ mod gpu;
++#[cfg(not(feature = "vaio"))]
+ mod gpu_limits;
+ mod logging;
+ #[cfg(target_os = "macos")]
+@@ -33,6 +35,7 @@
+     #[cfg(target_os = "macos")]
+     menu: Option<native_menu::NativeMenu>,
+     /// The window's start: the adapter and backend chosen for it; see `gpu`.
++    #[cfg(not(feature = "vaio"))]
+     startup: std::sync::Arc<gpu::Startup>,
+     /// Documents and quit requests from Finder, the Dock and Open With.
+     #[cfg(target_os = "macos")]
+@@ -41,29 +44,34 @@
+     #[cfg(target_os = "macos")]
+     movable: Option<bool>,
+     /// Frames begun so far.
++    #[cfg(not(feature = "vaio"))]
+     frames: u32,
+     /// The device whose uncaptured errors are logged once the window is past its start-up frames
+     /// (`gpu_limits::log_uncaptured_errors`). Until then wgpu's default handler panics, so a
+     /// failing adapter still makes `gpu` start again on the next one.
++    #[cfg(not(feature = "vaio"))]
+     log_errors_after_startup: Option<eframe::wgpu::Device>,
+ }
+ 
+ impl eframe::App for App {
+     fn logic(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+-        self.startup.enter();
+-        if let Some(note) = self.startup.take_notice() {
+-            self.app.status(note);
+-        }
+-        // The third call: two frames went through `ui`, so the first was presented and the driver
+-        // survived it (a fault at the first present is what the fallback in `gpu` is for).
+-        if self.frames == 2 {
+-            self.startup.presented();
+-        }
+-        self.frames = self.frames.saturating_add(1);
+-        if u64::from(self.frames) >= gpu::STARTUP_FRAMES
+-            && let Some(device) = self.log_errors_after_startup.take()
++        #[cfg(not(feature = "vaio"))]
+         {
+-            gpu_limits::log_uncaptured_errors(&device);
++            self.startup.enter();
++            if let Some(note) = self.startup.take_notice() {
++                self.app.status(note);
++            }
++            // The third call: two frames went through `ui`, so the first was presented and the driver
++            // survived it (a fault at the first present is what the fallback in `gpu` is for).
++            if self.frames == 2 {
++                self.startup.presented();
++            }
++            self.frames = self.frames.saturating_add(1);
++            if u64::from(self.frames) >= gpu::STARTUP_FRAMES
++                && let Some(device) = self.log_errors_after_startup.take()
++            {
++                gpu_limits::log_uncaptured_errors(&device);
++            }
+         }
+         #[cfg(target_os = "macos")]
+         {
+@@ -74,17 +82,24 @@
+                 m.poll(&mut self.app, ctx);
+             }
+             // Noted for a start again after a graphics failure, which reopens them (`gpu::restart`).
+-            self.startup.opening(apple_events::poll(&self.apple_events, &mut self.app, ctx));
++            let opened = apple_events::poll(&self.apple_events, &mut self.app, ctx);
++            #[cfg(not(feature = "vaio"))]
++            self.startup.opening(opened);
++            #[cfg(feature = "vaio")]
++            let _ = opened;
+         }
+         self.app.logic(ctx);
++        #[cfg(not(feature = "vaio"))]
+         self.startup.leave();
+     }
+     fn raw_input_hook(&mut self, _ctx: &egui::Context, raw: &mut egui::RawInput) {
+         self.app.raw_input_hook(raw);
+     }
+     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
++        #[cfg(not(feature = "vaio"))]
+         self.startup.enter();
+         self.app.ui(ui);
++        #[cfg(not(feature = "vaio"))]
+         self.startup.leave();
+         #[cfg(target_os = "macos")]
+         if self.app.take_ime_discard() {
+@@ -93,8 +108,9 @@
+         #[cfg(target_os = "macos")]
+         mac_window::sync_movable(ui.ctx(), &mut self.movable);
+     }
+-    fn on_exit(&mut self) {
++    fn on_exit(&mut self, #[cfg(feature = "vaio")] _gl: Option<&eframe::glow::Context>) {
+         // A normal exit before the third frame is not a crash.
++        #[cfg(not(feature = "vaio"))]
+         self.startup.presented();
+         if let Err(e) = preserve_documents_on_exit(&mut self.app) {
+             log::error!("Couldn't preserve documents on exit: {e}");
+@@ -350,6 +366,7 @@
+     let mut control_port = control_port_from("DESIGNCRAFT_CONTROL_PORT", std::env::var("DESIGNCRAFT_CONTROL_PORT").ok());
+     let mut files = Vec::new();
+     let mut sample = false;
++    #[cfg(not(feature = "vaio"))]
+     let mut skip = Vec::new();
+     let mut args = std::env::args().skip(1);
+     while let Some(a) = args.next() {
+@@ -360,10 +377,15 @@
+                 println!("designcraft {}", env!("CARGO_PKG_VERSION"));
+                 return std::process::ExitCode::SUCCESS;
+             }
+-            _ => match gpu::skip_arg(&a) {
+-                Some(list) => skip = list,
+-                None => files.push(a),
+-            },
++            _ => {
++                #[cfg(not(feature = "vaio"))]
++                match gpu::skip_arg(&a) {
++                    Some(list) => skip = list,
++                    None => files.push(a),
++                }
++                #[cfg(feature = "vaio")]
++                files.push(a);
++            }
+         }
+     }
+     // A portable.txt whose DesignCraftData folder cannot be written: the platform folders are used
+@@ -384,13 +406,15 @@
+     let mut options = eframe::NativeOptions {
+         viewport: egui::ViewportBuilder::default()
+             .with_title("DesignCraft")
+-            .with_inner_size([1440.0, 900.0])
++            .with_inner_size(if cfg!(feature = "vaio") { [1440.0, 650.0] } else { [1440.0, 900.0] })
+             .with_min_inner_size([900.0, 560.0])
+             .with_decorations(!cfg!(target_os = "windows"))
+             .with_drag_and_drop(true)
+             .with_fullsize_content_view(true)
+             .with_titlebar_shown(false)
+             .with_title_shown(false),
++        #[cfg(feature = "vaio")]
++        renderer: eframe::Renderer::Glow,
+         ..Default::default()
+     };
+     options.viewport = options.viewport.with_app_id(APP_ID);
+@@ -399,39 +423,43 @@
+     }
+     // The adapter's largest texture side instead of eframe's 8192, so a window across several
+     // monitors keeps its surface (see `gpu_limits`).
+-    gpu_limits::request_adapter_texture_size(&mut options);
+-    // The graphics backend, decided before the window exists: a driver that faults takes the
+-    // process down before any Rust code can catch it (see `gpu::backend`).
+-    let fallback = gpu::backend::Fallback::begin(
+-        if no_prefs() { None } else { profile::config_dir().map(|d| d.join(gpu::backend::FILE)) },
+-        env!("CARGO_PKG_VERSION"),
+-        &gpu::backend::skipped_backends(&skip),
+-    );
+-    let instance_backends = fallback.as_ref().map(gpu::backend::Fallback::backends);
+-    let startup = std::sync::Arc::new(gpu::Startup::new(fallback, skip.clone()));
+-    // The adapter: the GPU that drives the (primary) display unless `WGPU_POWER_PREF` chooses a
+-    // kind; a GPU without a monitor reset its driver and took every monitor down. Logged first:
+-    // the first question in every black-window report.
+-    let power_env = eframe::wgpu::PowerPreference::from_env();
+-    let power = gpu::power_preference(power_env);
+-    let displays = gpu::preferred_displays(power_env);
+-    let chosen_gpu = !gpu::automatic(power_env);
+-    if chosen_gpu {
+-        log::info!("graphics processor chosen by WGPU_POWER_PREF ({power:?}): which GPU drives the display isn't considered");
+-    } else {
+-        let listed: Vec<String> = displays.iter().map(ToString::to_string).collect();
+-        log::info!("display GPUs (PCI vendor:device): {}", if listed.is_empty() { "unknown".to_string() } else { listed.join(", ") });
+-    }
+-    if let eframe::egui_wgpu::WgpuSetup::CreateNew(create) = &mut options.wgpu_options.wgpu_setup {
+-        if let Some(backends) = instance_backends {
+-            create.instance_descriptor.backends = backends;
+-        }
+-        create.instance_descriptor.flags = gpu::instance_flags();
+-        // Only adapters that can show the window, in the order `gpu` gives.
+-        create.native_adapter_selector = Some(gpu::selector(power, displays, startup.clone()));
+-    }
+-    gpu::watch_panics();
+-    gpu::watch_first_frame(startup.clone());
++    #[cfg(not(feature = "vaio"))]
++    let (startup, power, chosen_gpu) = {
++        gpu_limits::request_adapter_texture_size(&mut options);
++        // The graphics backend, decided before the window exists: a driver that faults takes the
++        // process down before any Rust code can catch it (see `gpu::backend`).
++        let fallback = gpu::backend::Fallback::begin(
++            if no_prefs() { None } else { profile::config_dir().map(|d| d.join(gpu::backend::FILE)) },
++            env!("CARGO_PKG_VERSION"),
++            &gpu::backend::skipped_backends(&skip),
++        );
++        let instance_backends = fallback.as_ref().map(gpu::backend::Fallback::backends);
++        let startup = std::sync::Arc::new(gpu::Startup::new(fallback, skip.clone()));
++        // The adapter: the GPU that drives the (primary) display unless `WGPU_POWER_PREF` chooses a
++        // kind; a GPU without a monitor reset its driver and took every monitor down. Logged first:
++        // the first question in every black-window report.
++        let power_env = eframe::wgpu::PowerPreference::from_env();
++        let power = gpu::power_preference(power_env);
++        let displays = gpu::preferred_displays(power_env);
++        let chosen_gpu = !gpu::automatic(power_env);
++        if chosen_gpu {
++            log::info!("graphics processor chosen by WGPU_POWER_PREF ({power:?}): which GPU drives the display isn't considered");
++        } else {
++            let listed: Vec<String> = displays.iter().map(ToString::to_string).collect();
++            log::info!("display GPUs (PCI vendor:device): {}", if listed.is_empty() { "unknown".to_string() } else { listed.join(", ") });
++        }
++        if let eframe::egui_wgpu::WgpuSetup::CreateNew(create) = &mut options.wgpu_options.wgpu_setup {
++            if let Some(backends) = instance_backends {
++                create.instance_descriptor.backends = backends;
++            }
++            create.instance_descriptor.flags = gpu::instance_flags();
++            // Only adapters that can show the window, in the order `gpu` gives.
++            create.native_adapter_selector = Some(gpu::selector(power, displays, startup.clone()));
++        }
++        gpu::watch_panics();
++        gpu::watch_first_frame(startup.clone());
++        (startup, power, chosen_gpu)
++    };
+     // winit has no file drag-and-drop on Wayland (only on X11), so dropping images from the file
+     // manager showed a "no" cursor. Run through XWayland when it's there; DESIGNCRAFT_WAYLAND=1
+     // keeps the native Wayland backend.
+@@ -457,6 +485,7 @@
+     let apple_events = apple_events::AppleEvents::install();
+     #[cfg(target_os = "macos")]
+     let events = &apple_events;
++    #[cfg(not(feature = "vaio"))]
+     let created = startup.clone();
+     // A panic that ends the window (egui-wgpu's own) is caught here: never a crash.
+     let run = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+@@ -464,38 +493,43 @@
+             "DesignCraft",
+             options,
+             Box::new(move |cc| {
+-                let mut restarted = None;
+-                let mut device = None;
+-                if let Some(rs) = &cc.wgpu_render_state {
+-                    device = Some(rs.device.clone());
+-                    // What a bug report needs to know about the graphics driver.
+-                    let info = rs.adapter.get_info();
+-                    log::info!(
+-                        "graphics: {} on {:?} ({:?}; driver {} {}; power preference {power:?})",
+-                        info.name,
+-                        info.backend,
+-                        info.device_type,
+-                        info.driver,
+-                        info.driver_info
+-                    );
+-                    created.started_with(info.backend);
+-                    created.created(&cc.egui_ctx);
+-                    if !skip.is_empty() {
+-                        // A processor chosen by `WGPU_POWER_PREF` can be the one that can't show the window.
+-                        let hint = if chosen_gpu { " (without WGPU_POWER_PREF it uses the one that drives your display)" } else { "" };
+-                        restarted = Some(format!(
+-                            "The graphics processor tried first couldn't show the window, so DesignCraft started again on {} ({:?}, {:?}){hint}.",
+-                            info.name.trim(),
++                #[cfg(not(feature = "vaio"))]
++                let (restarted, device) = {
++                    let mut restarted = None;
++                    let mut device = None;
++                    if let Some(rs) = &cc.wgpu_render_state {
++                        device = Some(rs.device.clone());
++                        // What a bug report needs to know about the graphics driver.
++                        let info = rs.adapter.get_info();
++                        log::info!(
++                            "graphics: {} on {:?} ({:?}; driver {} {}; power preference {power:?})",
++                            info.name,
+                             info.backend,
+-                            info.device_type
+-                        ));
++                            info.device_type,
++                            info.driver,
++                            info.driver_info
++                        );
++                        created.started_with(info.backend);
++                        created.created(&cc.egui_ctx);
++                        if !skip.is_empty() {
++                            // A processor chosen by `WGPU_POWER_PREF` can be the one that can't show the window.
++                            let hint = if chosen_gpu { " (without WGPU_POWER_PREF it uses the one that drives your display)" } else { "" };
++                            restarted = Some(format!(
++                                "The graphics processor tried first couldn't show the window, so DesignCraft started again on {} ({:?}, {:?}){hint}.",
++                                info.name.trim(),
++                                info.backend,
++                                info.device_type
++                            ));
++                        }
+                     }
+-                }
++                    (restarted, device)
++                };
+                 let mut session = Session::new();
+                 // Crash recovery: reopen what a previous run left unsaved, then keep it current.
+                 session.recovery_dir = profile::recovery_dir();
+                 let recovered = session.execute("file.recovery.open", &serde_json::json!({})).ok();
+                 let mut app = DesignApp::new(session, services());
++                #[cfg(not(feature = "vaio"))]
+                 if let Some(line) = restarted.or_else(|| created.status_line()) {
+                     app.status(line);
+                 }
+@@ -523,17 +557,21 @@
+                     }
+                 }
+                 // The first frame is due from now (`gpu::watch_first_frame`).
++                #[cfg(not(feature = "vaio"))]
+                 created.ready();
+                 Ok(Box::new(App {
+                     app,
+                     #[cfg(target_os = "macos")]
+                     menu: None,
++                    #[cfg(not(feature = "vaio"))]
+                     startup: created,
+                     #[cfg(target_os = "macos")]
+                     apple_events: events.connect(&cc.egui_ctx),
+                     #[cfg(target_os = "macos")]
+                     movable: None,
++                    #[cfg(not(feature = "vaio"))]
+                     frames: 0,
++                    #[cfg(not(feature = "vaio"))]
+                     log_errors_after_startup: device,
+                 }))
+             }),
+@@ -543,9 +581,13 @@
+     // The window's end, or a graphics failure that starts the app again. A failure is logged:
+     // standard error and the log file, since a Windows start has no console to show it.
+     // Documents that arrived after the last frame, for a start again to open too.
+-    #[cfg(target_os = "macos")]
++    #[cfg(all(target_os = "macos", not(feature = "vaio")))]
+     startup.opening(apple_events.queued());
+-    match gpu::finish(run, &startup) {
++    #[cfg(not(feature = "vaio"))]
++    let result = gpu::finish(run, &startup);
++    #[cfg(feature = "vaio")]
++    let result = run.and_then(|r| r.map_err(|e| e.to_string()));
++    match result {
+         Ok(()) => std::process::ExitCode::SUCCESS,
+         Err(e) => {
+             log::error!("DesignCraft stopped: {e}");
+--- a/crates/ui-egui/src/about.rs
++++ b/crates/ui-egui/src/about.rs
+@@ -1,5 +1,5 @@
+ //! Help › About DesignCraft: tabs About · Contributors · Models. About is the splash with the
+-//! ArtCraft mark, version, and community links (Discord first and largest), plus the other ArtCraft
++//! original page glyph, version, and community links (Discord first and largest), plus the other ArtCraft
+ //! apps; Contributors and Models are the compiled-in credits (`crate::credits`).
+ 
+ use designcraft_engine::links;
+@@ -9,13 +9,10 @@
+ use crate::DesignApp;
+ use crate::theme::{Tokens, semibold};
+ 
+-/// ArtCraft brand blue (from `docs/brand/artcraft-mark.svg`).
+-pub const BRAND: Color32 = Color32::from_rgb(0x4e, 0x7b, 0xfb);
++/// Accent used by the unofficial VAIO build.
++pub const BRAND: Color32 = Color32::from_rgb(0x19, 0x59, 0x6b);
+ /// Discord's brand colour, used for the "Join our Discord" buttons (colour only; no Discord artwork).
+ pub const DISCORD: Color32 = Color32::from_rgb(0x58, 0x65, 0xf2);
+-
+-/// The ArtCraft mark outline (viewBox -10 -19.42 136.34 136.34), from `docs/brand/artcraft-mark.svg`.
+-const MARK_PATH: &str = "M104.28,49.49L81.55,0h-31.23l-3.17,4.76L14.75,53.63,0,75.85l21.55,21.55,63.79-36.94,16.99,37.04,14.01-21.74-12.06-26.27ZM32.89,65.66l32.42-48.87,10.91,23.77-43.32,25.09Z";
+ 
+ /// The other ArtCraft apps (app-page slug, name, what it is) — same list as the README.
+ pub const SIBLINGS: &[(&str, &str, &str)] = &[
+@@ -30,35 +27,14 @@
+ /// The About window's tabs, in `UiState::about_tab` order (`help.about {tab}` names them in lowercase).
+ pub const ABOUT_TABS: [&str; 3] = ["About", "Contributors", "Models"];
+ 
+-/// Paint the ArtCraft mark into `rect` (square), rasterised once per size and cached.
++/// Original page-layout glyph for this unofficial VAIO build.
+ pub fn paint_mark(ui: &egui::Ui, rect: Rect, color: Color32) {
+-    use designcraft_render::vello_cpu::{self, kurbo, peniko};
+-    let ctx = ui.ctx();
+-    let ppp = ctx.pixels_per_point();
+-    let px = ((rect.width().min(rect.height()) * ppp).round() as u32).clamp(8, 1024);
+-    let key = egui::Id::new(("artcraft_mark", px, color.to_array()));
+-    let tex: Option<egui::TextureHandle> = ctx.data(|d| d.get_temp(key));
+-    let tex = tex.unwrap_or_else(|| {
+-        let mut rc = vello_cpu::RenderContext::new_with(px as u16, px as u16, vello_cpu::RenderSettings { num_threads: 0, ..Default::default() });
+-        let k = px as f64 / 136.34;
+-        rc.set_transform(kurbo::Affine::scale(k) * kurbo::Affine::translate((10.0, 19.42)));
+-        let [r, g, b, a] = color.to_srgba_unmultiplied();
+-        rc.set_paint(peniko::Color::from_rgba8(r, g, b, a));
+-        if let Ok(p) = kurbo::BezPath::from_svg(MARK_PATH) {
+-            rc.fill_path(&p);
+-        }
+-        rc.flush();
+-        let mut pm = vello_cpu::Pixmap::new(px as u16, px as u16);
+-        let mut res = vello_cpu::Resources::new();
+-        rc.render(&mut pm, &mut res);
+-        let ci = egui::ColorImage::from_rgba_premultiplied([px as usize, px as usize], pm.data_as_u8_slice());
+-        let t = crate::widgets::load_texture(ctx, "artcraft_mark", ci, egui::TextureOptions::LINEAR);
+-        ctx.data_mut(|d| d.insert_temp(key, t.clone()));
+-        t
+-    });
+-    let side = rect.width().min(rect.height());
+-    let r = Rect::from_center_size(rect.center(), vec2(side, side));
+-    ui.painter().image(tex.id(), r, Rect::from_min_max(pos2(0.0, 0.0), pos2(1.0, 1.0)), Color32::WHITE);
++    let r = rect.shrink2(vec2(rect.width() * 0.2, rect.height() * 0.1));
++    ui.painter().rect_stroke(r, 2.0, Stroke::new(3.0, color), egui::StrokeKind::Inside);
++    for n in 0..4 {
++        let y = r.top() + 12.0 + n as f32 * 9.0;
++        ui.painter().line_segment([pos2(r.left() + 8.0, y), pos2(r.right() - 8.0, y)], Stroke::new(2.0, color));
++    }
+ }
+ 
+ /// A speech-bubble glyph (drawn in code) for Discord buttons.
+@@ -169,7 +145,7 @@
+             ));
+             ui.label(crate::rtl::widget(
+                 ui,
+-                egui::RichText::new(crate::i18n::tr(&app.ui.language, "Part of the ArtCraft suite of open creative tools."))
++                egui::RichText::new(crate::i18n::tr(&app.ui.language, "Unofficial VAIO build, based on DesignCraft by the ArtCraft team."))
+                     .size(12.0)
+                     .color(t.text_dim),
+             ));
+--- a/crates/ui-egui/src/canvas.rs
++++ b/crates/ui-egui/src/canvas.rs
+@@ -1490,12 +1490,21 @@
+         let on = |p: Point| compose::PathTextMap::new(it, ft).map_or(p, |map| map.to_path(p));
+         let p0 = xf.to_screen(m * on(Point::new(x, bl - asc)));
+         let p1 = xf.to_screen(m * on(Point::new(x, bl + desc)));
+-        let blink = (painter.ctx().input(|i| i.time) * 1.6) as i64 % 2 == 0;
++        let steady = steady_caret();
++        let blink = steady || (painter.ctx().input(|i| i.time) * 1.6) as i64 % 2 == 0;
+         if blink {
+             painter.line_segment([p0, p1], Stroke::new(1.0, Color32::BLACK));
+         }
+-        painter.ctx().request_repaint_after(std::time::Duration::from_millis(330));
+-    }
++        if !steady {
++            painter.ctx().request_repaint_after(std::time::Duration::from_millis(330));
++        }
++    }
++}
++
++/// The Atom VAIO presents through llvmpipe: a blinking caret redraws the whole
++/// window. Keep it visible without a periodic redraw; opt out for one launch.
++pub(crate) fn steady_caret() -> bool {
++    cfg!(all(target_os = "linux", target_arch = "x86")) && std::env::var("DESIGNCRAFT_STATIC_CARET").as_deref() != Ok("0")
+ }
+ 
+ /// A text field had keyboard focus when this frame began, per window: egui keeps one focus per
+@@ -1557,11 +1566,14 @@
+     {
+         let m = a * doc.text_xf(it);
+         let (p0, p1) = (xf.to_screen(m * Point::new(x, bl - asc)), xf.to_screen(m * Point::new(x, bl + desc)));
+-        let blink = (painter.ctx().input(|i| i.time) * 1.6) as i64 % 2 == 0;
++        let steady = steady_caret();
++        let blink = steady || (painter.ctx().input(|i| i.time) * 1.6) as i64 % 2 == 0;
+         if blink {
+             painter.line_segment([p0, p1], Stroke::new(1.0, Color32::BLACK));
+         }
+-        painter.ctx().request_repaint_after(std::time::Duration::from_millis(330));
++        if !steady {
++            painter.ctx().request_repaint_after(std::time::Duration::from_millis(330));
++        }
+     }
+ }
+ 
+--- a/crates/ui-egui/src/theme.rs
++++ b/crates/ui-egui/src/theme.rs
+@@ -542,7 +542,11 @@
+         s.spacing.button_padding = egui::vec2(6.0, 2.0);
+         s.spacing.interact_size = egui::vec2(20.0, 21.0);
+         s.spacing.menu_margin = egui::Margin::same(4);
+-        s.animation_time = 0.06;
++        s.animation_time = if crate::canvas::steady_caret() { 0.0 } else { 0.06 };
++        if crate::canvas::steady_caret() {
++            s.visuals.text_cursor.blink = false;
++            s.scroll_animation = egui::style::ScrollAnimation::none();
++        }
+     });
+ }
+ 
+--- a/crates/ui-egui/src/lib.rs
++++ b/crates/ui-egui/src/lib.rs
+@@ -1168,6 +1168,14 @@
+                 self.status(crate::i18n::tr(&self.ui.language, "Couldn't write recovery data: {error}").replace("{error}", &e.to_string()));
+             }
+         }
++        // An idle window must wake for recovery even with a steady caret and no
++        // input. Only dirty documents need this timer; no continuous redraw.
++        #[cfg(not(target_arch = "wasm32"))]
++        if self.session.recovery_dir.is_some() && self.session.documents().iter().any(|d| d.is_dirty()) {
++            let remaining = (self.session.prefs.recovery_minutes * 60.0).max(5.0) - (now - self.last_recovery);
++            let seconds = if remaining.is_finite() { remaining.clamp(0.05, 3600.0) } else { 30.0 };
++            ctx.request_repaint_after(std::time::Duration::from_secs_f64(seconds));
++        }
+         let dt = now - self.last_time;
+         if dt > 0.0 {
+             self.perf.fps = self.perf.fps * 0.9 + (1.0 / dt).min(240.0) * 0.1;

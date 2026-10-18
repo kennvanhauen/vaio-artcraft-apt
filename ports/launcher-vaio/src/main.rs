@@ -102,7 +102,7 @@ fn main() -> eframe::Result {
             settings.close_to_tray = false;
             settings.preferred_kinds = vec![PackageKind::Deb];
             let mut launcher = LauncherUi::new(&cc.egui_ctx, Box::new(apt::AptBackend::new(cc.egui_ctx.clone())), settings);
-            launcher.retain_apps(&["wordcraft", "gridcraft", "pdfcraft", "deckcraft", "vectorcraft"]);
+            launcher.retain_apps(&["wordcraft", "gridcraft", "pdfcraft", "deckcraft", "vectorcraft", "designcraft"]);
             Ok(Box::new(Shell { launcher, host: Desktop::default(), smoke, start: Instant::now(), shot_requested: false }))
         }),
     )

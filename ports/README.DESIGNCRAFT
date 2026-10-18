@@ -1,0 +1,26 @@
+DesignCraft 0.9.0 VAIO preview, revision 1
+Unofficial native i386 build for Ubuntu 16.04 / Atom Z540.
+
+Desktop: designcraft-vaio [FILE.designcraft|FILE.idml]
+Headless: designcraft-vaio-cli --help
+Example: designcraft-vaio-cli run --in Brochure.designcraft --export Brochure.pdf
+MCP: designcraft-vaio-cli mcp --automation-read-root DIR --automation-write-root DIR
+GUI control is opt-in (--control PORT), loopback only, without authentication.
+Enable it only while needed. Headless MCP supports explicit file-access roots.
+
+Glow presents the interface using the existing software OpenGL driver. Document
+rendering remains CPU based. Fonts and original upstream engines are retained.
+A steady caret and reduced motion avoid repeated llvmpipe redraws. Set
+DESIGNCRAFT_STATIC_CARET=0 for one launch to restore blinking/animation. Recovery
+wakes the idle editor on its snapshot schedule (default 30 seconds).
+The private libxcb is package-local; system libraries are not replaced.
+
+Suitable for small brochures, flyers and page layouts. Upstream is pre-alpha;
+complex external INDD/IDML, professional prepress and large layouts are unverified.
+Use explicit pages and manual threading: primary-frame Smart Text Reflow has a
+known upstream page-growth issue. Keep native originals and check exported pages.
+
+APT manages installation and updates through the existing Check & Install Updates
+frontend. Removal: sudo apt-get remove designcraft-vaio (documents/settings remain).
+Preferences/recovery default to ~/.config/designcraft and the upstream recovery
+location. DESIGNCRAFT_CONFIG_DIR selects an isolated profile including Recovery.

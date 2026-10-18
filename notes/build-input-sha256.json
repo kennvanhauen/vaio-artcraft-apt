@@ -1,0 +1,6 @@
+{
+  "rustup-init": "ec1b9233e7f72990ecd8e62063fa7f6c3dfc2bec8e97f88bff165f9100ac696a",
+  "zig.tar.xz": "39f3dc5e79c22088ce878edc821dedb4ca5a1cd9f5ef915e9b3cc3053e8faefa",
+  "libxcb-1.17.0.tar.xz": "599ebf9996710fea71622e6e184f3a8ad5b43d0e5fa8c4e407123c88a59a6d55",
+  "xcb-proto-1.17.0.tar.xz": "2c1bacd2110f4799f74de6ebb714b94cf6f80fb112316b1219480fd22562148c"
+}

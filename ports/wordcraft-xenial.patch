@@ -1,0 +1,129 @@
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -1076,6 +1076,7 @@
+  "egui-wgpu",
+  "egui-winit",
+  "egui_glow",
++ "glow",
+  "glutin",
+  "glutin-winit",
+  "image",
+--- a/apps/wordcraft/Cargo.toml
++++ b/apps/wordcraft/Cargo.toml
+@@ -19,7 +19,7 @@
+ wordcraft-ui-egui = { workspace = true }
+ # The control key file's location (shared with the MCP bridge).
+ wordcraft-control-key = { workspace = true }
+-eframe = { workspace = true, features = ["default_fonts", "wgpu", "accesskit", "wayland", "x11", "links"] }
++eframe = { workspace = true, features = ["default_fonts", "accesskit", "wayland", "x11", "links"] }
+ egui = { workspace = true }
+ serde_json = { workspace = true }
+ log = { workspace = true }
+@@ -27,6 +27,12 @@
+ [build-dependencies]
+ # Icon + VERSIONINFO for wordcraft.exe; build.rs only uses it when the target is Windows.
+ winresource = "0.1"
++
++[target.'cfg(all(target_os = "linux", target_arch = "x86"))'.dependencies]
++eframe = { workspace = true, features = ["glow"] }
++
++[target.'cfg(not(all(target_os = "linux", target_arch = "x86")))'.dependencies]
++eframe = { workspace = true, features = ["wgpu"] }
+ 
+ [target.'cfg(target_os = "macos")'.dependencies]
+ # Finder double-click, Open With, Dock drops and `open -a WordCraft letter.docx` arrive as a
+--- a/apps/wordcraft/src/main.rs
++++ b/apps/wordcraft/src/main.rs
+@@ -92,7 +92,7 @@
+         self.0.ui(ui);
+         self.3.show(frame);
+     }
+-    fn on_exit(&mut self) {
++    fn on_exit(&mut self, #[cfg(all(target_os = "linux", target_arch = "x86"))] _gl: Option<&eframe::glow::Context>) {
+         print::finish_pending_jobs();
+         save_prefs(&self.0);
+         if let Some(key_file) = &self.2 {
+@@ -381,6 +381,10 @@
+             .with_title_shown(false),
+         ..Default::default()
+     };
++    #[cfg(all(target_os = "linux", target_arch = "x86"))]
++    {
++        options.renderer = eframe::Renderer::Glow;
++    }
+     if let Some(icon) = app_icon() {
+         options.viewport = options.viewport.with_icon(icon);
+     }
+--- a/crates/ui-egui/src/control.rs
++++ b/crates/ui-egui/src/control.rs
+@@ -61,7 +61,12 @@
+         "focused": app.canvas.focused,
+         "title": app.title_stem(),
+         "dirty": app.session.dirty,
+-        "perf": {"frameMs": app.frame_ms, "renderMs": app.canvas.render_ms, "layoutMs": app.session.layout().ms},
++        "perf": {
++            "frameMs": app.frame_ms, "renderMs": app.canvas.render_ms, "layoutMs": app.session.layout().ms,
++            "frameNr": ctx.cumulative_frame_nr(),
++            "repaintCauses": ctx.repaint_causes().iter().map(ToString::to_string).collect::<Vec<_>>(),
++            "inputEvents": ctx.input(|i| i.raw.events.len()),
++        },
+     })
+ }
+ 
+--- a/crates/ui-egui/src/caret_glide.rs
++++ b/crates/ui-egui/src/caret_glide.rs
+@@ -35,6 +35,13 @@
+ use crate::WordApp;
+ use crate::canvas::Geometry;
+ 
++/// Optional steady caret for the VAIO software-rendered preview.
++/// Input and navigation still repaint; idle blinking no longer repaints the page.
++pub(crate) fn static_caret() -> bool {
++    static ENABLED: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
++    *ENABLED.get_or_init(|| cfg!(all(target_os = "linux", target_arch = "x86")) && std::env::var_os("WORDCRAFT_STATIC_CARET").is_some())
++}
++
+ /// How long a glide, and each fade of the blink, takes (seconds).
+ pub const GLIDE_SECS: f64 = 0.10;
+ /// The caret is on for this long, then off for this long (seconds).
+@@ -349,6 +356,9 @@
+ /// on-and-off blink says. Returns where and how strongly to draw it. `content_origin` is the scrolled
+ /// content's top-left on screen.
+ pub fn look(app: &WordApp, ui: &Ui, content_origin: Pos2, geo: &Geometry, target: Bar, shown: bool, since_ms: f64, on: bool) -> Look {
++    if static_caret() {
++        return Look { bar: target, opacity: 1.0, moving: false };
++    }
+     // Turned off in Options, Animation effects off (the setting, or the system's under "Use system
+     // setting"), or egui's own switch for "no animations": the caret jumps and blinks on and off.
+     if !app.ui.caret_animation || !app.animations_on() || ui.style().animation_time <= 0.0 || glide_secs() <= 0.0 {
+--- a/crates/ui-egui/src/canvas.rs
++++ b/crates/ui-egui/src/canvas.rs
+@@ -1459,7 +1459,7 @@
+                     let caret_color = caret_color_at(app, &layout, pi, ex + slot.x, base - slot.y + (slot.d - slot.a) / 2.0, view, dim_body);
+                     painter.line_segment(look.bar, Stroke::new(1.5, caret_color.gamma_multiply(look.opacity)));
+                 }
+-                if focused {
++                if focused && !crate::caret_glide::static_caret() {
+                     ui.ctx().request_repaint_after(std::time::Duration::from_millis(530 - (since as u64 % 530)));
+                     let cr = Rect::from_min_max(pos2(x, y0), pos2(x + 1.0, y1));
+                     ui.ctx().output_mut(|o| {
+@@ -1498,7 +1498,7 @@
+             if shown && look.opacity > 0.0 {
+                 painter.line_segment(look.bar, Stroke::new(1.5, caret_color(app).gamma_multiply(look.opacity)));
+             }
+-            if focused {
++            if focused && !crate::caret_glide::static_caret() {
+                 ui.ctx().request_repaint_after(std::time::Duration::from_millis(530 - (since as u64 % 530)));
+             }
+             // IME candidate window placement.
+--- a/crates/ui-egui/src/lib.rs
++++ b/crates/ui-egui/src/lib.rs
+@@ -363,7 +363,7 @@
+             theme: theme::Appearance::default(),
+             interface_size: theme::InterfaceSize::default(),
+             legacy_interface_size: None,
+-            animations: theme::Animations::default(),
++            animations: if cfg!(all(target_os = "linux", target_arch = "x86")) { theme::Animations::Off } else { theme::Animations::default() },
+             legacy_dark: None,
+             nav_tab: "headings".into(),
+             nav_pane: false,

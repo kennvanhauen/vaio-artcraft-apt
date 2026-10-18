@@ -9,8 +9,8 @@ import sys
 import tarfile
 
 root = Path(__file__).resolve().parents[1]
-version = sys.argv[1] if len(sys.argv) > 1 else '0.8.0~vaio4'
-if version not in ('0.8.0~vaio1', '0.8.0~vaio2', '0.8.0~vaio3', '0.8.0~vaio4'):
+version = sys.argv[1] if len(sys.argv) > 1 else '0.8.0~vaio5'
+if version not in ('0.8.0~vaio1', '0.8.0~vaio2', '0.8.0~vaio3', '0.8.0~vaio4', '0.8.0~vaio5'):
     raise SystemExit('Unknown preview version')
 files = {}
 
@@ -39,7 +39,7 @@ Icon=wordcraft-vaio
 Terminal=false
 StartupNotify=true
 Categories=Office;WordProcessor;
-MimeType=application/vnd.openxmlformats-officedocument.wordprocessingml.document;text/plain;
+MimeType=application/vnd.openxmlformats-officedocument.wordprocessingml.document;application/vnd.oasis.opendocument.text;application/rtf;text/rtf;text/markdown;text/html;text/plain;
 ''')
 add('usr/share/icons/hicolor/scalable/apps/wordcraft-vaio.svg',
     (root / 'upstream/wordcraft/assets/app-icon/wordcraft.svg').read_bytes())
@@ -55,14 +55,7 @@ Bundled private libxcb: https://xcb.freedesktop.org/
 License: permissive X11/MIT notices; see libxcb-COPYING.
 Original application icon is from the pinned WordCraft source tree.
 ''')
-add(doc+'README.VAIO', b'''Experimental WordCraft preview for Ubuntu 16.04 i386 / Sony VAIO P.
-Uses Glow and a private Xenial-compatible libxcb, without replacing system XCB.
-The launcher selects a steady caret to avoid expensive idle software rendering.
-Opening, UI typing, bold formatting and synthetic DOCX round trips were tested.
-Large documents, printing, complex layouts and other formats remain unverified.
-This package does not change the system's audio, power or screensaver settings.
-Install, upgrade and remove this application with APT/dpkg.
-''')
+add(doc+'README.VAIO', (root / 'ports/README.WORDCRAFT').read_bytes())
 metadata = {
     'package_version': version,
     'source_revision': 'd6f20f93fd22deb441b2216ecfd65acb15ea8b64',
@@ -83,7 +76,7 @@ Priority: optional
 Architecture: i386
 Maintainer: VAIO local build <vaio@localhost>
 Installed-Size: SIZE
-Depends: libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa
+Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa
 Description: WordCraft preview adapted for the Sony VAIO P and Ubuntu Xenial
  Experimental native 32-bit build with a software-rendering profile and
  a private compatible XCB library. Package-managed application files only.

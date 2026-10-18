@@ -43,17 +43,107 @@
          print::finish_pending_jobs();
          save_prefs(&self.0);
          if let Some(key_file) = &self.2 {
-@@ -381,6 +381,10 @@
+@@ -381,6 +381,11 @@
              .with_title_shown(false),
          ..Default::default()
      };
 +    #[cfg(all(target_os = "linux", target_arch = "x86"))]
 +    {
 +        options.renderer = eframe::Renderer::Glow;
++        options.viewport = options.viewport.with_inner_size([1100.0, 650.0]);
 +    }
      if let Some(icon) = app_icon() {
          options.viewport = options.viewport.with_icon(icon);
      }
+--- a/apps/wordcraft/src/file_dialogs.rs
++++ b/apps/wordcraft/src/file_dialogs.rs
+@@ -27,7 +27,7 @@
+ pub type Hook = Box<dyn Fn(FileDialogRequest) -> Receiver<FileDialogAnswer>>;
+ 
+ /// A picker's answer, waited for off the UI thread.
+-type Picking = Pin<Box<dyn Future<Output = Option<rfd::FileHandle>> + Send>>;
++type Picking = Pin<Box<dyn Future<Output = Option<std::path::PathBuf>> + Send>>;
+ 
+ /// Shows the dialogs the app queued; lives in the eframe app, which has the window.
+ pub struct Launcher {
+@@ -56,13 +56,32 @@
+             // Built here, on the UI thread: macOS shows the panel as a sheet on the window now.
+             let dialog = rfd::AsyncFileDialog::new().set_parent(parent);
+             let picking: Picking = match req {
+-                FileDialogRequest::Open { purpose } => Box::pin(open_filters(dialog, &purpose).pick_file()),
++                FileDialogRequest::Open { purpose } => {
++                    Box::pin(async move { open_filters(dialog, &purpose).pick_file().await.map(|handle| handle.path().to_path_buf()) })
++                }
+                 FileDialogRequest::Save { name } => {
+                     let mut dialog = dialog.set_file_name(name.clone());
+                     for (label, exts) in save_filters(&name) {
+                         dialog = dialog.add_filter(label, &exts);
+                     }
+-                    Box::pin(dialog.save_file())
++                    let confirm = rfd::AsyncMessageDialog::new()
++                        .set_parent(parent)
++                        .set_title("Replace file?")
++                        .set_level(rfd::MessageLevel::Warning)
++                        .set_buttons(rfd::MessageButtons::YesNo);
++                    Box::pin(async move {
++                        let picked = dialog.save_file().await?;
++                        let path = selected_save_path(picked.path(), &name);
++                        // Zenity confirms the typed path. A default extension can change it,
++                        // so an existing normalized target needs its own explicit confirmation.
++                        if path != picked.path() && path.exists() {
++                            let answer = confirm.set_description(format!("{} already exists. Replace it?", path.display())).show().await;
++                            if answer != rfd::MessageDialogResult::Yes {
++                                return None;
++                            }
++                        }
++                        Some(path)
++                    })
+                 }
+             };
+             let ctx = self.ctx.clone();
+@@ -70,7 +89,7 @@
+                 // The picker only starts when first polled: without a system dialog it never does.
+                 let picked = match no_system_dialog() {
+                     Some(reason) => Err(reason),
+-                    None => Ok(pollster::block_on(picking).map(|f| f.path().to_string_lossy().to_string())),
++                    None => Ok(pollster::block_on(picking).map(|path| path.to_string_lossy().to_string())),
+                 };
+                 let _ = answer.send(picked);
+                 ctx.request_repaint();
+@@ -143,6 +162,16 @@
+     std::env::var_os("PATH").is_some_and(|paths| std::env::split_paths(&paths).any(|dir| dir.join(program).is_file()))
+ }
+ 
++/// Older Zenity does not add the selected default extension to a bare filename.
++fn selected_save_path(path: &std::path::Path, suggested: &str) -> std::path::PathBuf {
++    let mut selected = path.to_path_buf();
++    if path.extension().is_none_or(|extension| extension.is_empty()) {
++        let extension = save_exts(suggested).into_iter().next().unwrap_or_else(|| "docx".into());
++        selected.set_extension(extension);
++    }
++    selected
++}
++
+ /// The file types Save As offers: every format the engine saves, with the suggested name's own
+ /// format first. rfd makes a filter's first extension the dialog's default, which the Windows,
+ /// macOS and Linux panels append to a file name the user typed without one; with no filter at
+@@ -193,7 +222,15 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-    use super::{save_exts, save_filters};
++    use super::{save_exts, save_filters, selected_save_path};
++    #[test]
++    fn bare_save_names_get_the_suggested_format_without_replacing_typed_formats() {
++        use std::path::{Path, PathBuf};
++        assert_eq!(selected_save_path(Path::new("/tmp/v1.2/report"), "Document.docx"), PathBuf::from("/tmp/v1.2/report.docx"));
++        assert_eq!(selected_save_path(Path::new("/tmp/report.odt"), "Document.docx"), PathBuf::from("/tmp/report.odt"));
++        assert_eq!(selected_save_path(Path::new("/tmp/export"), "Document.pdf"), PathBuf::from("/tmp/export.pdf"));
++        assert_eq!(selected_save_path(Path::new("report."), "Document.rtf"), PathBuf::from("report.rtf"));
++    }
+ 
+     /// #1399: the Save dialog's type list has one named entry per format, the suggested one first,
+     /// every savable extension exactly once.
 --- a/crates/ui-egui/src/control.rs
 +++ b/crates/ui-egui/src/control.rs
 @@ -61,7 +61,12 @@
@@ -98,16 +188,18 @@
      if !app.ui.caret_animation || !app.animations_on() || ui.style().animation_time <= 0.0 || glide_secs() <= 0.0 {
 --- a/crates/ui-egui/src/canvas.rs
 +++ b/crates/ui-egui/src/canvas.rs
-@@ -1459,7 +1459,7 @@
-                     let caret_color = caret_color_at(app, &layout, pi, ex + slot.x, base - slot.y + (slot.d - slot.a) / 2.0, view, dim_body);
+@@ -1460,7 +1460,9 @@
                      painter.line_segment(look.bar, Stroke::new(1.5, caret_color.gamma_multiply(look.opacity)));
                  }
--                if focused {
-+                if focused && !crate::caret_glide::static_caret() {
-                     ui.ctx().request_repaint_after(std::time::Duration::from_millis(530 - (since as u64 % 530)));
+                 if focused {
+-                    ui.ctx().request_repaint_after(std::time::Duration::from_millis(530 - (since as u64 % 530)));
++                    if !crate::caret_glide::static_caret() {
++                        ui.ctx().request_repaint_after(std::time::Duration::from_millis(530 - (since as u64 % 530)));
++                    }
                      let cr = Rect::from_min_max(pos2(x, y0), pos2(x + 1.0, y1));
                      ui.ctx().output_mut(|o| {
-@@ -1498,7 +1498,7 @@
+                         o.ime = Some(egui::output::IMEOutput {
+@@ -1498,7 +1500,7 @@
              if shown && look.opacity > 0.0 {
                  painter.line_segment(look.bar, Stroke::new(1.5, caret_color(app).gamma_multiply(look.opacity)));
              }

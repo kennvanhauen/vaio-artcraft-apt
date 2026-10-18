@@ -2,6 +2,7 @@
 use artcraft_launcher_core::protocol::{Backend, Capabilities, Command, Event, JobPhase, LatestRelease, Origin, Source};
 use artcraft_launcher_core::release::{Asset, Release};
 use artcraft_launcher_core::{InstallSource, Installed, Platform, version};
+use std::path::{Path, PathBuf};
 use std::process::Command as Process;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, mpsc};
@@ -31,11 +32,73 @@ fn display_version(value: &str) -> Option<version::Version> {
     version::parse(value)
 }
 
+fn cache_directory() -> Result<PathBuf, String> {
+    let root = std::env::var_os("XDG_CACHE_HOME")
+        .map(PathBuf::from)
+        .filter(|path| path.is_absolute())
+        .or_else(|| std::env::var_os("HOME").map(|home| PathBuf::from(home).join(".cache")))
+        .ok_or("Cannot locate the application cache")?;
+    Ok(root.join("vaio-app-launcher/apt"))
+}
+
+fn apt_options(cache: &Path) -> Vec<String> {
+    vec![
+        "-o".into(),
+        "Dir::Etc::sourcelist=/etc/apt/sources.list.d/vaio-artcraft.list".into(),
+        "-o".into(),
+        "Dir::Etc::sourceparts=-".into(),
+        "-o".into(),
+        format!("Dir::State::lists={}", cache.join("lists").display()),
+        "-o".into(),
+        format!("Dir::Cache={}", cache.display()),
+        "-o".into(),
+        format!("Dir::Cache::pkgcache={}", cache.join("pkgcache.bin").display()),
+        "-o".into(),
+        format!("Dir::Cache::srcpkgcache={}", cache.join("srcpkgcache.bin").display()),
+        "-o".into(),
+        "Debug::NoLocking=1".into(),
+        "-o".into(),
+        "Acquire::Languages=none".into(),
+        "-o".into(),
+        "Acquire::https::Timeout=15".into(),
+        "-o".into(),
+        "Acquire::Retries=0".into(),
+    ]
+}
+
+/// Fetch only signed project metadata, unprivileged. No system index/package changes.
+pub fn refresh() -> Result<serde_json::Value, String> {
+    let cache = cache_directory()?;
+    for child in ["lists/partial", "archives/partial"] {
+        std::fs::create_dir_all(cache.join(child)).map_err(|error| format!("Cannot prepare APT cache: {error}"))?;
+    }
+    let mut args = apt_options(&cache);
+    args.push("update".into());
+    let output =
+        Process::new("apt-get").args(&args).env("LC_ALL", "C").output().map_err(|error| format!("Cannot check the signed archive: {error}"))?;
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    // APT 1.2 can exit successfully after an acquisition failed and it kept old lists.
+    if !output.status.success()
+        || stdout.lines().any(|line| line.starts_with("Err:"))
+        || stderr.lines().any(|line| line.starts_with("W:") || line.starts_with("E:"))
+    {
+        return Err(format!(
+            "Could not refresh the signed archive; saved package state is still available. {}",
+            stderr.chars().take(1200).collect::<String>()
+        ));
+    }
+    snapshot()
+}
+
 pub fn snapshot() -> Result<serde_json::Value, String> {
     let installed = output("dpkg-query", &["-W", "-f=${db:Status-Abbrev}\t${Version}\n", PACKAGE])
         .ok()
         .and_then(|line| line.strip_prefix("ii ").and_then(|v| v.split_whitespace().next()).map(str::to_owned));
-    let policy = output("apt-cache", &["policy", PACKAGE])?;
+    let mut args = cache_directory().ok().filter(|cache| cache.join("lists").is_dir()).map(|cache| apt_options(&cache)).unwrap_or_default();
+    args.extend(["policy".to_string(), PACKAGE.to_string()]);
+    let refs: Vec<&str> = args.iter().map(String::as_str).collect();
+    let policy = output("apt-cache", &refs)?;
     let candidate = policy.lines().find_map(|line| line.trim().strip_prefix("Candidate: ")).filter(|value| *value != "(none)").map(str::to_owned);
     Ok(serde_json::json!({"package": PACKAGE, "installed": installed, "candidate": candidate,
         "binary": "/usr/bin/wordcraft-vaio", "updates": "APT", "policy": policy}))
@@ -79,7 +142,7 @@ impl AptBackend {
         let (sender, receiver) = mpsc::channel();
         Self { sender, receiver, context, query_busy: Arc::new(AtomicBool::new(false)), job_busy: Arc::new(AtomicBool::new(false)) }
     }
-    fn query(&self) {
+    fn query(&self, online: bool) {
         if self.query_busy.swap(true, Ordering::SeqCst) {
             return;
         }
@@ -88,6 +151,17 @@ impl AptBackend {
         let busy = self.query_busy.clone();
         std::thread::spawn(move || {
             let _ = sender.send(Event::CheckStarted);
+            let source = if online {
+                match refresh() {
+                    Ok(_) => Source::Apt,
+                    Err(error) => {
+                        let _ = sender.send(Event::JobFinished { app: APP.into(), result: Err(error) });
+                        Source::Cache
+                    }
+                }
+            } else {
+                Source::Cache
+            };
             match state_events() {
                 Ok(events) => {
                     for event in events {
@@ -98,7 +172,7 @@ impl AptBackend {
                     let _ = sender.send(Event::Latest { app: APP.into(), latest: LatestRelease::Failed(error), from: Origin::Apt });
                 }
             }
-            let _ = sender.send(Event::CheckFinished { at: now(), source: Source::Apt, rate_limited_until: None });
+            let _ = sender.send(Event::CheckFinished { at: now(), source, rate_limited_until: None });
             busy.store(false, Ordering::SeqCst);
             context.request_repaint();
         });
@@ -117,15 +191,16 @@ impl AptBackend {
             // All privileged executable paths and arguments are fixed. No remote shell scripts,
             // unverified downloads, mutable user helper files or interpolated input.
             let command = if remove {
-                "/usr/bin/uxterm -T 'ArtCraft Launcher - APT' -e /usr/lib/artcraft-launcher-vaio/apt-action remove wordcraft-vaio"
+                "/usr/bin/uxterm -T 'VAIO App Launcher - APT' -e /usr/lib/artcraft-launcher-vaio/apt-action remove wordcraft-vaio"
             } else {
-                "/usr/bin/uxterm -T 'ArtCraft Launcher - APT' -e /usr/lib/artcraft-launcher-vaio/apt-action install wordcraft-vaio"
+                "/usr/bin/uxterm -T 'VAIO App Launcher - APT' -e /usr/lib/artcraft-launcher-vaio/apt-action install wordcraft-vaio"
             };
+            let expected = snapshot().ok().and_then(|state| state.get("candidate").and_then(|v| v.as_str()).map(str::to_owned));
             let result = Process::new("/usr/bin/gksu")
                 .args([
                     "-S",
                     "-m",
-                    "ArtCraft Launcher will use APT for the WordCraft preview. Review and confirm the package operation in the terminal.",
+                    "VAIO App Launcher will use APT for the WordCraft preview. Review and confirm the package operation in the terminal.",
                     command,
                 ])
                 .status()
@@ -137,6 +212,27 @@ impl AptBackend {
                         Err("APT operation was cancelled or failed. See the APT terminal output.".into())
                     }
                 });
+            let result = result.and_then(|message| {
+                let state = snapshot()?;
+                let installed = state.get("installed").and_then(|value| value.as_str());
+                let completed = if remove {
+                    installed.is_none()
+                } else {
+                    installed.is_some_and(|actual| {
+                        expected.as_deref().is_none_or(|candidate| {
+                            Process::new("/usr/bin/dpkg")
+                                .args(["--compare-versions", actual, "ge", candidate])
+                                .status()
+                                .is_ok_and(|status| status.success())
+                        })
+                    })
+                };
+                if completed {
+                    Ok(message)
+                } else {
+                    Err("The requested package change was not completed. Your existing package state was retained.".into())
+                }
+            });
             if let Ok(events) = state_events() {
                 for event in events {
                     let _ = sender.send(event);
@@ -154,14 +250,20 @@ fn now() -> i64 {
 impl Backend for AptBackend {
     fn send(&mut self, command: Command) {
         match command {
-            Command::CheckForUpdates { .. } | Command::Detect => self.query(),
+            Command::CheckForUpdates { .. } => self.query(true),
+            Command::Detect => self.query(false),
             Command::Install { app } => self.job(&app, false),
             Command::Uninstall { app } => self.job(&app, true),
-            Command::Launch { app } if app == APP => {
-                if let Err(error) = Process::new("/usr/bin/wordcraft-vaio").spawn() {
+            Command::Launch { app } if app == APP => match Process::new("/usr/bin/wordcraft-vaio").spawn() {
+                Ok(mut child) => {
+                    std::thread::spawn(move || {
+                        let _ = child.wait();
+                    });
+                }
+                Err(error) => {
                     let _ = self.sender.send(Event::JobFinished { app, result: Err(error.to_string()) });
                 }
-            }
+            },
             Command::Reveal { app } if app == APP => {
                 let _ = Process::new("xdg-open").arg("/usr/share/doc/wordcraft-vaio").spawn();
             }

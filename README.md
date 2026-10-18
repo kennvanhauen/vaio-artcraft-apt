@@ -73,9 +73,10 @@ and reduced motion. Install, update and remove go through a root-owned APT helpe
 with a visible administrator prompt and terminal confirmation. No user-owned or
 downloaded helper is executed as root. The launcher itself is APT-managed.
 
-Refresh reads the cached APT state. Use the system's existing **Check & Install
-Updates** frontend to refresh repositories. The launcher does not run a system
-upgrade silently. Settings are currently session-only; there is no tray or login
+Refresh now downloads and verifies signed project APT metadata in an unprivileged
+application cache. Offline failures are reported while cached state remains usable.
+The existing **Check & Install Updates** frontend also updates these packages.
+The launcher does not run a system upgrade silently. Settings now persist between runs and recover from invalid data. There is no tray or login
 autostart. Additional applications remain outside this verified preview.
 
 To build, obtain the pinned launcher checkout under `upstream/craft-launcher`,
@@ -103,3 +104,20 @@ archive, not an unlimited binary store.
 
 The source recipes and VAIO icon additions use MIT OR Apache-2.0 like the upstream
 code. `ports/launcher-vaio/ATTRIBUTION.md` records the original generic tile icon.
+
+## Everyday workflow checkpoint
+
+WordCraft preview 5 and launcher preview 2 add safe default filename extensions,
+confirmation before replacing an extension-normalized target, preserved math IME
+positioning, a VAIO-sized initial window, saved launcher preferences, fresh signed
+update checks without root, offline fallback and child-process reaping.
+
+On the VAIO, a 1,284-word four-page report passed search/replace, typing, undo/redo,
+save/reopen, scrolling and ODT/RTF/HTML/TXT/Markdown/PDF export. A table and picture
+survived a DOCX → ODT → DOCX round trip; headers/footers and searchable Unicode
+text were checked in PDF. Native Open/Save dialogs worked without blocking the
+application. Bare-name save and cancelled overwrite were verified interactively.
+Launcher preferences survived restart and recovered from invalid settings.
+726 engine regressions and three native file-dialog tests passed on the Mac.
+No physical printer is configured, so physical print output remains untested.
+See `ports/README.WORDCRAFT` for a short everyday-use guide.

@@ -26,6 +26,9 @@ struct Shell {
     shot_requested: bool,
 }
 impl eframe::App for Shell {
+    fn save(&mut self, storage: &mut dyn eframe::Storage) {
+        eframe::set_value(storage, "vaio-launcher-settings", &self.launcher.settings);
+    }
     fn logic(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         self.launcher.logic(ctx, &mut self.host);
         if self.host.quit {
@@ -67,8 +70,8 @@ fn main() -> eframe::Result {
         println!("VAIO App Launcher {} (APT preview)", env!("CARGO_PKG_VERSION"));
         return Ok(());
     }
-    if args.iter().any(|arg| arg == "--check") {
-        match apt::snapshot() {
+    if args.iter().any(|arg| arg == "--check" || arg == "--refresh") {
+        match if args.iter().any(|arg| arg == "--refresh") { apt::refresh() } else { apt::snapshot() } {
             Ok(snapshot) => println!("{}", snapshot),
             Err(error) => {
                 eprintln!("{error}");
@@ -78,12 +81,25 @@ fn main() -> eframe::Result {
         return Ok(());
     }
     let smoke = args.iter().any(|arg| arg == "--smoke");
-    let viewport = egui::ViewportBuilder::default().with_inner_size([1100.0, 650.0]);
+    let pixels = (0..64)
+        .flat_map(|y| {
+            (0..64).flat_map(move |x| {
+                let tile = ((12..29).contains(&x) || (35..52).contains(&x)) && ((12..29).contains(&y) || (35..52).contains(&y));
+                if tile { [135, 184, 250, 255] } else { [32, 38, 48, 255] }
+            })
+        })
+        .collect();
+    let viewport = egui::ViewportBuilder::default()
+        .with_app_id("vaio-app-launcher")
+        .with_icon(egui::IconData { rgba: pixels, width: 64, height: 64 })
+        .with_inner_size([1100.0, 650.0]);
     eframe::run_native(
         "VAIO App Launcher",
-        eframe::NativeOptions { renderer: eframe::Renderer::Glow, viewport, ..Default::default() },
+        eframe::NativeOptions { renderer: eframe::Renderer::Glow, viewport, persist_window: true, ..Default::default() },
         Box::new(move |cc| {
-            let settings = Settings { close_to_tray: false, auto_update: false, preferred_kinds: vec![PackageKind::Deb], ..Default::default() };
+            let mut settings: Settings = cc.storage.and_then(|storage| eframe::get_value(storage, "vaio-launcher-settings")).unwrap_or_default();
+            settings.close_to_tray = false;
+            settings.preferred_kinds = vec![PackageKind::Deb];
             let mut launcher = LauncherUi::new(&cc.egui_ctx, Box::new(apt::AptBackend::new(cc.egui_ctx.clone())), settings);
             launcher.retain_apps(&["wordcraft"]);
             Ok(Box::new(Shell { launcher, host: Desktop::default(), smoke, start: Instant::now(), shot_requested: false }))

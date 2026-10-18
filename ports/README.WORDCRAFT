@@ -1,0 +1,34 @@
+WordCraft for the VAIO — everyday use
+
+Open WordCraft from the Office menu or VAIO App Launcher. The VAIO build uses a
+steady caret and reduced animations to keep idle CPU use low. Its initial window
+fits the 1600 x 768 screen. You can resize it normally.
+
+Use Ctrl+O to open a document, Ctrl+S to save, and F12 / Save As for a new name or
+format. DOCX is the normal working format. ODT, RTF, HTML, Markdown and plain text
+were checked with a four-page synthetic report. Enter the desired extension when
+choosing another format, for example report.odt. A bare Save As name gets the
+suggested document extension. Replacing an existing file requires confirmation.
+
+Ctrl+F finds text. The Home tab provides formatting and find/replace. Ctrl+Z and
+Ctrl+Y undo and redo. Tables, pictures, headings, lists, headers and footers were
+checked in ordinary documents. Keep an original copy before exchanging complex
+layouts with other word processors; not every upstream feature has been audited.
+
+Use Export PDF for sharing or printing elsewhere. File > Print previews the
+pages and discovers printers configured in the system. No physical printer is
+configured on this VAIO, so physical output has not been tested. A four-page PDF
+with searchable accented, Greek and Cyrillic text and an embedded picture passed.
+
+The VAIO is CPU-rendered. Short reports are the tested working range; large
+image-heavy documents may be slow. The app's advanced upstream features remain
+available, but this port is not a promise of Microsoft Word compatibility.
+
+VAIO App Launcher saves its view, theme and language choices. Refresh verifies
+new project metadata with APT in a user cache, without asking for administrator
+access. Offline checks report the problem and retain saved package information.
+Installation and updates still use APT and ask for local administrator access.
+The existing Check & Install Updates tool can also update these packages.
+
+Application packages: wordcraft-vaio, artcraft-launcher-vaio.
+Project sources and signed archive: https://github.com/kennvanhauen/vaio-artcraft-apt

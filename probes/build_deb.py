@@ -4,14 +4,17 @@ import gzip
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 import sys
 import tarfile
 
 root = Path(__file__).resolve().parents[1]
 version = sys.argv[1] if len(sys.argv) > 1 else '0.8.0~vaio5'
-if version not in ('0.8.0~vaio1', '0.8.0~vaio2', '0.8.0~vaio3', '0.8.0~vaio4', '0.8.0~vaio5'):
+if not os.environ.get('VAIO_PACKAGE_SPEC') and version not in ('0.8.0~vaio1', '0.8.0~vaio2', '0.8.0~vaio3', '0.8.0~vaio4', '0.8.0~vaio5'):
     raise SystemExit('Unknown preview version')
+from update_package_spec import candidate_spec
+version, revision = candidate_spec(root, 'wordcraft', version, 'd6f20f93fd22deb441b2216ecfd65acb15ea8b64')
 files = {}
 
 def add(name, data, mode=0o644):
@@ -58,7 +61,7 @@ Original application icon is from the pinned WordCraft source tree.
 add(doc+'README.VAIO', (root / 'ports/README.WORDCRAFT').read_bytes())
 metadata = {
     'package_version': version,
-    'source_revision': 'd6f20f93fd22deb441b2216ecfd65acb15ea8b64',
+    'source_revision': revision,
     'rust': '1.95.0', 'zig': '0.14.1', 'target': 'i686-unknown-linux-gnu',
     'cpu': 'atom', 'glibc_target': '2.23', 'renderer': 'Glow',
     'private_libxcb': '1.17.0',

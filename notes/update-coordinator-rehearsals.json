@@ -1,0 +1,201 @@
+{
+  "unit_tests_passed": 21,
+  "rehearsals": {
+    "cadcraft": {
+      "package_sha256": "b106ca156e52584e09140dd279726c3b18fdd5e34a4590abce8aaaa8e2ba62b3",
+      "installed_version": "0.9.0~vaio1",
+      "steps": [
+        "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+        "cadcraft_headless.py",
+        "cadcraft_gui.py",
+        "cadcraft_native_dialogs.py"
+      ],
+      "measurements": [
+        {
+          "idle_cpu_percent": 0.33,
+          "rss_kib": 117704,
+          "probe": "cadcraft_gui.py"
+        }
+      ],
+      "passed": true,
+      "temperatures_millicelsius_after": [
+        67000
+      ],
+      "throttle_counts_unchanged": true
+    },
+    "deckcraft": {
+      "package_sha256": "3282392ab734cdb9162bc496af0ec17d95e9b050f0200c69b8dffde480110ebd",
+      "installed_version": "0.8.0~vaio1",
+      "steps": [
+        "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+        "CLI startup without display variables",
+        "deckcraft_smoke.py",
+        "deckcraft_native_dialogs.py"
+      ],
+      "measurements": [
+        {
+          "probe": "deckcraft_smoke.py",
+          "rss_kib": 109308,
+          "idle_cpu_percent": 0.0
+        }
+      ],
+      "passed": true,
+      "temperatures_millicelsius_after": [
+        69000
+      ],
+      "throttle_counts_unchanged": true
+    },
+    "designcraft": {
+      "package_sha256": "342e5b7a3d4226b40347695eebcfaf5fe1e091366f47efe78ab4aef60ce799f5",
+      "installed_version": "0.9.0~vaio1",
+      "steps": [
+        "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+        "designcraft_headless.py",
+        "designcraft_gui.py",
+        "designcraft_native_dialogs.py"
+      ],
+      "measurements": [
+        {
+          "probe": "designcraft_gui.py",
+          "idle_cpu_percent": 0.0,
+          "rss_kib": 133892
+        }
+      ],
+      "passed": true,
+      "temperatures_millicelsius_after": [
+        66000
+      ],
+      "throttle_counts_unchanged": true
+    },
+    "figcraft": {
+      "package_sha256": "e401e2f332377de8feb467e6bb8b10ff66609c2251e485044790e2268a8e9edd",
+      "installed_version": "0.7.0~vaio1",
+      "steps": [
+        "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+        "figcraft_headless.py",
+        "figcraft_gui.py",
+        "figcraft_native_dialogs.py"
+      ],
+      "measurements": [
+        {
+          "probe": "figcraft_gui.py",
+          "idle_cpu_percent": 0.17,
+          "rss_kib": 111544
+        }
+      ],
+      "passed": true,
+      "temperatures_millicelsius_after": [
+        70000
+      ],
+      "throttle_counts_unchanged": true
+    },
+    "gridcraft": {
+      "package_sha256": "dca03a831cb13308c1d4da1aa91dbfdb6eb88927759915b3c8b0815bf51cbc0c",
+      "installed_version": "0.8.0~vaio1",
+      "steps": [
+        "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+        "CLI startup without display variables",
+        "gridcraft_smoke.py",
+        "gridcraft_native_dialogs.py"
+      ],
+      "measurements": [
+        {
+          "idle_cpu_percent": 0.2,
+          "probe": "gridcraft_smoke.py",
+          "rss_kib": 88592
+        }
+      ],
+      "passed": true,
+      "temperatures_millicelsius_after": [
+        68000
+      ],
+      "throttle_counts_unchanged": true
+    },
+    "launcher": {
+      "package_sha256": "89e9224b50e8d0b2c62f79e1a9321e44a438f939a7cdb1ec96a03b5670c37a6e",
+      "installed_version": "0.5.1~vaio9",
+      "steps": [
+        "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+        "launcher_eight_open.py"
+      ],
+      "measurements": [
+        {
+          "idle_cpu_percent": 0.0,
+          "rss_kib": 70340,
+          "probe": "launcher_eight_open.py"
+        }
+      ],
+      "passed": true,
+      "temperatures_millicelsius_after": [
+        57000
+      ],
+      "throttle_counts_unchanged": true
+    },
+    "pdfcraft": {
+      "package_sha256": "0d2c56ceaae2376b33f4e5e5a8118ed9f487ec9d78e3abe300c9568092ad0a61",
+      "installed_version": "0.9.0~vaio1",
+      "steps": [
+        "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+        "CLI startup without display variables",
+        "pdfcraft_smoke.py",
+        "pdfcraft_native_dialogs.py"
+      ],
+      "measurements": [
+        {
+          "idle_cpu_percent": 0.2,
+          "probe": "pdfcraft_smoke.py",
+          "rss_kib": 86956
+        }
+      ],
+      "passed": true,
+      "temperatures_millicelsius_after": [
+        72000
+      ],
+      "throttle_counts_unchanged": true
+    },
+    "vectorcraft": {
+      "package_sha256": "1ef5efd1a1a018bf44ee18b673cca32da372ff1aea48ed8add1df9d82aa11504",
+      "installed_version": "0.13.1~vaio1",
+      "steps": [
+        "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+        "vectorcraft_headless.py",
+        "vectorcraft_gui.py",
+        "vectorcraft_native_dialogs.py"
+      ],
+      "measurements": [
+        {
+          "rss_kib": 113416,
+          "probe": "vectorcraft_gui.py",
+          "idle_cpu_percent": 1.2
+        }
+      ],
+      "passed": true,
+      "temperatures_millicelsius_after": [
+        61000
+      ],
+      "throttle_counts_unchanged": true
+    },
+    "wordcraft": {
+      "package_sha256": "c4207e366105b636493985a74d20f7fceddcaf1f8152e9da546d74f425fad16f",
+      "installed_version": "0.8.0~vaio5",
+      "steps": [
+        "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+        "CLI startup without display variables",
+        "wordcraft_smoke.py",
+        "native_dialog_test.py"
+      ],
+      "measurements": [
+        {
+          "rss_kib": 100220,
+          "idle_cpu_percent": 0.0,
+          "probe": "wordcraft_smoke.py"
+        }
+      ],
+      "passed": true,
+      "temperatures_millicelsius_after": [
+        70000
+      ],
+      "throttle_counts_unchanged": true
+    }
+  }
+}

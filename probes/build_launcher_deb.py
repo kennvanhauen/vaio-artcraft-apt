@@ -8,7 +8,8 @@ from pathlib import Path
 import tarfile
 
 root = Path(__file__).resolve().parents[1]
-version = '0.5.1~vaio9'
+from update_package_spec import candidate_spec
+version, revision = candidate_spec(root, 'launcher', '0.5.1~vaio9', '9cef5d2a0f207da50d31547a726057ea40f7e5b4')
 binary = (root / '.build/wordcraft-target/i686-unknown-linux-gnu/release/artcraft-launcher-vaio').read_bytes()
 if binary[:6] != b'\x7fELF\x01\x01' or int.from_bytes(binary[18:20], 'little') != 3:
     raise SystemExit('Not an i386 ELF executable')
@@ -44,7 +45,7 @@ add(doc+'ATTRIBUTION-VAIO.md', (root/'ports/launcher-vaio/ATTRIBUTION.md').read_
 add(doc+'libxcb-COPYING', (root/'.build/libxcb-1.17.0/COPYING').read_bytes())
 add(doc+'README.VAIO', b'''VAIO App Launcher is an unofficial modification based on ArtCraft Launcher.
 The original ArtCraft trademarks have been removed and replaced with a generic tile icon.
-Offers WordCraft, GridCraft, PdfCraft, DeckCraft, VectorCraft, DesignCraft and FigCraft VAIO previews. Uses Glow and reduced motion.
+Offers WordCraft, GridCraft, PdfCraft, DeckCraft, VectorCraft, DesignCraft, FigCraft and CADCraft VAIO previews. Uses Glow and reduced motion.
 Package state is read from dpkg. Refresh fetches and verifies signed project APT metadata
 into the user cache, without root access or a system-wide update. Cached results remain
 available offline; a failed refresh is reported. The existing system Check & Install
@@ -56,7 +57,7 @@ The launcher itself is updated and removed through APT, without a separate updat
 View/theme/language and window preferences persist between runs and recover from
 invalid data. No autostart, tray daemon or downloaded privileged helper is installed.
 ''')
-metadata={'package_version':version,'upstream_revision':'9cef5d2a0f207da50d31547a726057ea40f7e5b4',
+metadata={'package_version':version,'upstream_revision':revision,
  'binary_sha256':hashlib.sha256(binary).hexdigest(),'target':'i686-unknown-linux-gnu',
  'cpu':'atom','glibc_target':'2.23','renderer':'Glow','private_libxcb':'1.17.0',
  'port_patch_sha256':hashlib.sha256((root/'ports/launcher-xenial.patch').read_bytes()).hexdigest()}

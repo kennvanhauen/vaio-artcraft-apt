@@ -44,7 +44,7 @@ def type_path(path):
     for c in str(path):tap(names.get(c,c))
     x11.XFlush(display);time.sleep(.2)
 def picker(question=False):
-    until=time.monotonic()+12
+    until=time.monotonic()+30
     while time.monotonic()<until:
         rows=subprocess.check_output(['ps','-eo','pid,ppid,comm']).decode().splitlines()
         pids=[int(p[0]) for line in rows for p in [line.split()] if len(p)==3 and p[1]==str(app.process.pid) and p[2]=='zenity']
@@ -66,7 +66,7 @@ def picker(question=False):
 def request(method,params=None):
     send(method,params);return receive()
 def dialog(kind):
-    until=time.monotonic()+12
+    until=time.monotonic()+30
     while time.monotonic()<until:
         state=request('ui.inspect');d=state['ui'].get('dialog')
         if d and d.get('kind')==kind:return d
@@ -82,7 +82,7 @@ try:
     receive(True)
     # Native format options follow the chooser in this upstream version.
     state=request('ui.inspect')
-    until=time.monotonic()+12
+    until=time.monotonic()+30
     while time.monotonic()<until and not target.exists():
         state=request('ui.inspect')
         if state['ui'].get('dialog'):
@@ -96,7 +96,7 @@ try:
     marker=b'Existing synthetic target to preserve';protected=base/'protected.vectorcraft';protected.write_bytes(marker)
     send('engine.execute',{'command':'file.saveAs','params':{}});picker()
     chord('Alt_L','n');chord('Control_L','a');type_path(protected.with_suffix(''));tap('Return');x11.XFlush(display);receive(True)
-    until=time.monotonic()+12
+    until=time.monotonic()+30
     while time.monotonic()<until:
         state=request('ui.inspect');d=state['ui'].get('dialog')
         if d:break

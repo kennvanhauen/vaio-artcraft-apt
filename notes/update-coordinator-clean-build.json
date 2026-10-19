@@ -1,0 +1,21 @@
+{
+  "source_revision": "62329310d751f97d3dadffee530752f24bec4531",
+  "package_version": "0.9.0~vaio2",
+  "package_sha256": "398bf6364cebd83fe681b7242097143ba32a0368974bab330d1014cf49a41023",
+  "build_passed": true,
+  "target_passed": true,
+  "target_steps": [
+    "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+    "cadcraft_headless.py",
+    "cadcraft_gui.py",
+    "cadcraft_native_dialogs.py"
+  ],
+  "measurements": [
+    {
+      "rss_kib": 116928,
+      "idle_cpu_percent": 0.33,
+      "probe": "cadcraft_gui.py"
+    }
+  ],
+  "publication_blocked": "Missing host acceptance evidence; complete host-check and verify before publication"
+}

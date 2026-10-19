@@ -33,6 +33,8 @@ specs = {
 }
 app = sys.argv[1]
 version, revision, title, categories, mime = specs[app]
+from update_package_spec import candidate_spec
+version, revision = candidate_spec(root, app, version, revision)
 package = app+'-vaio'
 source = root/'upstream'/app
 files = {}
@@ -165,6 +167,9 @@ if app in ('deckcraft', 'vectorcraft', 'designcraft', 'figcraft', 'cadcraft'):
         licence=entry['licence_file']
         add(doc+'craft-fonts/'+licence,(font_root/licence).read_bytes())
 if app == 'cadcraft':
+    used_lock = tomllib.loads((root/'.build/cadcraft-port/Cargo.lock').read_text())
+    if {p['version'] for p in used_lock['package'] if p['name'] == 'acadrust'} != {'0.6.4'}:
+        raise SystemExit('acadrust changed: review and update the MPL source notice before packaging')
     dep=next((root/'.build/cargo/registry/src').glob('*/acadrust-0.6.4'))
     add(doc+'acadrust-MPL-2.0.txt',(dep/'LICENSE').read_bytes())
     add(doc+'acadrust-SOURCE.txt',b'Unmodified acadrust 0.6.4, Mozilla Public License 2.0.\nCorresponding source: https://crates.io/api/v1/crates/acadrust/0.6.4/download\nRepository: https://github.com/hakanaktt/acadrust\nCrate archive SHA256: 94862189cab6e282ed0433a801a216cd1a712953813284a48fa81c67223e38f6\n')

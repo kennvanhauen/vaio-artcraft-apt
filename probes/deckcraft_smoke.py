@@ -53,8 +53,14 @@ try:
             time.sleep(.2)
         return state
     def activate_screensaver():
-        subprocess.check_call(['xscreensaver-command','-activate'],env=env,stdout=subprocess.DEVNULL)
-        assert wait_screensaver(False)==False,'Test screensaver activation failed'
+        # Show teardown can still be completing a wake command. Prove the actual
+        # blanked state, retrying that short command race rather than trusting rc.
+        for attempt in range(3):
+            command=subprocess.run(['xscreensaver-command','-activate'],env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+            result.setdefault('screensaver_activation_returncodes',[]).append(command.returncode)
+            if wait_screensaver(False)==False:return
+            time.sleep(.3)
+        raise AssertionError('Test screensaver activation failed')
     result['screensaver_before_awake']=wait_screensaver(True)
     log=(base/'application.log').open('w')
     process=subprocess.Popen([binary,'--control','7991',str(base/'original.pptx')],env=env,stdin=subprocess.DEVNULL,stdout=log,stderr=log)

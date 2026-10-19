@@ -333,3 +333,33 @@ No test listeners, builds or monitors remain. These are short workflow checks,
 not long-term stability guarantees. See [installed evidence](notes/cadcraft-installed-proof-result.json),
 [CAD editing](notes/cadcraft-ui.png), [eight-app launcher](notes/launcher-eight.png)
 and [final runtime](notes/cadcraft-final-runtime-result.json).
+
+
+## Continuing upstream development
+
+The [Mac update coordinator](maintenance/README.md) checks all eight apps and the
+launcher, prepares isolated source/port trees, builds Xenial i386 candidates,
+runs scoped host checks and rootless real-VAIO workflow tests, and publishes
+passing packages through this signed APT archive. Previous packages remain in
+the pool for rollback. APT delivers published VAIO builds; it does not compile
+new upstream commits by itself.
+
+```sh
+python3 probes/maintain_updates.py check
+```
+
+Use the guide's staged commands or `run APP --ref COMMIT_OR_TAG --version VERSION
+--ssh VAIO_SSH_ALIAS`; add `--publish` only when publication is intended. Failed
+patches, locked dependencies, workflow tests or resource checks stop the sequence.
+No unattended publisher, scheduled task or signing credential is installed on
+GitHub or the VAIO. A credential-free GitHub Actions template is included; it is not enabled because
+the current publication token lacks workflow scope.
+
+
+Coordinator validation: 21 unit checks passed on the Mac; all eight app adapters
+and the launcher passed rootless real-VAIO package rehearsals. A fresh CADCraft
+source candidate built for Atom/i386/glibc 2.23 and passed the VAIO workflow checks.
+Its release gate correctly rejects publication until its separate host checks
+pass. This tooling update publishes no new app package or APT metadata. See
+[the validation record](notes/update-coordinator.md), [adapter evidence](notes/update-coordinator-rehearsals.json)
+and [clean-build evidence](notes/update-coordinator-clean-build.json).

@@ -1,0 +1,157 @@
+{
+  "observed_at": "2026-10-19T06:50:30.608541+00:00",
+  "apps": {
+    "cadcraft": {
+      "pinned": "0cc66ad3066e71f2c3d4cacb7de905e79ba1c95b",
+      "published_version": "0.9.0~vaio1",
+      "head": "62329310d751f97d3dadffee530752f24bec4531",
+      "changed": true,
+      "tags": [
+        "v0.1.0",
+        "v0.3.0",
+        "v0.4.0",
+        "v0.5.0",
+        "v0.6.2",
+        "v0.7.0",
+        "v0.8.0"
+      ]
+    },
+    "deckcraft": {
+      "pinned": "cb78440a1618e6a2c1df55dd7bff74719685518c",
+      "published_version": "0.8.0~vaio1",
+      "head": "010941ec60f81f1eece31ec1ea83825c9a396217",
+      "changed": true,
+      "tags": [
+        "v0.1.0",
+        "v0.3.0",
+        "v0.4.0",
+        "v0.5.0",
+        "v0.6.1",
+        "v0.7.0",
+        "v0.8.0"
+      ]
+    },
+    "designcraft": {
+      "pinned": "ecd7e5d063eb12fa5e61fe61c9b8a77bb3c9110a",
+      "published_version": "0.9.0~vaio1",
+      "head": "8ce4c31bac19269aa41b392a838c5a1dc96f10b6",
+      "changed": true,
+      "tags": [
+        "v0.1.0",
+        "v0.1.1",
+        "v0.2.0",
+        "v0.2.1",
+        "v0.4.0",
+        "v0.5.0",
+        "v0.6.0",
+        "v0.7.1",
+        "v0.8.0",
+        "v0.9.0"
+      ]
+    },
+    "figcraft": {
+      "pinned": "a0d1162976fac1e4a8b8fd49a3948e9d6bad6f40",
+      "published_version": "0.7.0~vaio1",
+      "head": "a0d1162976fac1e4a8b8fd49a3948e9d6bad6f40",
+      "changed": false,
+      "tags": [
+        "v0.2.0",
+        "v0.3.1",
+        "v0.4.0",
+        "v0.5.0",
+        "v0.5.1",
+        "v0.6.0",
+        "v0.7.0"
+      ]
+    },
+    "gridcraft": {
+      "pinned": "c30fa3f1cf324603f3bfc0171689b1d4083b40e5",
+      "published_version": "0.8.0~vaio1",
+      "head": "66ce6be4743f4227047f76f56815520f824e6d81",
+      "changed": true,
+      "tags": [
+        "v0.1.0",
+        "v0.3.0",
+        "v0.4.0",
+        "v0.5.0",
+        "v0.6.1",
+        "v0.7.0",
+        "v0.8.0"
+      ]
+    },
+    "launcher": {
+      "pinned": "9cef5d2a0f207da50d31547a726057ea40f7e5b4",
+      "published_version": "0.5.1~vaio9",
+      "head": "7c7271e5f62975326d0add2dcf31f03096be4189",
+      "changed": true,
+      "tags": [
+        "v0.1.0",
+        "v0.1.1",
+        "v0.1.2",
+        "v0.1.3",
+        "v0.2.0",
+        "v0.2.1",
+        "v0.3.2",
+        "v0.4.0",
+        "v0.4.1",
+        "v0.5.1"
+      ]
+    },
+    "pdfcraft": {
+      "pinned": "98cbd38a8e0f5afe685258aa0fcab0f0012f7a8b",
+      "published_version": "0.9.0~vaio1",
+      "head": "cbbeb616505f3e2486da10b80e6d2f8f080f70d2",
+      "changed": true,
+      "tags": [
+        "v0.1.0",
+        "v0.1.1",
+        "v0.2.0",
+        "v0.2.1",
+        "v0.4.0",
+        "v0.5.0",
+        "v0.6.0",
+        "v0.7.1",
+        "v0.8.0",
+        "v0.9.0"
+      ]
+    },
+    "vectorcraft": {
+      "pinned": "a466625c8987550635cda951ebf36e08e1e80a56",
+      "published_version": "0.13.1~vaio1",
+      "head": "a466625c8987550635cda951ebf36e08e1e80a56",
+      "changed": false,
+      "tags": [
+        "v0.1.0",
+        "v0.1.1",
+        "v0.10.0",
+        "v0.11.0",
+        "v0.12.0",
+        "v0.13.1",
+        "v0.2.0",
+        "v0.3.0",
+        "v0.3.1",
+        "v0.4.0",
+        "v0.5.0",
+        "v0.6.0",
+        "v0.7.0",
+        "v0.8.0",
+        "v0.9.0"
+      ]
+    },
+    "wordcraft": {
+      "pinned": "d6f20f93fd22deb441b2216ecfd65acb15ea8b64",
+      "published_version": "0.8.0~vaio5",
+      "head": "76d8347f779423ad32c016cb4c6ca666098f4c4b",
+      "changed": true,
+      "tags": [
+        "v0.1.0",
+        "v0.3.0",
+        "v0.4.0",
+        "v0.5.0",
+        "v0.6.1",
+        "v0.7.0",
+        "v0.8.0"
+      ]
+    }
+  }
+}

@@ -51,6 +51,14 @@ try:
         while time.monotonic()<until and Path('/proc/%d'%found).exists():time.sleep(.1)
         assert not Path('/proc/%d'%found).exists(),'Child was not reaped: '+app
         result['opened'].append(app)
+    time.sleep(10)
+    def sample():
+        fields=Path('/proc/%d/stat'%p.pid).read_text().rsplit(')',1)[1].split()
+        rss=next(int(line.split()[1]) for line in Path('/proc/%d/status'%p.pid).read_text().splitlines() if line.startswith('VmRSS:'))
+        return int(fields[11])+int(fields[12]),rss
+    before,rss=sample();at=time.monotonic();time.sleep(7);after,rss=sample()
+    result['idle_cpu_percent_one_logical_cpu']=round(100*(after-before)/os.sysconf('SC_CLK_TCK')/(time.monotonic()-at),2)
+    result['rss_kib']=rss
     result['passed']=True
 except Exception as error:result.update(passed=False,error=str(error))
 finally:

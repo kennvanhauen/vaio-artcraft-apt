@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "throttle_counts": {
+    "/sys/devices/system/cpu/cpu1/thermal_throttle/core_throttle_count": 0,
+    "/sys/devices/system/cpu/cpu0/thermal_throttle/core_throttle_count": 0
+  },
+  "normal_launcher_raised": true,
+  "temperatures_millicelsius": [
+    58000
+  ],
+  "installed_cadcraft": "0.9.0~vaio1",
+  "observed_at": "2026-10-19 08:27:36 BST",
+  "installed_launcher": "0.5.1~vaio9",
+  "leftover_candidates": []
+}

@@ -1,0 +1,55 @@
+{
+  "rss_kib": 70580,
+  "installed_apps": [
+    {
+      "candidate": "0.9.0~vaio1",
+      "package": "cadcraft-vaio",
+      "installed": "0.9.0~vaio1"
+    },
+    {
+      "candidate": "0.7.0~vaio1",
+      "package": "figcraft-vaio",
+      "installed": "0.7.0~vaio1"
+    },
+    {
+      "candidate": "0.9.0~vaio1",
+      "package": "designcraft-vaio",
+      "installed": "0.9.0~vaio1"
+    },
+    {
+      "candidate": "0.13.1~vaio1",
+      "package": "vectorcraft-vaio",
+      "installed": "0.13.1~vaio1"
+    },
+    {
+      "candidate": "0.8.0~vaio5",
+      "package": "wordcraft-vaio",
+      "installed": "0.8.0~vaio5"
+    },
+    {
+      "candidate": "0.8.0~vaio1",
+      "package": "gridcraft-vaio",
+      "installed": "0.8.0~vaio1"
+    },
+    {
+      "candidate": "0.9.0~vaio1",
+      "package": "pdfcraft-vaio",
+      "installed": "0.9.0~vaio1"
+    },
+    {
+      "candidate": "0.8.0~vaio1",
+      "package": "deckcraft-vaio",
+      "installed": "0.8.0~vaio1"
+    }
+  ],
+  "fits_screen": true,
+  "idle_cpu_percent_one_logical_cpu": 0.0,
+  "window": {
+    "x": 21,
+    "width": 1540,
+    "height": 650,
+    "y": 59
+  },
+  "passed": true,
+  "left_visible": true
+}

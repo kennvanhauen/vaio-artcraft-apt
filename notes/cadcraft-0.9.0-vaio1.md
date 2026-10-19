@@ -1,4 +1,4 @@
-# CADCraft VAIO port — in progress
+# CADCraft VAIO port — installed verification
 
 User explicitly authorized autonomous CADCraft porting, following the seven
 installed apps. Upstream 0.9.0 is pinned at
@@ -56,15 +56,15 @@ test passed. Actual native-save/overwrite-cancel verification passed on the VAIO
 
 Default SAVETIME remains ten minutes. In an isolated test profile, SAVETIME=1
 produced a snapshot after 61.12 seconds without input. Only that process was killed.
-The upstream five-minute lock lease is being allowed to expire naturally before
-restarting for recovery; no test timestamp is altered.
+The upstream five-minute lock lease expired naturally before restarting for
+recovery; no test timestamp was altered.
 
 Pristine full CI stopped at an unchanged xtask collapsible_match style lint.
 Native i386 GUI Clippy passed with warnings denied except existing nonminimal_bool
 and collapsible_match style lints. Asset attribution and layering pass. Host
-functional tests are running with --no-fail-fast; one closed-port test failed in
+functional tests completed with --no-fail-fast; one closed-port test failed in
 the parallel host run. The actual VAIO closed-port check correctly failed startup
-without emitting MCP output; an isolated host rerun follows. WASM is not claimed
+without emitting MCP output; the isolated serial host rerun passed all four tests. WASM is not claimed
 (the target is absent). Upstream source checkouts remain unmodified.
 
 
@@ -77,12 +77,12 @@ passed. CAD's native DXF type is image/vnd.dxf on the target.
 
 ## Package installation and rollback
 
-Planned: install cadcraft-vaio 0.9.0~vaio1 and update the launcher to 0.5.1~vaio9
-through the existing signed APT source/native administrator prompt. Expand the
-origin preference to nine package names, keeping wildcard priority -1. Back up
+Installed cadcraft-vaio 0.9.0~vaio1 and launcher 0.5.1~vaio9
+through the existing signed APT source/native administrator prompt. Expanded the
+origin preference to nine package names, keeping wildcard priority -1. Backed up
 the old preference outside preferences.d to
-/var/backups/vaio-artcraft/preferences.before-cadcraft-20261019. Simulate first and
-reject unrelated installs or removals; refresh only the project source.
+/var/backups/vaio-artcraft/preferences.before-cadcraft-20261019. The simulation rejected unrelated installs or removals; only the project
+source was refreshed. Installer exit status was zero.
 
 Rollback: remove cadcraft-vaio with APT (user drawings/settings remain). If desired,
 download the retained launcher revision 8 .deb from the public pool and run
@@ -112,3 +112,38 @@ GitHub Pages built successfully; live InRelease signature and exact InRelease/Pa
 output before the native administrator prompt was shown. Releases retain CADCraft 0.9.0 VAIO revision 1
 and launcher 0.5.1 revision 9, plus the pinned source-recipe archive. The original
 upstream checkouts remain unmodified. Private diagnostics/keys are excluded.
+
+
+The user authenticated at the native gksu prompt. Installation completed with
+status 0. The first automatic continuation's 15-minute authentication wait had
+expired before that happened; it was resumed after confirming the installation.
+No password was requested or logged in chat. No reboot, session restart or
+network change was made.
+
+Installed-wrapper checks passed: headless drawing/export, CPU/Glow desktop edits,
+DXF save/reopen, PDF plotting, native bare-name Save As and overwrite cancellation.
+The GUI loaded its own package-local XCB. Short installed idle samples were
+0.33%, 0.33% and 0.17% of one logical CPU, with 116608–118076 KiB RSS.
+Package integrity, binary hashes, all nine installed versions, scoped key,
+nine-package preference and native DXF MIME checks passed. No test listener
+remained after the CAD checks. The earlier automatic snapshot/recovery test used
+the identical packaged binary, whose installed hash is verified; its five-minute
+lease was not repeated just for installation.
+
+All eight installed launcher Open buttons passed with isolated profiles. The
+recorded previous normal launcher was closed after checking its boot identity,
+process command and start time. Test children were terminated and reaped; user
+application windows were not targeted.
+
+The normal eight-app launcher is left visible; the inspected 1540×650 screenshot
+fits the 1600×768 screen. All installed application versions match APT candidates.
+Its settled seven-second sample was 0.0% CPU and 70580 KiB RSS (68.9 MiB).
+Final runtime at 06:59 BST: 58°C, exposed core-throttle counters both zero,
+1609 MiB available memory and no swap use. Only the normal launcher remained
+among project application processes; no test control listeners remained. These
+are short checks, not a long-term stability or thermal guarantee.
+
+Installed results are recorded in cadcraft-installed-{headless,gui,native-dialogs,proof}-result.json;
+launcher-eight-open-result.json records all eight buttons. The normal launcher
+identity is retained locally for safe future management; public runtime evidence
+omits its PID, start time and boot identity. No build or monitor is left running.

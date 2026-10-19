@@ -319,3 +319,17 @@ suite then passed all four cases serially; the other failure had no wgpu adapter
 Full CI still stops at an unchanged xtask style lint. Native i386 Clippy passed
 with warnings denied except two unchanged style lints; assets/layers and the
 save-name regression passed. WebAssembly was not checked (target absent).
+
+
+CADCraft revision 1 and launcher revision 9 are installed through signed APT.
+Installed GUI/headless, native Save As/overwrite cancellation, package integrity,
+binary hashes, scoped key, native MIME and nine-package origin-preference checks
+passed. All eight actual launcher Open buttons passed with isolated profiles.
+The inspected normal launcher is left visible, fitting all eight cards; all
+versions match APT candidates. Installed CAD idle samples were 0.17–0.33% of one
+logical CPU, about 114–115 MiB RSS. Launcher idle was 0.0%, 68.9 MiB RSS.
+Final temperature was 58°C, exposed core-throttle counters zero and swap unused.
+No test listeners, builds or monitors remain. These are short workflow checks,
+not long-term stability guarantees. See [installed evidence](notes/cadcraft-installed-proof-result.json),
+[CAD editing](notes/cadcraft-ui.png), [eight-app launcher](notes/launcher-eight.png)
+and [final runtime](notes/cadcraft-final-runtime-result.json).

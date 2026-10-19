@@ -1,0 +1,19 @@
+{
+  "temperatures_millicelsius": [
+    58000
+  ],
+  "thermal_throttle_counts": {
+    "/sys/devices/system/cpu/cpu0/thermal_throttle/core_throttle_count": 0,
+    "/sys/devices/system/cpu/cpu1/thermal_throttle/core_throttle_count": 0
+  },
+  "control_listeners": [],
+  "observed_at": "2026-10-19 06:59:10 BST",
+  "memory": "total        used        free      shared  buff/cache   available\nMem:           2004         139         188          18        1675        1609\nSwap:          3038           0        3037",
+  "passed": true,
+  "project_processes": [
+    {
+      "executable": "/usr/lib/artcraft-launcher-vaio/bin/launcher"
+    }
+  ],
+  "uptime": "06:59:10 up  8:45,  1 user,  load average: 0.73, 0.86, 0.46"
+}

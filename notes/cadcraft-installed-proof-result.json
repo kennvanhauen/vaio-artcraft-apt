@@ -1,0 +1,69 @@
+{
+  "kernel": "4.4.0-210-generic",
+  "memory": "total        used        free      shared  buff/cache   available\nMem:           2004         147         170          18        1686        1600\nSwap:          3038           0        3037",
+  "versions": {
+    "deckcraft-vaio": "0.8.0~vaio1",
+    "designcraft-vaio": "0.9.0~vaio1",
+    "gridcraft-vaio": "0.8.0~vaio1",
+    "figcraft-vaio": "0.7.0~vaio1",
+    "wordcraft-vaio": "0.8.0~vaio5",
+    "vectorcraft-vaio": "0.13.1~vaio1",
+    "pdfcraft-vaio": "0.9.0~vaio1",
+    "cadcraft-vaio": "0.9.0~vaio1",
+    "artcraft-launcher-vaio": "0.5.1~vaio9"
+  },
+  "key_sha256": "dfe2482d39a8785758534e312440b21fa494004e13a2726f1e4921c27cb561f1",
+  "passed": true,
+  "source": "deb [arch=i386 signed-by=/usr/share/keyrings/vaio-artcraft-archive-keyring.gpg] https://kennvanhauen.github.io/vaio-artcraft-apt xenial main\n",
+  "leftover_test_listeners": [],
+  "preferences": "Package: wordcraft-vaio gridcraft-vaio pdfcraft-vaio deckcraft-vaio vectorcraft-vaio designcraft-vaio figcraft-vaio cadcraft-vaio artcraft-launcher-vaio\nPin: origin \"kennvanhauen.github.io\"\nPin-Priority: 500\n\nPackage: *\nPin: origin \"kennvanhauen.github.io\"\nPin-Priority: -1\n",
+  "manifests": {
+    "cadcraft-vaio": {
+      "target": "i686-unknown-linux-gnu",
+      "cpu": "atom",
+      "package_version": "0.9.0~vaio1",
+      "craft_fonts_revision": "a71c20e30af613287c504f7e685ca8fad77752bc",
+      "rust": "1.95.0",
+      "zig": "0.14.1",
+      "glibc_target": "2.23",
+      "private_libxcb": "1.17.0",
+      "renderer": "Glow",
+      "binary_sha256": {
+        "cadcraft-cli": "cf38c49eeb0025474e5e888dd7c778227343988ba3e886bfdbcad68a3330caa1",
+        "cadcraft": "0734ad08ca5ea4aeb02c0029d31fb73063f50cfed47ba417e861e7848747a101"
+      },
+      "port_patch_sha256": "7d450867e3e25ffe621d6881d5c951aeae4de9bc241e8d2486662edc616b5bd4",
+      "embedded_font_faces": 7,
+      "source_revision": "0cc66ad3066e71f2c3d4cacb7de905e79ba1c95b"
+    },
+    "artcraft-launcher-vaio": {
+      "glibc_target": "2.23",
+      "private_libxcb": "1.17.0",
+      "cpu": "atom",
+      "package_version": "0.5.1~vaio9",
+      "renderer": "Glow",
+      "port_patch_sha256": "84cb8b70e9608403f40aada5d094a7b5697852262b9c94978e270d10d1a5ba3b",
+      "binary_sha256": "b7e9852deac4369fa802ac5738e26a97ecece329112cce35ff7ed6a09cef3f88",
+      "target": "i686-unknown-linux-gnu",
+      "upstream_revision": "9cef5d2a0f207da50d31547a726057ea40f7e5b4"
+    }
+  },
+  "temperatures_millicelsius": [
+    65000
+  ],
+  "mime": {
+    "repair-plate.dxf": "image/vnd.dxf"
+  },
+  "policy": "cadcraft-vaio:\n  Installed: 0.9.0~vaio1\n  Candidate: 0.9.0~vaio1\n  Version table:\n *** 0.9.0~vaio1 500\n         -1 https://kennvanhauen.github.io/vaio-artcraft-apt xenial/main i386 Packages\n        100 /var/lib/dpkg/status\nartcraft-launcher-vaio:\n  Installed: 0.5.1~vaio9\n  Candidate: 0.5.1~vaio9\n  Version table:\n *** 0.5.1~vaio9 500\n         -1 https://kennvanhauen.github.io/vaio-artcraft-apt xenial/main i386 Packages\n        100 /var/lib/dpkg/status",
+  "architecture": "i686",
+  "checks": [
+    "nine installed versions",
+    "package integrity",
+    "manifest binary hashes",
+    "private XCB ownership",
+    "unchanged scoped key",
+    "nine-package APT preference",
+    "native MIME",
+    "no test control listeners"
+  ]
+}

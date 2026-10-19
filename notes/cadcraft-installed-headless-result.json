@@ -1,0 +1,664 @@
+{
+  "own_dwg_counts": {
+    "Dimension": 2,
+    "MText": 1,
+    "Block Reference": 4,
+    "Text": 1,
+    "Line": 2,
+    "Polyline": 1
+  },
+  "export_svg": {
+    "notes": "wrote /tmp/vaio-cadcraft-test/repair-plate.svg (58039 bytes)",
+    "bytes": 58039
+  },
+  "display_variables_absent": true,
+  "drawing": {
+    "counts": {
+      "Dimension": 2,
+      "MText": 1,
+      "Block Reference": 4,
+      "Text": 1,
+      "Line": 2,
+      "Polyline": 1
+    },
+    "skipped": {
+      "count": 0,
+      "sections": {}
+    },
+    "dimStyles": [
+      "Standard",
+      "ISO-25"
+    ],
+    "entityCount": 11,
+    "path": "/tmp/vaio-cadcraft-test/repair-plate.dxf",
+    "selection": [],
+    "layouts": [
+      "Layout1",
+      "Layout2"
+    ],
+    "extents": [
+      [
+        -6.25,
+        -42.43
+      ],
+      [
+        155.0,
+        105.0
+      ]
+    ],
+    "dirty": false,
+    "title": "repair-plate.dxf",
+    "blocks": [
+      "Mounting hole"
+    ],
+    "view": {
+      "center": [
+        74.375,
+        31.285
+      ],
+      "height": 154.8015
+    },
+    "blockEditor": null,
+    "currentLayer": "Notes",
+    "entities": [
+      {
+        "type": "Polyline",
+        "handle": "100",
+        "geometry": {
+          "type": "lwPolyline",
+          "plinegen": false,
+          "const_width": 0.0,
+          "closed": true,
+          "vertices": [
+            {
+              "p": {
+                "x": 5.0,
+                "y": 0.0
+              },
+              "bulge": 0.0,
+              "start_width": 0.0,
+              "end_width": 0.0
+            },
+            {
+              "p": {
+                "x": 115.0,
+                "y": 0.0
+              },
+              "bulge": 0.4142135623730951,
+              "start_width": 0.0,
+              "end_width": 0.0
+            },
+            {
+              "p": {
+                "x": 120.0,
+                "y": 5.0
+              },
+              "bulge": 0.0,
+              "start_width": 0.0,
+              "end_width": 0.0
+            },
+            {
+              "p": {
+                "x": 120.0,
+                "y": 75.0
+              },
+              "bulge": 0.4142135623730951,
+              "start_width": 0.0,
+              "end_width": 0.0
+            },
+            {
+              "p": {
+                "x": 115.0,
+                "y": 80.0
+              },
+              "bulge": 0.0,
+              "start_width": 0.0,
+              "end_width": 0.0
+            },
+            {
+              "p": {
+                "x": 5.0,
+                "y": 80.0
+              },
+              "bulge": 0.4142135623730951,
+              "start_width": 0.0,
+              "end_width": 0.0
+            },
+            {
+              "p": {
+                "x": 0.0,
+                "y": 75.0
+              },
+              "bulge": 0.0,
+              "start_width": 0.0,
+              "end_width": 0.0
+            },
+            {
+              "p": {
+                "x": 0.0,
+                "y": 5.0
+              },
+              "bulge": 0.4142135623730951,
+              "start_width": 0.0,
+              "end_width": 0.0
+            }
+          ],
+          "elevation": 0.0
+        },
+        "color": "ByLayer",
+        "layer": "Outline",
+        "transparency": "ByLayer"
+      },
+      {
+        "type": "Block Reference",
+        "handle": "103",
+        "geometry": {
+          "rowSpacing": 0.0,
+          "cols": 1,
+          "rotation": 0.0,
+          "rows": 1,
+          "insert": {
+            "x": 12.0,
+            "y": 12.0,
+            "z": 0.0
+          },
+          "attribs": [],
+          "scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "colSpacing": 0.0,
+          "type": "insert",
+          "block": "Mounting hole"
+        },
+        "color": "ByLayer",
+        "layer": "Holes",
+        "transparency": "ByLayer"
+      },
+      {
+        "type": "Block Reference",
+        "handle": "104",
+        "geometry": {
+          "rowSpacing": 0.0,
+          "cols": 1,
+          "rotation": 0.0,
+          "rows": 1,
+          "insert": {
+            "x": 108.0,
+            "y": 12.0,
+            "z": 0.0
+          },
+          "attribs": [],
+          "scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "colSpacing": 0.0,
+          "type": "insert",
+          "block": "Mounting hole"
+        },
+        "color": "ByLayer",
+        "layer": "Holes",
+        "transparency": "ByLayer"
+      },
+      {
+        "type": "Block Reference",
+        "handle": "105",
+        "geometry": {
+          "rowSpacing": 0.0,
+          "cols": 1,
+          "rotation": 0.0,
+          "rows": 1,
+          "insert": {
+            "x": 12.0,
+            "y": 68.0,
+            "z": 0.0
+          },
+          "attribs": [],
+          "scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "colSpacing": 0.0,
+          "type": "insert",
+          "block": "Mounting hole"
+        },
+        "color": "ByLayer",
+        "layer": "Holes",
+        "transparency": "ByLayer"
+      },
+      {
+        "type": "Block Reference",
+        "handle": "106",
+        "geometry": {
+          "rowSpacing": 0.0,
+          "cols": 1,
+          "rotation": 0.0,
+          "rows": 1,
+          "insert": {
+            "x": 108.0,
+            "y": 68.0,
+            "z": 0.0
+          },
+          "attribs": [],
+          "scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+          },
+          "colSpacing": 0.0,
+          "type": "insert",
+          "block": "Mounting hole"
+        },
+        "color": "ByLayer",
+        "layer": "Holes",
+        "transparency": "ByLayer"
+      },
+      {
+        "type": "Line",
+        "handle": "107",
+        "geometry": {
+          "b": {
+            "x": 125.0,
+            "y": 40.0,
+            "z": 0.0
+          },
+          "type": "line",
+          "a": {
+            "x": -5.0,
+            "y": 40.0,
+            "z": 0.0
+          }
+        },
+        "color": "ByLayer",
+        "layer": "Center",
+        "transparency": "ByLayer"
+      },
+      {
+        "type": "Line",
+        "handle": "108",
+        "geometry": {
+          "b": {
+            "x": 60.0,
+            "y": 85.0,
+            "z": 0.0
+          },
+          "type": "line",
+          "a": {
+            "x": 60.0,
+            "y": -5.0,
+            "z": 0.0
+          }
+        },
+        "color": "ByLayer",
+        "layer": "Center",
+        "transparency": "ByLayer"
+      },
+      {
+        "type": "Dimension",
+        "handle": "109",
+        "geometry": {
+          "type": "dimension",
+          "text": "",
+          "measurement": 0.0,
+          "textMid": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "p14": {
+            "x": 120.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "p13": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "block": null,
+          "p16": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "textRotation": 0.0,
+          "p15": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "userTextPos": false,
+          "defpt": {
+            "x": 60.0,
+            "y": -13.0,
+            "z": 0.0
+          },
+          "style": "ISO-25",
+          "kind": {
+            "linear": {
+              "rotation": 0.0
+            }
+          }
+        },
+        "color": "ByLayer",
+        "layer": "Dimensions",
+        "transparency": "ByLayer"
+      },
+      {
+        "type": "Dimension",
+        "handle": "10A",
+        "geometry": {
+          "type": "dimension",
+          "text": "",
+          "measurement": 0.0,
+          "textMid": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "p14": {
+            "x": 120.0,
+            "y": 80.0,
+            "z": 0.0
+          },
+          "p13": {
+            "x": 120.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "block": null,
+          "p16": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "textRotation": 0.0,
+          "p15": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "userTextPos": false,
+          "defpt": {
+            "x": 139.0,
+            "y": 40.0,
+            "z": 0.0
+          },
+          "style": "ISO-25",
+          "kind": {
+            "linear": {
+              "rotation": 1.5707963267948966
+            }
+          }
+        },
+        "color": "ByLayer",
+        "layer": "Dimensions",
+        "transparency": "ByLayer"
+      },
+      {
+        "type": "Text",
+        "handle": "10B",
+        "geometry": {
+          "alignPt": null,
+          "type": "text",
+          "height": 5.0,
+          "rotation": 0.0,
+          "valign": "baseline",
+          "halign": "left",
+          "value": "REPAIR CLUB \u2014 MOUNTING PLATE",
+          "widthFactor": 1.0,
+          "oblique": 0.0,
+          "style": "Standard",
+          "insert": {
+            "x": 2.0,
+            "y": 100.0,
+            "z": 0.0
+          }
+        },
+        "color": "ByLayer",
+        "layer": "Notes",
+        "transparency": "ByLayer"
+      },
+      {
+        "type": "MText",
+        "handle": "10C",
+        "geometry": {
+          "type": "mText",
+          "height": 3.5,
+          "rotation": 0.0,
+          "width": 155.0,
+          "insert": {
+            "x": 0.0,
+            "y": -25.0,
+            "z": 0.0
+          },
+          "contents": "Original CADCraft VAIO example\\P120 x 80 mm; four mounting holes\\PNot a production engineering drawing.",
+          "attach": 1,
+          "lineSpacingExact": false,
+          "lineSpacing": 1.0,
+          "style": "Standard"
+        },
+        "color": "ByLayer",
+        "layer": "Notes",
+        "transparency": "ByLayer"
+      }
+    ],
+    "layers": [
+      {
+        "on": true,
+        "name": "0",
+        "frozen": false,
+        "color": "White",
+        "linetype": "Continuous",
+        "locked": false
+      },
+      {
+        "on": true,
+        "name": "Defpoints",
+        "frozen": false,
+        "color": "White",
+        "linetype": "Continuous",
+        "locked": false
+      },
+      {
+        "on": true,
+        "name": "Outline",
+        "frozen": false,
+        "color": "White",
+        "linetype": "Continuous",
+        "locked": false
+      },
+      {
+        "on": true,
+        "name": "Holes",
+        "frozen": false,
+        "color": "Cyan",
+        "linetype": "Continuous",
+        "locked": false
+      },
+      {
+        "on": true,
+        "name": "Center",
+        "frozen": false,
+        "color": "Red",
+        "linetype": "Continuous",
+        "locked": false
+      },
+      {
+        "on": true,
+        "name": "Dimensions",
+        "frozen": false,
+        "color": "Green",
+        "linetype": "Continuous",
+        "locked": false
+      },
+      {
+        "on": true,
+        "name": "Notes",
+        "frozen": false,
+        "color": "White",
+        "linetype": "Continuous",
+        "locked": false
+      }
+    ],
+    "undo": [
+      "Move",
+      "Multiline Text",
+      "Single Line Text",
+      "New Layer",
+      "Linear",
+      "Linear",
+      "New Layer",
+      "Line",
+      "Horizontal",
+      "Line",
+      "New Layer",
+      "Block...",
+      "Block...",
+      "Block...",
+      "Make...",
+      "Circle",
+      "New Layer",
+      "Rectangle",
+      "New Layer",
+      "Set Variable"
+    ],
+    "space": "Model",
+    "linetypes": [
+      "ByBlock",
+      "ByLayer",
+      "Continuous"
+    ],
+    "textStyles": [
+      "Standard"
+    ]
+  },
+  "export_dwg": {
+    "notes": "wrote /tmp/vaio-cadcraft-test/repair-plate.dwg (24182 bytes)",
+    "bytes": 24182
+  },
+  "layouts": [
+    {
+      "page": {
+        "plotTransparency": false,
+        "landscape": true,
+        "plotArea": "layout",
+        "scale": 1.0,
+        "showPlotStyles": false,
+        "lineweights": true,
+        "plotStyleTable": "",
+        "heightMm": 279.4,
+        "scaleToFit": false,
+        "marginsMm": [
+          6.35,
+          6.35,
+          6.35,
+          6.35
+        ],
+        "device": "None",
+        "center": false,
+        "paper": "ANSI A (8.50 x 11.00 Inches)",
+        "widthMm": 215.9
+      },
+      "current": false,
+      "viewports": [],
+      "tabOrder": 1,
+      "name": "Layout1"
+    },
+    {
+      "page": {
+        "plotTransparency": false,
+        "landscape": true,
+        "plotArea": "layout",
+        "scale": 1.0,
+        "showPlotStyles": false,
+        "lineweights": true,
+        "plotStyleTable": "",
+        "heightMm": 279.4,
+        "scaleToFit": false,
+        "marginsMm": [
+          6.35,
+          6.35,
+          6.35,
+          6.35
+        ],
+        "device": "None",
+        "center": false,
+        "paper": "ANSI A (8.50 x 11.00 Inches)",
+        "widthMm": 215.9
+      },
+      "current": false,
+      "viewports": [],
+      "tabOrder": 2,
+      "name": "Layout2"
+    },
+    {
+      "page": {
+        "plotTransparency": false,
+        "landscape": true,
+        "plotArea": "layout",
+        "scale": 1.0,
+        "showPlotStyles": false,
+        "lineweights": true,
+        "plotStyleTable": "",
+        "heightMm": 297.0,
+        "scaleToFit": false,
+        "marginsMm": [
+          6.35,
+          6.35,
+          6.35,
+          6.35
+        ],
+        "device": "None",
+        "center": false,
+        "paper": "ISO A4 (210.00 x 297.00 MM)",
+        "widthMm": 210.0
+      },
+      "current": false,
+      "viewports": [
+        "1165"
+      ],
+      "tabOrder": 3,
+      "name": "A4 workshop"
+    }
+  ],
+  "pdfinfo": "Title:          A4 workshop\nCreator:        CADCraft\nProducer:       CADCraft\nTagged:         no\nUserProperties: no\nSuspects:       no\nForm:           none\nJavaScript:     no\nPages:          1\nEncrypted:      no\nPage size:      841.89 x 595.276 pts (A4)\nPage rot:       0\nFile size:      28979 bytes\nOptimized:      no\nPDF version:    1.4\n",
+  "export_pdf": {
+    "notes": "wrote /tmp/vaio-cadcraft-test/repair-plate.pdf (28914 bytes)",
+    "bytes": 28914
+  },
+  "checks": [
+    "no-display MCP",
+    "original metric drawing",
+    "rounded rectangle",
+    "block with four inserts",
+    "layers",
+    "center lines and horizontal constraint",
+    "two dimensions",
+    "text/MTEXT",
+    "LISP expression",
+    "move undo/redo",
+    "DXF reopen",
+    "SVG/PDF/PNG export",
+    "own synthetic DWG round trip",
+    "paper-space viewport and A4 PDF plot",
+    "independent DXF groups and PDF page check"
+  ],
+  "command_count": 426,
+  "passed": true,
+  "handles": {
+    "outline": {
+      "handle": "100"
+    },
+    "centerline": "107",
+    "heading": "10B"
+  },
+  "export_png": {
+    "notes": "wrote /tmp/vaio-cadcraft-test/repair-plate.png (254561 bytes)",
+    "bytes": 254561
+  }
+}

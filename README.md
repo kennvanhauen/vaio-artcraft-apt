@@ -340,8 +340,9 @@ and [final runtime](notes/cadcraft-final-runtime-result.json).
 The [Mac update coordinator](maintenance/README.md) checks all eight apps and the
 launcher, prepares isolated source/port trees, builds Xenial i386 candidates,
 runs scoped host checks and rootless real-VAIO workflow tests, and publishes
-passing packages through this signed APT archive. Previous packages remain in
-the pool for rollback. APT delivers published VAIO builds; it does not compile
+passing packages through this signed APT archive. Previous packages remain available in GitHub Releases for rollback.
+Older unindexed Pages copies may be retired after verifying downloaded backups;
+[retired-packages.json](retired-packages.json) records their URLs and SHA256 hashes. APT delivers published VAIO builds; it does not compile
 new upstream commits by itself.
 
 ```sh

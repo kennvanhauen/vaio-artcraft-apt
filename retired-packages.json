@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "filename": "pool/main/artcraft-launcher-vaio_0.5.1~vaio1_i386.deb",
+      "sha256": "0e8df1fd6b0f0e01d82ecfd1c56583a1c99292bbbd66367c646e52d08fd5a52e",
+      "size": 6748580,
+      "asset_name": "artcraft-launcher-vaio_0.5.1.vaio1_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/launcher-0.5.1-vaio1/artcraft-launcher-vaio_0.5.1.vaio1_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/launcher-0.5.1-vaio1"
+    },
+    {
+      "filename": "pool/main/artcraft-launcher-vaio_0.5.1~vaio2_i386.deb",
+      "sha256": "45795c5298f3d1f69d77982c5c5a2c5f4dd04af87f3248c9b8e7819950960d05",
+      "size": 6834178,
+      "asset_name": "artcraft-launcher-vaio_0.5.1.vaio2_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/launcher-0.5.1-vaio2/artcraft-launcher-vaio_0.5.1.vaio2_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/launcher-0.5.1-vaio2"
+    },
+    {
+      "filename": "pool/main/artcraft-launcher-vaio_0.5.1~vaio3_i386.deb",
+      "sha256": "d8efe331ebe767340c1df3e940252c0e3eb3d9b457d0b2cede56b688c2385671",
+      "size": 6862800,
+      "asset_name": "artcraft-launcher-vaio_0.5.1.vaio3_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/launcher-0.5.1-vaio3/artcraft-launcher-vaio_0.5.1.vaio3_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/launcher-0.5.1-vaio3"
+    },
+    {
+      "filename": "pool/main/artcraft-launcher-vaio_0.5.1~vaio4_i386.deb",
+      "sha256": "d3a1319bf1b35331ffc579c36486f74ad46f58da822220f2ccbd18773ca67395",
+      "size": 6862882,
+      "asset_name": "artcraft-launcher-vaio_0.5.1.vaio4_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/launcher-0.5.1-vaio4/artcraft-launcher-vaio_0.5.1.vaio4_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/launcher-0.5.1-vaio4"
+    },
+    {
+      "filename": "pool/main/artcraft-launcher-vaio_0.5.1~vaio5_i386.deb",
+      "sha256": "85a168fff5ba26ef08beb62389c7311b3730b8089b7900ff8742fc39ffb81023",
+      "size": 6863058,
+      "asset_name": "artcraft-launcher-vaio_0.5.1.vaio5_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/launcher-0.5.1-vaio5/artcraft-launcher-vaio_0.5.1.vaio5_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/launcher-0.5.1-vaio5"
+    },
+    {
+      "filename": "pool/main/artcraft-launcher-vaio_0.5.1~vaio6_i386.deb",
+      "sha256": "4713de60b902ec34b18ff083d4f9bbdae68c3ba807761f07ab449d638b36add9",
+      "size": 6862872,
+      "asset_name": "artcraft-launcher-vaio_0.5.1.vaio6_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/launcher-0.5.1-vaio6/artcraft-launcher-vaio_0.5.1.vaio6_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/launcher-0.5.1-vaio6"
+    },
+    {
+      "filename": "pool/main/artcraft-launcher-vaio_0.5.1~vaio7_i386.deb",
+      "sha256": "7329c1189987e54e642a4ddde8775fb79209e40811b385f0b1288d8a3cc3b44e",
+      "size": 6862764,
+      "asset_name": "artcraft-launcher-vaio_0.5.1.vaio7_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/launcher-0.5.1-vaio7/artcraft-launcher-vaio_0.5.1.vaio7_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/launcher-0.5.1-vaio7"
+    },
+    {
+      "filename": "pool/main/artcraft-launcher-vaio_0.5.1~vaio8_i386.deb",
+      "sha256": "1d48456a5d4dd41a53296860dd083676c277bbf96b3371dfeb1b395a21214f12",
+      "size": 6862698,
+      "asset_name": "artcraft-launcher-vaio_0.5.1.vaio8_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/launcher-0.5.1-vaio8/artcraft-launcher-vaio_0.5.1.vaio8_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/launcher-0.5.1-vaio8"
+    },
+    {
+      "filename": "pool/main/deckcraft-vaio_0.8.0~vaio1_i386.deb",
+      "sha256": "3282392ab734cdb9162bc496af0ec17d95e9b050f0200c69b8dffde480110ebd",
+      "size": 84682682,
+      "asset_name": "deckcraft-vaio_0.8.0.vaio1_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/deckcraft-0.8.0-vaio1/deckcraft-vaio_0.8.0.vaio1_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/deckcraft-0.8.0-vaio1"
+    },
+    {
+      "filename": "pool/main/gridcraft-vaio_0.8.0~vaio1_i386.deb",
+      "sha256": "dca03a831cb13308c1d4da1aa91dbfdb6eb88927759915b3c8b0815bf51cbc0c",
+      "size": 21860730,
+      "asset_name": "gridcraft-vaio_0.8.0.vaio1_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/gridcraft-0.8.0-vaio1/gridcraft-vaio_0.8.0.vaio1_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/gridcraft-0.8.0-vaio1"
+    },
+    {
+      "filename": "pool/main/wordcraft-vaio_0.8.0~vaio3_i386.deb",
+      "sha256": "2ae70287f23e6c4045225f8e9ba24e3e8175303273a09b74366a3d1a72db5722",
+      "size": 43748424,
+      "asset_name": "wordcraft-vaio_0.8.0.vaio3_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/wordcraft-0.8.0-vaio3/wordcraft-vaio_0.8.0.vaio3_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/wordcraft-0.8.0-vaio3"
+    },
+    {
+      "filename": "pool/main/wordcraft-vaio_0.8.0~vaio4_i386.deb",
+      "sha256": "98751b29861c2613bacc972865dc11bf404e61ed6bc4c1d916c2a7f5619c313d",
+      "size": 43756120,
+      "asset_name": "wordcraft-vaio_0.8.0.vaio4_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/wordcraft-0.8.0-vaio4/wordcraft-vaio_0.8.0.vaio4_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/wordcraft-0.8.0-vaio4"
+    },
+    {
+      "filename": "pool/main/wordcraft-vaio_0.8.0~vaio5_i386.deb",
+      "sha256": "c4207e366105b636493985a74d20f7fceddcaf1f8152e9da546d74f425fad16f",
+      "size": 43766716,
+      "asset_name": "wordcraft-vaio_0.8.0.vaio5_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/wordcraft-0.8.0-vaio5/wordcraft-vaio_0.8.0.vaio5_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/wordcraft-0.8.0-vaio5"
+    }
+  ]
+}

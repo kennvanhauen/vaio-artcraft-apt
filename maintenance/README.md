@@ -154,10 +154,16 @@ commit may already be deployed even if the final release API call failed; do not
 blindly rerun the whole command. Finish the release/baseline bookkeeping after
 verifying the pushed commit, or restore the prior signed metadata and commit it.
 GitHub Pages deployment can lag a push; check its run before expecting the VAIO
-to see a new candidate. The package pool retains all previous versions.
+to see a new candidate. Publication retains the immediately previous package.
+Older unindexed copies may later move out of Pages after their public GitHub
+Release downloads have been verified byte for byte. `retired-packages.json`
+records the original filenames, public download URLs and SHA256 hashes.
 
 To roll back an installed app, download its recorded previous `.deb` from
-`pool/main/` and install that exact local file with native APT authentication:
+`pool/main/`, or its matching GitHub Release URL in `retired-packages.json`,
+verify the recorded SHA256 and install that exact local file with native APT
+authentication. GitHub normalizes `~` to `.` in release asset names; the internal
+Debian version and package bytes are unchanged.
 
 ```sh
 sudo apt-get install /path/to/previous-package_i386.deb
@@ -167,6 +173,29 @@ The archive index normally lists only the newest version, so a version-qualified
 APT command may not find the retained older package. Existing documents and
 settings remain. File-format changes may still require backups made before
 opening a document in a newer version.
+
+GitHub Pages limits published sites to 1 GB ([official limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)).
+Before a large update batch, measure the pool and allow room for the candidates.
+The explicit retention helper only selects files absent from the signed current
+index. It checks GitHub's asset digest, downloads each Release backup and compares
+its SHA256 with the local package, retaining another copy privately on the Mac:
+
+```sh
+python3 probes/retire_apt_packages.py plan --plan .build/retirement-plan.json
+```
+
+Review that plan, then run the separate mutation command when no coordinator is
+active. It rejects an advanced archive or changed backup, checks all files before
+removal, commits/pushes the public URL/hash map and keeps the signed index intact:
+
+```sh
+python3 probes/retire_apt_packages.py apply --plan .build/retirement-plan.json
+```
+
+This retires website copies, not GitHub Releases or Git history. Do not remove
+indexed packages, signing keys or private/local backups to make room. Host tests
+that exercise the macOS pasteboard need desktop access; rerun the unchanged gate
+with that access if the tool sandbox blocks it, rather than disabling the test.
 
 Private SSH details, diagnostics, user documents and signing credentials are not
 public release inputs. `maintenance/public-files.json` is the explicit recipe

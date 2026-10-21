@@ -216,8 +216,12 @@ def prepare(app, ref, version):
 
 def build(path):
     root, state = candidate(path)
-    if state['status'] not in ('prepared', 'build-failed'):
+    if (root/'publication.json').exists():
+        raise RuntimeError('Published candidates cannot be rebuilt; prepare a new version')
+    if state['status'] not in ('prepared', 'build-failed', 'built'):
         raise RuntimeError('Build requires a prepared candidate')
+    # Rebuilding a local candidate must never preserve acceptance for its old inputs.
+    invalidate_acceptance(root)
     app = state['app']
     env = dict(os.environ, VAIO_PACKAGE_SPEC=str(root/'candidate.json'), RUSTUP_TOOLCHAIN='1.95.0')
     try:
@@ -274,6 +278,26 @@ def unchanged(root, state):
     return package
 
 
+def invalidate_acceptance(root):
+    stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
+    for name in ('host-result.json', 'target-result.json'):
+        path = root/name
+        if path.exists():
+            history = root/'acceptance-history'/stamp
+            history.mkdir(parents=True, exist_ok=True)
+            path.replace(history/name)
+
+
+def host_git_environment(root, state, tree, env):
+    # Asset checks need the real tracked-file inventory even though the port is an
+    # archive tree. Use a private index and upstream objects, never an enclosing repo.
+    source = root/'upstream'/source_name(state['app'])
+    env = dict(env, GIT_DIR=str(source/'.git'), GIT_WORK_TREE=str(tree),
+               GIT_INDEX_FILE=str(root/'host-source.index'))
+    run(['git', 'read-tree', state['revision']], cwd=tree, env=env)
+    return env
+
+
 def host_check(path):
     root, state = candidate(path)
     unchanged(root, state)
@@ -281,6 +305,7 @@ def host_check(path):
     tree = root/'.build'/(app+'-port')
     env = dict(os.environ, CARGO_HOME=str(root/'.build/cargo'), RUSTUP_HOME=str(root/'.build/rustup'), RUSTUP_TOOLCHAIN='1.95.0', CARGO_TARGET_DIR=str(root/'.build/host-target'))
     env['PATH'] = str(root/'.build/cargo/bin')+':'+env['PATH']
+    env = host_git_environment(root, state, tree, env)
     result = {'passed': False, 'scope': 'workspace host tests excluding xtask and GPU UI crate; serial test execution'}
     try:
         ui_package = tomllib.loads((tree/'crates/ui-egui/Cargo.toml').read_text())['package']['name']
@@ -401,6 +426,26 @@ def release_gate(root, state):
     return package
 
 
+def stage_public_recipes(candidate_root, destination):
+    """Keep the public maintenance checkout usable after a port patch changes."""
+    names = read(ROOT/'maintenance/public-files.json')
+    copied = []
+    for name in names:
+        relative = Path(name)
+        if relative.is_absolute() or '..' in relative.parts:
+            raise RuntimeError('Unsafe public recipe path')
+        if name == 'maintenance/upstreams.json':
+            continue  # Publication writes the advanced baseline separately.
+        source = candidate_root/relative
+        if not source.is_file():
+            source = ROOT/relative
+        target = destination/relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, target)
+        copied.append(name)
+    return copied
+
+
 def publish(path):
     root, state = candidate(path)
     package = release_gate(root, state)
@@ -429,6 +474,7 @@ def publish(path):
     if output.exists():
         raise RuntimeError('Publication stage already exists; inspect prior attempt before retrying')
     shutil.copytree(public, output, ignore=shutil.ignore_patterns('.git'))
+    recipe_paths = stage_public_recipes(root, output)
     # Signing remains on the Mac; builder never sees the signing key.
     tag = state['app']+'-'+state['version'].replace('~', '-')
     run(['python3', ROOT/'probes/build_public_apt.py', package, '--tag', tag, '--output', output], log=root/'signing.log')
@@ -469,6 +515,10 @@ def publish(path):
     shutil.copytree(public/'dists', root/'previous-dists')
     for name in ('dists', 'pool'):
         shutil.copytree(output/name, public/name, dirs_exist_ok=True)
+    for name in recipe_paths:
+        destination = public/name
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(output/name, destination)
     updated = json.loads(json.dumps(settings))
     updated['apps'][state['app']]['revision'] = state['revision']
     updated['apps'][state['app']]['version'] = state['version']
@@ -481,7 +531,7 @@ def publish(path):
     text = text.replace('| '+state['package']+' | '+previous['Version']+' |',
                         '| '+state['package']+' | '+state['version']+' |')
     (public/'README.md').write_text(text)
-    run(['git', '-C', public, 'add', 'dists', 'pool', 'maintenance/upstreams.json', 'notes/updates/'+tag+'.json', 'README.md'])
+    run(['git', '-C', public, 'add', 'dists', 'pool', 'maintenance/upstreams.json', 'notes/updates/'+tag+'.json', 'README.md']+recipe_paths)
     run(['git', '-C', public, 'commit', '-m', 'Publish verified '+tag])
     run(['git', '-C', public, 'push', 'origin', 'main'])
     run(['gh', 'release', 'edit', tag, '--repo', settings['public_repo'], '--draft=false'])

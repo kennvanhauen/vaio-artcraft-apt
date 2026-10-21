@@ -57,60 +57,75 @@
      }
 --- a/apps/wordcraft/src/file_dialogs.rs
 +++ b/apps/wordcraft/src/file_dialogs.rs
-@@ -27,7 +27,7 @@
+@@ -33,7 +33,7 @@
  pub type Hook = Box<dyn Fn(FileDialogRequest) -> Receiver<FileDialogAnswer>>;
  
  /// A picker's answer, waited for off the UI thread.
--type Picking = Pin<Box<dyn Future<Output = Option<rfd::FileHandle>> + Send>>;
-+type Picking = Pin<Box<dyn Future<Output = Option<std::path::PathBuf>> + Send>>;
+-type Picking = Pin<Box<dyn Future<Output = Vec<rfd::FileHandle>> + Send>>;
++type Picking = Pin<Box<dyn Future<Output = Vec<std::path::PathBuf>> + Send>>;
  
  /// Shows the dialogs the app queued; lives in the eframe app, which has the window.
  pub struct Launcher {
-@@ -56,13 +56,32 @@
+@@ -60,9 +60,14 @@
+     pub fn show(&self, parent: &eframe::Frame) {
+         while let Ok((req, answer)) = self.queue.try_recv() {
              // Built here, on the UI thread: macOS shows the panel as a sheet on the window now.
-             let dialog = rfd::AsyncFileDialog::new().set_parent(parent);
-             let picking: Picking = match req {
--                FileDialogRequest::Open { purpose } => Box::pin(open_filters(dialog, &purpose).pick_file()),
-+                FileDialogRequest::Open { purpose } => {
-+                    Box::pin(async move { open_filters(dialog, &purpose).pick_file().await.map(|handle| handle.path().to_path_buf()) })
-+                }
-                 FileDialogRequest::Save { name } => {
-                     let mut dialog = dialog.set_file_name(name.clone());
-                     for (label, exts) in save_filters(&name) {
-                         dialog = dialog.add_filter(label, &exts);
-                     }
--                    Box::pin(dialog.save_file())
-+                    let confirm = rfd::AsyncMessageDialog::new()
-+                        .set_parent(parent)
-+                        .set_title("Replace file?")
-+                        .set_level(rfd::MessageLevel::Warning)
-+                        .set_buttons(rfd::MessageButtons::YesNo);
-+                    Box::pin(async move {
-+                        let picked = dialog.save_file().await?;
-+                        let path = selected_save_path(picked.path(), &name);
-+                        // Zenity confirms the typed path. A default extension can change it,
-+                        // so an existing normalized target needs its own explicit confirmation.
-+                        if path != picked.path() && path.exists() {
-+                            let answer = confirm.set_description(format!("{} already exists. Replace it?", path.display())).show().await;
-+                            if answer != rfd::MessageDialogResult::Yes {
-+                                return None;
-+                            }
-+                        }
-+                        Some(path)
-+                    })
-                 }
-             };
+-            let picking = picker(rfd::AsyncFileDialog::new().set_parent(parent), &req);
++            let confirm = || rfd::AsyncMessageDialog::new()
++                .set_parent(parent)
++                .set_title("Replace file?")
++                .set_level(rfd::MessageLevel::Warning)
++                .set_buttons(rfd::MessageButtons::YesNo);
++            let picking = picker(rfd::AsyncFileDialog::new().set_parent(parent), &req, confirm());
+             #[cfg(all(unix, not(target_os = "macos")))]
+-            let unparented = picker(rfd::AsyncFileDialog::new(), &req);
++            let unparented = picker(rfd::AsyncFileDialog::new(), &req, confirm());
              let ctx = self.ctx.clone();
-@@ -70,7 +89,7 @@
-                 // The picker only starts when first polled: without a system dialog it never does.
-                 let picked = match no_system_dialog() {
-                     Some(reason) => Err(reason),
--                    None => Ok(pollster::block_on(picking).map(|f| f.path().to_string_lossy().to_string())),
-+                    None => Ok(pollster::block_on(picking).map(|path| path.to_string_lossy().to_string())),
+             let waiting = std::thread::Builder::new().name("file dialog".into()).spawn(move || {
+                 // The pickers only start when first polled: without a system dialog they never do.
+@@ -74,7 +79,7 @@
+                         let picked = pick(picking, unparented, TOO_QUICK);
+                         #[cfg(not(all(unix, not(target_os = "macos"))))]
+                         let picked: Result<_, String> = Ok(pollster::block_on(picking));
+-                        picked.map(|f| f.iter().map(|f| f.path().to_string_lossy().to_string()).collect())
++                        picked.map(|paths| paths.iter().map(|path| path.to_string_lossy().to_string()).collect())
+                     }
                  };
                  let _ = answer.send(picked);
-                 ctx.request_repaint();
-@@ -143,6 +162,16 @@
+@@ -89,16 +94,28 @@
+ }
+ 
+ /// The picker for `req` on `dialog`.
+-fn picker(dialog: rfd::AsyncFileDialog, req: &FileDialogRequest) -> Picking {
++fn picker(dialog: rfd::AsyncFileDialog, req: &FileDialogRequest, confirm: rfd::AsyncMessageDialog) -> Picking {
+     match req.clone() {
+-        FileDialogRequest::Open { purpose } => Box::pin(async move { open_filters(dialog, &purpose).pick_file().await.into_iter().collect() }),
+-        FileDialogRequest::OpenMany { purpose } => Box::pin(async move { open_filters(dialog, &purpose).pick_files().await.unwrap_or_default() }),
++        FileDialogRequest::Open { purpose } => Box::pin(async move { open_filters(dialog, &purpose).pick_file().await.into_iter().map(|handle| handle.path().to_path_buf()).collect() }),
++        FileDialogRequest::OpenMany { purpose } => Box::pin(async move { open_filters(dialog, &purpose).pick_files().await.unwrap_or_default().into_iter().map(|handle| handle.path().to_path_buf()).collect() }),
+         FileDialogRequest::Save { name } => {
+             let mut dialog = dialog.set_file_name(name.clone());
+             for (label, exts) in save_filters(&name) {
+                 dialog = dialog.add_filter(label, &exts);
+             }
+-            Box::pin(async move { dialog.save_file().await.into_iter().collect() })
++            Box::pin(async move {
++                let Some(picked) = dialog.save_file().await else { return Vec::new(); };
++                let path = selected_save_path(picked.path(), &name);
++                // Old Zenity confirms the typed name, before we add a default extension.
++                // Confirm separately if that normalization selects an existing file.
++                if path != picked.path() && path.exists() {
++                    let answer = confirm.set_description(format!("{} already exists. Replace it?", path.display())).show().await;
++                    if answer != rfd::MessageDialogResult::Yes {
++                        return Vec::new();
++                    }
++                }
++                vec![path]
++            })
+         }
+     }
+ }
+@@ -195,6 +212,16 @@
      std::env::var_os("PATH").is_some_and(|paths| std::env::split_paths(&paths).any(|dir| dir.join(program).is_file()))
  }
  
@@ -127,12 +142,13 @@
  /// The file types Save As offers: every format the engine saves, with the suggested name's own
  /// format first. rfd makes a filter's first extension the dialog's default, which the Windows,
  /// macOS and Linux panels append to a file name the user typed without one; with no filter at
-@@ -193,7 +222,15 @@
+@@ -245,7 +272,16 @@
  
  #[cfg(test)]
  mod tests {
--    use super::{save_exts, save_filters};
-+    use super::{save_exts, save_filters, selected_save_path};
+-    use super::{pick, save_exts, save_filters};
++    use super::{pick, save_exts, save_filters, selected_save_path};
++
 +    #[test]
 +    fn bare_save_names_get_the_suggested_format_without_replacing_typed_formats() {
 +        use std::path::{Path, PathBuf};
@@ -141,9 +157,9 @@
 +        assert_eq!(selected_save_path(Path::new("/tmp/export"), "Document.pdf"), PathBuf::from("/tmp/export.pdf"));
 +        assert_eq!(selected_save_path(Path::new("report."), "Document.rtf"), PathBuf::from("report.rtf"));
 +    }
+     use std::time::Duration;
  
-     /// #1399: the Save dialog's type list has one named entry per format, the suggested one first,
-     /// every savable extension exactly once.
+     /// #2999: a dialog that "cancels" at once is a portal that failed: asked again without a
 --- a/crates/ui-egui/src/control.rs
 +++ b/crates/ui-egui/src/control.rs
 @@ -61,7 +61,12 @@
@@ -188,7 +204,7 @@
      if !app.ui.caret_animation || !app.animations_on() || ui.style().animation_time <= 0.0 || glide_secs() <= 0.0 {
 --- a/crates/ui-egui/src/canvas.rs
 +++ b/crates/ui-egui/src/canvas.rs
-@@ -1460,7 +1460,9 @@
+@@ -1498,7 +1498,9 @@
                      painter.line_segment(look.bar, Stroke::new(1.5, caret_color.gamma_multiply(look.opacity)));
                  }
                  if focused {
@@ -199,7 +215,7 @@
                      let cr = Rect::from_min_max(pos2(x, y0), pos2(x + 1.0, y1));
                      ui.ctx().output_mut(|o| {
                          o.ime = Some(egui::output::IMEOutput {
-@@ -1498,7 +1500,7 @@
+@@ -1536,7 +1538,7 @@
              if shown && look.opacity > 0.0 {
                  painter.line_segment(look.bar, Stroke::new(1.5, caret_color(app).gamma_multiply(look.opacity)));
              }
@@ -210,7 +226,7 @@
              // IME candidate window placement.
 --- a/crates/ui-egui/src/lib.rs
 +++ b/crates/ui-egui/src/lib.rs
-@@ -363,7 +363,7 @@
+@@ -369,7 +369,7 @@
              theme: theme::Appearance::default(),
              interface_size: theme::InterfaceSize::default(),
              legacy_interface_size: None,

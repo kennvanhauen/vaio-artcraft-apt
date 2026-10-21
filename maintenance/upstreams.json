@@ -61,10 +61,10 @@
     },
     "wordcraft": {
       "repo": "storytold/wordcraft",
-      "revision": "d6f20f93fd22deb441b2216ecfd65acb15ea8b64",
-      "version": "0.8.0~vaio5",
+      "revision": "2e6db0bd88795e80375176c01665cff7dbe2b057",
+      "version": "0.9.0~vaio1",
       "package": "wordcraft-vaio",
-      "port_base_revision": "d6f20f93fd22deb441b2216ecfd65acb15ea8b64"
+      "port_base_revision": "2e6db0bd88795e80375176c01665cff7dbe2b057"
     }
   }
 }

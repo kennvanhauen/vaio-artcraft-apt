@@ -63,7 +63,9 @@ python3 probes/maintain_updates.py run cadcraft --ref COMMIT_OR_TAG --version 0.
 ```
 
 That stops with a verified local candidate. Add `--publish` to include publication
-after all checks pass. A failure stops the sequence and keeps its evidence.
+after all checks pass. A failure stops the sequence and keeps its evidence. A local, unpublished built
+candidate may be rebuilt after a recipe correction; this archives its old host/target
+receipts and requires fresh acceptance. Published candidates cannot be rebuilt.
 
 Before building, read the candidate's `UPSTREAM-INSTRUCTIONS.md`, upstream release
 notes and source diff. The ignored upstream plans may be absent. Resolve relevant
@@ -83,7 +85,9 @@ upstream version plus `~vaio1` when appropriate; do not reuse a published filena
   the existing local setup, with Rust 1.95.0 and Zig 0.14.1 pinned and font hashes
   rechecked before compilation. No new toolchain is selected implicitly. The three
   packagers accept explicit candidate metadata and verify its source HEAD, instead of silently stamping old pins.
-- **Host check:** serial workspace tests excluding `xtask` and the GPU UI crate;
+- **Host check:** a private Git index from the pinned upstream revision supplies
+  tracked-file inventory for asset checks in the extracted port tree; source and
+  enclosing repositories are not modified. Serial workspace tests excluding `xtask` and the GPU UI crate;
   application asset and layering gates also run (launcher lacks those commands).
   This is a scoped native maintenance gate, **not full upstream CI or WASM**.
 - **VAIO verification:** verify transfer SHA, Xenial/Atom/i386 identity, package
@@ -103,7 +107,8 @@ upstream version plus `~vaio1` when appropriate; do not reuse a published filena
   dirty public staging or an existing package filename. Sign a separate APT
   staging tree locally; verify its signature/key and retain the prior package.
   Upload a draft binary/source release, back up signed metadata locally, commit
-  the archive plus a public result summary/baseline, push, then publish the
+  the archive, the tested allowlisted recipes and a public result summary/baseline,
+  push, then publish the
   release. The existing signed APT source delivers it normally.
 
 One coordinator runs at a time. Failures have nonzero exits and retained logs;

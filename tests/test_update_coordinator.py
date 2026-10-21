@@ -77,6 +77,36 @@ class ReleaseGateTests(unittest.TestCase):
         self.assertFalse(m.read(self.root/'target-result.json')['passed'])
         self.assertEqual(len(list((self.root/'target-history').glob('*.json'))), 1)
 
+    def test_rebuild_archives_acceptance_before_new_build(self):
+        m.invalidate_acceptance(self.root)
+        self.assertFalse((self.root/'host-result.json').exists())
+        self.assertFalse((self.root/'target-result.json').exists())
+        self.assertEqual(len(list((self.root/'acceptance-history').glob('*/host-result.json'))), 1)
+        with self.assertRaises(RuntimeError): m.release_gate(self.root, self.state)
+
+    def test_published_candidate_cannot_be_rebuilt(self):
+        (self.root/'publication.json').write_text('{}')
+        with patch.object(m, 'candidate', return_value=(self.root, dict(status='built'))):
+            with self.assertRaisesRegex(RuntimeError, 'Published candidates'): m.build(self.root)
+
+    def test_host_git_inventory_uses_upstream_and_includes_added_assets(self):
+        import os
+        import subprocess
+        source = self.root/'upstream/cadcraft'
+        source.mkdir(parents=True)
+        subprocess.run(['git', 'init', '-q', str(source)], check=True)
+        (source/'tracked.svg').write_text('synthetic asset')
+        subprocess.run(['git', '-C', str(source), 'add', 'tracked.svg'], check=True)
+        subprocess.run(['git', '-C', str(source), '-c', 'user.name=Test', '-c',
+                        'user.email=test@example.invalid', 'commit', '-qm', 'fixture'], check=True)
+        tree = self.root/'port'; tree.mkdir()
+        (tree/'tracked.svg').write_text('synthetic asset')
+        (tree/'new.svg').write_text('new synthetic asset')
+        env = m.host_git_environment(self.root, dict(app='cadcraft', revision='HEAD'), tree, os.environ)
+        files = subprocess.check_output(['git', 'ls-files', '--cached', '--others',
+                                         '--exclude-standard'], cwd=tree, env=env, text=True)
+        self.assertEqual(set(files.splitlines()), {'tracked.svg', 'new.svg'})
+
     def test_compiled_source_changes_invalidate_evidence(self):
         source = self.root/'.build/cadcraft-port/src/lib.rs'; source.parent.mkdir(parents=True)
         source.write_text('original source')
@@ -143,6 +173,24 @@ class ReleaseGateTests(unittest.TestCase):
         for name in files:
             self.assertNotIn('..', Path(name).parts)
             self.assertTrue((ROOT/name).is_file(), name)
+
+    def test_publication_keeps_rebased_recipe_and_excludes_private_files(self):
+        settings = self.root/'maintenance'
+        settings.mkdir()
+        m.write(settings/'public-files.json', ['ports/cadcraft-xenial.patch',
+                'probes/maintain_updates.py', 'maintenance/upstreams.json'])
+        (self.root/'probes/maintain_updates.py').write_text('fallback coordinator')
+        candidate_root = self.root/'candidate'
+        (candidate_root/'ports').mkdir(parents=True)
+        (candidate_root/'ports/cadcraft-xenial.patch').write_text('rebased patch')
+        (candidate_root/'auth.json').write_text('private fixture: never publish')
+        destination = self.root/'public'
+        with patch.object(m, 'ROOT', self.root):
+            paths = m.stage_public_recipes(candidate_root, destination)
+        self.assertEqual((destination/'ports/cadcraft-xenial.patch').read_text(), 'rebased patch')
+        self.assertEqual((destination/'probes/maintain_updates.py').read_text(), 'fallback coordinator')
+        self.assertNotIn('maintenance/upstreams.json', paths)
+        self.assertFalse((destination/'auth.json').exists())
 
     def test_target_runner_has_python35_syntax(self):
         ast.parse((ROOT/'probes/update_target_check.py').read_text(), feature_version=(3, 5))

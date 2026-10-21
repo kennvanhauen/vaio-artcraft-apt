@@ -14,22 +14,6 @@ Size: 57133696
 MD5sum: 1239fc84b17f0c3a34f99c188aa1adc5
 SHA256: 0d2c56ceaae2376b33f4e5e5a8118ed9f487ec9d78e3abe300c9568092ad0a61
 
-Package: deckcraft-vaio
-Version: 0.8.0~vaio1
-Architecture: i386
-Section: editors
-Priority: optional
-Maintainer: VAIO local build <vaio@localhost>
-Installed-Size: 172216
-Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa, libasound2 (>= 1.1.0), shared-mime-info, xscreensaver
-Description: DeckCraft preview adapted for Ubuntu Xenial i386 on the Sony VAIO
- Unofficial native 32-bit build using Glow and a private XCB library.
- APT owns application files; existing user documents and settings are retained.
-Filename: pool/main/deckcraft-vaio_0.8.0~vaio1_i386.deb
-Size: 84682682
-MD5sum: cc09dd9399731374bd097132308f4a41
-SHA256: 3282392ab734cdb9162bc496af0ec17d95e9b050f0200c69b8dffde480110ebd
-
 Package: vectorcraft-vaio
 Version: 0.13.1~vaio1
 Architecture: i386
@@ -141,4 +125,20 @@ Filename: pool/main/gridcraft-vaio_0.10.0~vaio1_i386.deb
 Size: 21896556
 MD5sum: a88d392f891872502794baeb8d53d2fe
 SHA256: efa4dedd699aaf4a9bad4464734f2feab56507e7ccb269fb963f089c0cb82a48
+
+Package: deckcraft-vaio
+Version: 0.9.0~vaio1
+Architecture: i386
+Section: editors
+Priority: optional
+Maintainer: VAIO local build <vaio@localhost>
+Installed-Size: 172354
+Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa, libasound2 (>= 1.1.0), shared-mime-info, xscreensaver
+Description: DeckCraft preview adapted for Ubuntu Xenial i386 on the Sony VAIO
+ Unofficial native 32-bit build using Glow and a private XCB library.
+ APT owns application files; existing user documents and settings are retained.
+Filename: pool/main/deckcraft-vaio_0.9.0~vaio1_i386.deb
+Size: 84746114
+MD5sum: 0c4cc42276878e7149787cd5d53f2364
+SHA256: d47b0d56d4b520c8ac520a369da0229957328a207c87f7c71cf219565fcd5fb0
 

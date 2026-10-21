@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "package_sha256": "d47b0d56d4b520c8ac520a369da0229957328a207c87f7c71cf219565fcd5fb0",
+  "steps": [
+    "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+    "CLI startup without display variables",
+    "deckcraft_smoke.py",
+    "deckcraft_native_dialogs.py"
+  ],
+  "measurements": [
+    {
+      "rss_kib": 109648,
+      "idle_cpu_percent": 0.0,
+      "probe": "deckcraft_smoke.py"
+    }
+  ],
+  "version_newer": true,
+  "archive_version_newer": true,
+  "source_revision": "fe510bdac68118f2c9a714e69d0ff572e3f9a0c7",
+  "version": "0.9.0~vaio1"
+}

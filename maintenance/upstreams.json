@@ -26,10 +26,10 @@
     },
     "figcraft": {
       "repo": "storytold/figcraft",
-      "revision": "a0d1162976fac1e4a8b8fd49a3948e9d6bad6f40",
-      "version": "0.7.0~vaio1",
+      "revision": "28de91d9ae72fc7fbc2199ac5ee2c8be237980d5",
+      "version": "0.9.0~vaio1",
       "package": "figcraft-vaio",
-      "port_base_revision": "a0d1162976fac1e4a8b8fd49a3948e9d6bad6f40"
+      "port_base_revision": "28de91d9ae72fc7fbc2199ac5ee2c8be237980d5"
     },
     "gridcraft": {
       "repo": "storytold/gridcraft",

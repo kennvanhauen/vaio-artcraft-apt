@@ -1,6 +1,6 @@
 --- a/Cargo.lock
 +++ b/Cargo.lock
-@@ -1094,6 +1094,7 @@
+@@ -1137,6 +1137,7 @@
   "egui-wgpu",
   "egui-winit",
   "egui_glow",
@@ -22,9 +22,9 @@
  [dependencies]
  figcraft-engine = { workspace = true }
  figcraft-ui-egui = { workspace = true }
-@@ -17,7 +22,7 @@
- figcraft-format = { workspace = true }
- figcraft-text = { workspace = true }
+@@ -21,7 +26,7 @@
+ # craft-libs#217 branch and must be repointed to a merged `rev` before this PR is mergeable.
+ craft-window = { workspace = true }
  egui = { workspace = true }
 -eframe = { workspace = true, features = ["default_fonts", "wgpu", "accesskit", "wayland", "x11"] }
 +eframe = { workspace = true, features = ["default_fonts", "accesskit", "wayland", "x11"] }
@@ -39,9 +39,9 @@
  mod gamepad;
 +#[cfg(not(feature = "vaio"))]
  mod graphics;
- #[cfg(target_os = "linux")]
- mod linux_window;
-@@ -31,7 +32,7 @@
+ mod recovery;
+ mod services;
+@@ -29,7 +30,7 @@
  mod apple_events_tests;
  #[cfg(test)]
  mod args_tests;
@@ -50,7 +50,7 @@
  mod graphics_tests;
  #[cfg(test)]
  mod recovery_online_tests;
-@@ -107,7 +108,7 @@
+@@ -105,7 +106,7 @@
          services::parented(frame, || with_app(|fig| figcraft_ui_egui::windows::guard(fig, &ctx, |fig| fig.ui(ui))));
      }
  
@@ -59,7 +59,7 @@
          // With the app out of reach (busy), its recovery copies stay for the next start.
          let copies = recovery::lock(&self.recovery).take();
          with_app(|fig| services::shutdown(fig, services::config_dir().as_deref(), copies));
-@@ -221,7 +222,7 @@
+@@ -217,7 +218,7 @@
      let mut viewport = egui::ViewportBuilder::default()
          .with_title("FigCraft")
          .with_app_id("ai.storyteller.figcraft")
@@ -67,8 +67,8 @@
 +        .with_inner_size(if cfg!(feature = "vaio") { [1440.0, 650.0] } else { [1440.0, 900.0] })
          .with_min_inner_size([800.0, 500.0])
          .with_drag_and_drop(true);
-     // Start frameless on Linux; the app creator checks the actual display backend
-@@ -231,8 +232,20 @@
+     // Who draws the window frame is decided once, before the viewport is built, by the shared
+@@ -232,8 +233,20 @@
      if let Some(icon) = icon {
          viewport = viewport.with_icon(icon);
      }
@@ -89,11 +89,11 @@
 +        options
 +    };
      figcraft_ui_egui::windows::install(fig);
-     #[cfg(target_os = "linux")]
-     let linux_display = linux_window::display_socket();
+     // Registered before the event loop starts, so it catches the Finder event that launched the app
+     // as well as later ones. Lives until the event loop returns; the app creator only borrows it.
 --- a/crates/ui-egui/src/dialogs.rs
 +++ b/crates/ui-egui/src/dialogs.rs
-@@ -130,9 +130,7 @@
+@@ -129,9 +129,7 @@
          });
      });
      ui.add_space(12.0);
@@ -106,7 +106,7 @@
      ui.hyperlink_to(tr("Join us on Discord"), "https://discord.gg/artcraft");
 --- a/crates/ui-egui/src/canvas.rs
 +++ b/crates/ui-egui/src/canvas.rs
-@@ -1111,11 +1111,16 @@
+@@ -1122,11 +1122,16 @@
              }
          }
          let caret = preedit.map(|p| p.cursor).unwrap_or(te.caret);

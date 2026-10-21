@@ -100,6 +100,7 @@
   "probes/prepare-vectorcraft-fonts.py",
   "probes/prepare-vectorcraft-port.py",
   "probes/prepare-wordcraft-port.py",
+  "probes/retire_apt_packages.py",
   "probes/setup-cross-tools.py",
   "probes/show_final_eight_launcher.py",
   "probes/show_final_five_launcher.py",
@@ -126,5 +127,6 @@
   "probes/zig-ranlib.sh",
   "probes/zig_cc_xenial.py",
   "tests/test_update_coordinator.py",
+  "tests/test_update_archive_retention.py",
   "tests/test_update_package_spec.py"
 ]

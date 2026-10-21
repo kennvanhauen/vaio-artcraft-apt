@@ -8,26 +8,26 @@ Codename: xenial
 Architectures: i386
 Components: main
 Description: Unofficial ArtCraft previews for Ubuntu Xenial i386
-Date: Wed, 21 Oct 2026 22:31:46 GMT
+Date: Wed, 21 Oct 2026 22:50:52 GMT
 MD5Sum:
- 9f2519b7b2ed491e07977f8ca69733c9 7306 main/binary-i386/Packages
- faf9454613bd274be1118a7765f17bef 1593 main/binary-i386/Packages.gz
+ 40f26f50287dd2c536d72a41c0700d0c 7306 main/binary-i386/Packages
+ c3ae15454b4a07d9751130c1dff68486 1585 main/binary-i386/Packages.gz
  52608ca0ec5dea6c5b78c2850ab09913 51 main/binary-i386/Release
 SHA256:
- 4bdf6932e36bae7e1e4e2145d3a6bea0f7aa77fe2c257c246a9af64a6bd95776 7306 main/binary-i386/Packages
- a39423c7517340764753bbe11a701eb4cccfb7bbd8b10649291d2f7925014ec0 1593 main/binary-i386/Packages.gz
+ 1a62305572a4bac3f27fc406fc19f365aa0d42e173f98b7ff7704b3c34b45c44 7306 main/binary-i386/Packages
+ d777aea95345d9e7e5252a24a3b3e6bcf0125242aff4b4012981b1b231ac65d6 1585 main/binary-i386/Packages.gz
  8b5b8e1eea0817645ced68a21422690999cdb19ab64c6127115c99570dc1d93b 51 main/binary-i386/Release
 -----BEGIN PGP SIGNATURE-----
 
-iQGzBAEBCAAdFiEERBYWxlqrabmW42e9oH8n7A8ST4cFAmrZPVIACgkQoH8n7A8S
-T4dBlAv/YxupCvnbrMWl87iFhAXJF1ESt8+Fz/xrQWU/HM322JZjf3td8BFTG+ji
-a6s6EsTiSej/EWPf57WVr/8Gr1fy3pQJtqJZ6BryyWoz5ofpiiSeDc/1AsQhpJ5Y
-hWbbyOIT8y0oZj7q8i5dWyPLahEiHVpMD0xU9erRMMAgCS9JdHaCUxnN8BGKw3gK
-Z/h1U2js7w/MxEtZQqvi9QejexUjhz0PjFySbxowoJujjS5RVuqi3xgL+UDHq63e
-XDXh1iq/NEpa/gCPKvIWLzLDIuuMwjUSe1siszP1otQegwAgtsi4ty4tjM6nw4kx
-iEs6FI9WgxFRUVlyH989HKHuoMibufld4N/rBB9ZnFSFuKbZBfIqzD9Tz9yHxs9L
-/hnUZE8ASIdxI8roq0UUmUjxiXyEBzrZ+XAJ69pChXeG21lBGNjlOs1E7UOJReqa
-XH6s9Ue38PxpS04hP+prF7PGGuSB/jEOmN4vRwqZ8YsEHzOvjNzwJev8RlKro+tv
-rZYVayNN
-=W++j
+iQGzBAEBCAAdFiEERBYWxlqrabmW42e9oH8n7A8ST4cFAmrZQc0ACgkQoH8n7A8S
+T4ewogv+Kvab2DxySyhIXw1eluTIE7BLdp0+YNArP55Qf6Ko+m9gfXlRdkLPOVyN
+LsKjhkBEwIvqizRDPi5fwVfmHkgLiGPhUboo6gXXMAvFIOhmKMEc6CfPKJU15lox
+vspDPuaz09aX23Xgq+Jq7rn1Nnq92u49ecr8eN02qcsF5QrwpKe3pmUL5pLU/x74
++ulM3h7hHS3Ekw20zzoqqIEPJAerH24iYxZe70STL15aWF6qoy8uq+cvSc2Cwtse
+x2a3h9TH9Zje8779QtaiyC/WhfnWX3Er5AzgZ3oFdDTuBtqtKETJL09b6YDletr+
+ikRZt9E+vsSmc+i+lHjevKIH/MOD5CCST8VleR36srTiIorZb7KsFBqLHTqNP4qp
+hYnc1CJC8nTwUxAfp2pa8u2s8qGJlwktC0aqUAg2UgNpJiElBv+hfjCCMXlyq8VU
+DACz81oBpln+pMh9CqyiarRFMsrAS/2RwSRR+CQcx1lsUDLDovm3tAezQ14VJjVK
+OHt9kzGU
+=Sd16
 -----END PGP SIGNATURE-----

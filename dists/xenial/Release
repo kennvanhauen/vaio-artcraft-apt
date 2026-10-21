@@ -5,12 +5,12 @@ Codename: xenial
 Architectures: i386
 Components: main
 Description: Unofficial ArtCraft previews for Ubuntu Xenial i386
-Date: Wed, 21 Oct 2026 22:31:46 GMT
+Date: Wed, 21 Oct 2026 22:50:52 GMT
 MD5Sum:
- 9f2519b7b2ed491e07977f8ca69733c9 7306 main/binary-i386/Packages
- faf9454613bd274be1118a7765f17bef 1593 main/binary-i386/Packages.gz
+ 40f26f50287dd2c536d72a41c0700d0c 7306 main/binary-i386/Packages
+ c3ae15454b4a07d9751130c1dff68486 1585 main/binary-i386/Packages.gz
  52608ca0ec5dea6c5b78c2850ab09913 51 main/binary-i386/Release
 SHA256:
- 4bdf6932e36bae7e1e4e2145d3a6bea0f7aa77fe2c257c246a9af64a6bd95776 7306 main/binary-i386/Packages
- a39423c7517340764753bbe11a701eb4cccfb7bbd8b10649291d2f7925014ec0 1593 main/binary-i386/Packages.gz
+ 1a62305572a4bac3f27fc406fc19f365aa0d42e173f98b7ff7704b3c34b45c44 7306 main/binary-i386/Packages
+ d777aea95345d9e7e5252a24a3b3e6bcf0125242aff4b4012981b1b231ac65d6 1585 main/binary-i386/Packages.gz
  8b5b8e1eea0817645ced68a21422690999cdb19ab64c6127115c99570dc1d93b 51 main/binary-i386/Release

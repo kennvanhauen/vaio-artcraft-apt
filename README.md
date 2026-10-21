@@ -13,7 +13,7 @@ through APT. These are independent hardware adaptations of upstream alpha apps.
 | vectorcraft-vaio | 0.13.1~vaio1 | Headless CLI/MCP, GUI text editing, layers, shapes, pathfinder, undo/redo, two artboards, native/SVG round trip, broad format export, native Save As and draft recovery |
 | designcraft-vaio | 0.9.0~vaio1 | Three-page styles/images/threading/table/RTF workflow, GUI editing, native/IDML round trip, PDF/PNG/EPUB/PPTX/HTML/text export, parent pages, data merge, native Save As and automatic idle recovery |
 | figcraft-vaio | 0.9.0~vaio1 | Two-screen UI design, auto layout, components/instances, styles/variables, GUI text editing, prototype click navigation/preview, native/SVG/own-FIG round trips, seven exports, native Save As and idle draft recovery |
-| cadcraft-vaio | 0.9.0~vaio1 | Metric 2D drafting, rounded outline, layers, blocks, constraints, dimensions, TEXT/MTEXT, LISP, interactive editing, DXF save/reopen, own DWG round trip, SVG/PNG/PDF, A4 viewport plot, native Save As and autosave |
+| cadcraft-vaio | 0.10.0~vaio1 | Metric 2D drafting, rounded outline, layers, blocks, constraints, dimensions, TEXT/MTEXT, LISP, interactive editing, DXF save/reopen, own DWG round trip, SVG/PNG/PDF, A4 viewport plot, native Save As and autosave |
 | artcraft-launcher-vaio | 0.5.1~vaio9 | Eight-app APT backend, signed metadata refresh, offline reporting, saved settings and fixed package-operation allowlist |
 
 All eight application engines retain their upstream features. This is a practical

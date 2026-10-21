@@ -46,22 +46,6 @@ Size: 81483934
 MD5sum: 63642c84815d6b4ab07019a709b3c768
 SHA256: 342e5b7a3d4226b40347695eebcfaf5fe1e091366f47efe78ab4aef60ce799f5
 
-Package: cadcraft-vaio
-Version: 0.9.0~vaio1
-Architecture: i386
-Section: editors
-Priority: optional
-Maintainer: VAIO local build <vaio@localhost>
-Installed-Size: 123137
-Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa, shared-mime-info
-Description: CADCraft preview adapted for Ubuntu Xenial i386 on the Sony VAIO
- Unofficial native 32-bit build using Glow and a private XCB library.
- APT owns application files; existing user documents and settings are retained.
-Filename: pool/main/cadcraft-vaio_0.9.0~vaio1_i386.deb
-Size: 45563926
-MD5sum: 5dd8a4b5b918c35844ee19a03264dccb
-SHA256: b106ca156e52584e09140dd279726c3b18fdd5e34a4590abce8aaaa8e2ba62b3
-
 Package: artcraft-launcher-vaio
 Version: 0.5.1~vaio9
 Architecture: i386
@@ -141,4 +125,20 @@ Filename: pool/main/figcraft-vaio_0.9.0~vaio1_i386.deb
 Size: 63736978
 MD5sum: c146f5955f54d88dc12796279889309a
 SHA256: 0fbe3254b1915d636d48bb7620cbc9e4931a3cff6d6baf4c6280825b4aff962e
+
+Package: cadcraft-vaio
+Version: 0.10.0~vaio1
+Architecture: i386
+Section: editors
+Priority: optional
+Maintainer: VAIO local build <vaio@localhost>
+Installed-Size: 124060
+Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa, shared-mime-info
+Description: CADCraft preview adapted for Ubuntu Xenial i386 on the Sony VAIO
+ Unofficial native 32-bit build using Glow and a private XCB library.
+ APT owns application files; existing user documents and settings are retained.
+Filename: pool/main/cadcraft-vaio_0.10.0~vaio1_i386.deb
+Size: 45868428
+MD5sum: 50a460be44215c89bb46ad6a5983bf28
+SHA256: 57d9107b142aec81a9a8dac61304202b16a7fd2580e3ef41599952271931ddb6
 

@@ -5,8 +5,8 @@
   "apps": {
     "cadcraft": {
       "repo": "storytold/cadcraft",
-      "revision": "0cc66ad3066e71f2c3d4cacb7de905e79ba1c95b",
-      "version": "0.9.0~vaio1",
+      "revision": "e86eacf094fefda1cdb6ba5137a336f29deb5d99",
+      "version": "0.10.0~vaio1",
       "package": "cadcraft-vaio",
       "port_base_revision": "0cc66ad3066e71f2c3d4cacb7de905e79ba1c95b"
     },

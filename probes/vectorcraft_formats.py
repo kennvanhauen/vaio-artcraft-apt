@@ -16,6 +16,7 @@ try:
               ('text.create',{'x':35,'y':145,'text':'日本語の修理','font':'BIZ UDPGothic','size':14,'color':'#12364e'}),
               ('text.create',{'x':270,'y':170,'text':'مرحبا بالعالم','font':'Noto Sans Arabic','size':14,'color':'#12364e'}),
               ('text.create',{'x':250,'y':285,'text':'Ελληνικά — café','font':'Inter','size':14,'color':'#12364e'}),
+              ('text.create',{'x':250,'y':320,'text':'ქართული','font':'Noto Sans Georgian','size':14,'color':'#12364e'}),
               ('paint.setFill',{'gradient':{'kind':'radial','stops':[{'offset':0,'color':'#ffd56f'},{'offset':1,'color':'#dc7645'}]}}),
               ('shape.ellipse',{'x':350,'y':220,'width':90,'height':50}),
               ('object.setProps',{'opacity':75,'name':'Translucent gradient'}),
@@ -37,7 +38,7 @@ try:
     assert result['legacy_info']['info']['objects']==result['advanced_info']['info']['objects']
     for ext in ['svgz','ai','psd','emf','wmf']:
         result[ext+'_reopen']=json.loads(run('info',str(base/('advanced.'+ext))))
-    result['checks']=['Japanese/Arabic/Greek/Latin font resolution','radial gradient/transparency','12 additional export formats','five additional format reopen checks','legacy extension']
+    result['checks']=['Japanese/Arabic/Greek/Georgian/Latin font resolution','radial gradient/transparency','12 additional export formats','five additional format reopen checks','legacy extension']
     result['passed']=True
 except Exception as error:result.update(passed=False,error=str(error))
 (base/'formats-result.json').write_text(json.dumps(result,indent=2)+'\n')

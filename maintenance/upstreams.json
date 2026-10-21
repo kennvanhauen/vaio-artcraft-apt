@@ -54,8 +54,8 @@
     },
     "vectorcraft": {
       "repo": "storytold/vectorcraft",
-      "revision": "a466625c8987550635cda951ebf36e08e1e80a56",
-      "version": "0.13.1~vaio1",
+      "revision": "ad0566943ab9741e6356bbc9b53c3cc09895068d",
+      "version": "0.14.0~vaio1",
       "package": "vectorcraft-vaio",
       "port_base_revision": "a466625c8987550635cda951ebf36e08e1e80a56"
     },

@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "package_sha256": "23d46e80b7183ccf32e8c63b862d6ddf2eeca187cc5a03a50013845fb7844dbf",
+  "steps": [
+    "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+    "vectorcraft_headless.py",
+    "vectorcraft_gui.py",
+    "vectorcraft_native_dialogs.py"
+  ],
+  "measurements": [
+    {
+      "idle_cpu_percent": 0.6,
+      "probe": "vectorcraft_gui.py",
+      "rss_kib": 110980
+    }
+  ],
+  "version_newer": true,
+  "archive_version_newer": true,
+  "source_revision": "ad0566943ab9741e6356bbc9b53c3cc09895068d",
+  "version": "0.14.0~vaio1"
+}

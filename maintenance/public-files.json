@@ -61,6 +61,7 @@
   "probes/deckcraft_show_idle.py",
   "probes/deckcraft_smoke.py",
   "probes/designcraft_formats.py",
+  "probes/designcraft_pdf_backend.py",
   "probes/designcraft_gui.py",
   "probes/designcraft_headless.py",
   "probes/designcraft_installed_proof.py",

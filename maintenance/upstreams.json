@@ -19,8 +19,8 @@
     },
     "designcraft": {
       "repo": "storytold/designcraft",
-      "revision": "ecd7e5d063eb12fa5e61fe61c9b8a77bb3c9110a",
-      "version": "0.9.0~vaio1",
+      "revision": "4d62a501c18fb3cf453c6e9f19f15cbc9c558e26",
+      "version": "0.11.0~vaio1",
       "package": "designcraft-vaio",
       "port_base_revision": "ecd7e5d063eb12fa5e61fe61c9b8a77bb3c9110a"
     },

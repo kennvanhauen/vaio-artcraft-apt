@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "package_sha256": "42a7a20d90c4c8a58ee3989eb0767fdc6bf173ae729d38d5849c435367d3a97c",
+  "steps": [
+    "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+    "launcher_eight_open.py"
+  ],
+  "measurements": [
+    {
+      "idle_cpu_percent": 0.0,
+      "rss_kib": 70056,
+      "probe": "launcher_eight_open.py"
+    }
+  ],
+  "version_newer": true,
+  "archive_version_newer": true,
+  "source_revision": "ba3b0345f0b14f5cb892dcb8b917ca212c124cf9",
+  "version": "0.6.1~vaio1"
+}

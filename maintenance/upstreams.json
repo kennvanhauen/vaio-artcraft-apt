@@ -40,10 +40,10 @@
     },
     "launcher": {
       "repo": "storytold/craft-launcher",
-      "revision": "9cef5d2a0f207da50d31547a726057ea40f7e5b4",
-      "version": "0.5.1~vaio9",
+      "revision": "ba3b0345f0b14f5cb892dcb8b917ca212c124cf9",
+      "version": "0.6.1~vaio1",
       "package": "artcraft-launcher-vaio",
-      "port_base_revision": "9cef5d2a0f207da50d31547a726057ea40f7e5b4"
+      "port_base_revision": "ba3b0345f0b14f5cb892dcb8b917ca212c124cf9"
     },
     "pdfcraft": {
       "repo": "storytold/pdfcraft",

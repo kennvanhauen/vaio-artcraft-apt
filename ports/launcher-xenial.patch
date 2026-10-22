@@ -34,7 +34,7 @@
              Self::GitHubPages => "GitHub (release pages)",
 --- a/crates/ui-egui/src/app.rs
 +++ b/crates/ui-egui/src/app.rs
-@@ -222,6 +222,11 @@
+@@ -224,6 +224,11 @@
      /// Moves the UI to another window's context: fonts, image loaders, the theme and the animation
      /// timings belong to a context, and toasts and the next look at the OS's animation setting are
      /// timed on its clock.
@@ -46,7 +46,7 @@
      pub fn attach(&mut self, ctx: &egui::Context) {
          theme::install_fonts(ctx, self.cjk_font);
          egui_extras::install_image_loaders(ctx);
-@@ -293,6 +298,9 @@
+@@ -295,6 +300,9 @@
      }
  
      pub(crate) fn custom_install_folders(&self) -> bool {
@@ -56,7 +56,7 @@
          self.caps.manage_apps
              && self.platform.is_some_and(|p| {
                  matches!(p.os, artcraft_launcher_core::Os::Windows | artcraft_launcher_core::Os::MacOs | artcraft_launcher_core::Os::Linux)
-@@ -705,6 +713,7 @@
+@@ -730,6 +738,7 @@
              if matches!(e.latest, Some(LatestRelease::Found(_) | LatestRelease::None)) {
                  match e.origin {
                      Some(Origin::ArtCraftApi) => api = true,
@@ -78,18 +78,18 @@
      }
 --- a/crates/ui-egui/src/views.rs
 +++ b/crates/ui-egui/src/views.rs
-@@ -56,8 +56,8 @@
- /// The footer drops its platform label rather than leave the status less room than this.
- const FOOTER_MIN_STATUS_W: f32 = 300.0;
+@@ -51,8 +51,8 @@
+ /// Height of the footer bar.
+ pub(crate) const FOOTER_H: f32 = 34.0;
  
 -const CARD_MIN_W: f32 = 320.0;
--const CARD_H: f32 = 280.0;
+-const CARD_H: f32 = 314.0;
 +const CARD_MIN_W: f32 = 350.0;
-+const CARD_H: f32 = 235.0;
++const CARD_H: f32 = if cfg!(all(target_os = "linux", target_arch = "x86")) { 235.0 } else { 314.0 };
  /// The card's top strip: number tab and links.
  const STRIP_H: f32 = 40.0;
  const CARD_PAD: f32 = 20.0;
-@@ -77,10 +77,9 @@
+@@ -72,10 +72,9 @@
              if bar == TitleBar::MacOs {
                  ui.add_space(TRAFFIC_LIGHTS_W);
              }
@@ -103,27 +103,41 @@
              ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                  if bar == TitleBar::Custom {
                      widgets::window_buttons(ui, h);
-@@ -438,7 +437,7 @@
+@@ -452,7 +451,7 @@
+             });
          }
  
-         let status = entry.status(self.platform, self.caps.manage_apps);
 -        let inner = Rect::from_min_max(egui::pos2(rect.left() + CARD_PAD, strip.bottom() + 18.0), rect.max - vec2(CARD_PAD, CARD_PAD));
 +        let inner = Rect::from_min_max(egui::pos2(rect.left() + CARD_PAD, strip.bottom() + 12.0), rect.max - vec2(CARD_PAD, 12.0));
          // A detached child: the card's contents never move the next card along.
          let mut child = ui.new_child(egui::UiBuilder::new().max_rect(inner).layout(egui::Layout::top_down(egui::Align::Min)));
          child.set_clip_rect(rect.intersect(ui.clip_rect()));
-@@ -470,7 +469,7 @@
+@@ -484,7 +483,7 @@
                  ui.add(egui::Label::new(RichText::new(tr_ctx(current(), app.id, app.tagline)).font(tagline.clone()).color(t.muted)).truncate());
              });
          });
 -        ui.add_space(14.0);
 +        ui.add_space(8.0);
-         ui.horizontal(|ui| {
-             let (text, tone) = model::entry_status_text(&entry, &status, self.caps.manage_apps);
-             let r = widgets::badge(ui, &text, widgets::tone_color(&t, tone));
+         // Installed and up to date needs no badge: the strip has the version, and the group says the rest.
+         if !matches!(status, AppStatus::UpToDate | AppStatus::Installed) {
+             ui.horizontal(|ui| {
+@@ -504,10 +503,11 @@
+                 ui.add_space(8.0);
+             }
+         }
+-        if let Some(details) = AppDetails::by_id(id) {
++        // Keep all eight cards visible on the VAIO; the details drawer retains the full description.
++        if let Some(details) = AppDetails::by_id(id).filter(|_| !cfg!(all(target_os = "linux", target_arch = "x86"))) {
+             crate::card_parts::blurb(ui, details.headline, t.muted, 4);
+         }
+-        if let Some(line) = crate::card_parts::last_updated(&entry) {
++        if let Some(line) = crate::card_parts::last_updated(&entry).filter(|_| !cfg!(all(target_os = "linux", target_arch = "x86"))) {
+             ui.add_space(6.0);
+             ui.add(egui::Label::new(RichText::new(line).size(12.5).color(t.faint)).selectable(false));
+         }
 --- a/crates/ui-egui/src/icons.rs
 +++ b/crates/ui-egui/src/icons.rs
-@@ -24,16 +24,10 @@
+@@ -60,16 +60,10 @@
  
  /// The ArtCraft wordmark, as supplied: dark ink for light backgrounds, white for dark ones.
  /// An ArtCraft trademark, not covered by the MIT/Apache license (`docs/brand/LICENSE-brand.txt`).
@@ -143,38 +157,37 @@
  
  /// A social service's logo (Simple Icons, white, for tinting), by its name in `catalog::SOCIAL`.
  pub fn social(service: &str) -> Option<ImageSource<'static>> {
-@@ -49,5 +43,5 @@
+@@ -88,7 +82,7 @@
  
  /// The ArtCraft "A" mark in blue, as supplied: the launcher's app icon and getartcraft.com's favicon.
  pub fn artcraft_mark() -> ImageSource<'static> {
 -    egui::include_image!("../../../docs/brand/artcraft-mark.svg")
 +    egui::include_image!("../../../assets/vaio-launcher.svg")
  }
---- a/crates/ui-egui/src/dialogs.rs
-+++ b/crates/ui-egui/src/dialogs.rs
-@@ -267,9 +267,14 @@
-         ui.set_max_height((viewport.height() - 80.0).max(0.0));
-         ui.spacing_mut().scroll = egui::style::ScrollStyle { foreground_color: true, ..egui::style::ScrollStyle::solid() };
-         let title_top = ui.cursor().top();
--        Self::title(ui, Some(crate::icons::artcraft_mark()), tl!("Settings"), &format!("ArtCraft Launcher {}", env!("CARGO_PKG_VERSION")));
-+        Self::title(
-+            ui,
-+            Some(crate::icons::artcraft_mark()),
-+            tl!("Settings"),
+ 
+ #[cfg(test)]
+--- a/crates/ui-egui/src/settings_dialog.rs
++++ b/crates/ui-egui/src/settings_dialog.rs
+@@ -42,11 +42,11 @@
+             ui,
+             Some(crate::icons::artcraft_mark()),
+             tl!("Settings"),
+-            &format!("ArtCraft Launcher {}", env!("CARGO_PKG_VERSION")),
 +            &format!("VAIO App Launcher {} — based on ArtCraft Launcher", env!("CARGO_PKG_VERSION")),
-+        );
-         let title_height = ui.cursor().top() - title_top;
+             |_| {},
+         );
+ 
 -        let quit_width = widgets::button_width(ui, tl!("Quit ArtCraft Launcher"), 0.0);
 +        let quit_width = widgets::button_width(ui, tl!("Quit"), 0.0);
          let done_width = widgets::button_width(ui, tl!("Done"), 90.0);
-         let stack_actions = self.caps.manage_apps && quit_width + done_width + ui.spacing().item_spacing.x > ui.available_width();
-         let footer_height = if stack_actions { 2.0 * theme::CONTROL_H + ui.spacing().item_spacing.y } else { theme::CONTROL_H };
-@@ -281,7 +286,7 @@
-         ui.add_space(24.0);
-         let mut close = false;
-         let quit = |ui: &mut egui::Ui, host: &mut dyn Host| {
--            if self.caps.manage_apps && widgets::button(ui, tl!("Quit ArtCraft Launcher"), Kind::Secondary, 0.0).clicked() {
-+            if self.caps.manage_apps && widgets::button(ui, tl!("Quit"), Kind::Secondary, 0.0).clicked() {
-                 host.quit();
-             }
-         };
+         let stack_actions = self.caps.manage_apps && quit_width + done_width + ui.spacing().item_spacing.x + 48.0 > size.x;
+         let footer_h = if stack_actions { 2.0 * theme::CONTROL_H + ui.spacing().item_spacing.y } else { theme::CONTROL_H } + 32.0;
+@@ -68,7 +68,7 @@
+         egui::Frame::new().inner_margin(egui::Margin::symmetric(theme::PAD as i8, 16)).show(ui, |ui| {
+             ui.set_width(ui.available_width());
+             let quit = |ui: &mut Ui, host: &mut dyn Host| {
+-                if self.caps.manage_apps && widgets::button(ui, tl!("Quit ArtCraft Launcher"), Kind::Secondary, 0.0).clicked() {
++                if self.caps.manage_apps && widgets::button(ui, tl!("Quit"), Kind::Secondary, 0.0).clicked() {
+                     host.quit();
+                 }
+             };

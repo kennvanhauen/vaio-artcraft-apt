@@ -23,8 +23,8 @@ def window():
             return int(wid,16),int(re.search(r'Absolute upper-left X:\s+(-?\d+)',info).group(1)),int(re.search(r'Absolute upper-left Y:\s+(-?\d+)',info).group(1))
     raise RuntimeError('Own launcher window unavailable')
 try:
-    time.sleep(7)
-    for app,x,y in [('vectorcraft',200,320),('pdfcraft',575,320),('designcraft',950,320),('figcraft',1325,320),('wordcraft',200,554),('deckcraft',575,554),('cadcraft',950,554),('gridcraft',1325,554)]:
+    time.sleep(15)
+    for app,x,y in [('cadcraft',200,330),('deckcraft',575,330),('designcraft',950,330),('figcraft',1325,330),('gridcraft',200,564),('pdfcraft',575,564),('vectorcraft',950,564),('wordcraft',1325,564)]:
         wid,ox,oy=window();display=x11.XOpenDisplay(b':0');assert display
         try:
             x11.XRaiseWindow(display,wid);x11.XSetInputFocus(display,wid,2,0)

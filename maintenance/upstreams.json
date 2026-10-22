@@ -47,8 +47,8 @@
     },
     "pdfcraft": {
       "repo": "storytold/pdfcraft",
-      "revision": "98cbd38a8e0f5afe685258aa0fcab0f0012f7a8b",
-      "version": "0.9.0~vaio1",
+      "revision": "3e3064532f04fd6ec769c6bd7b2c97464757970e",
+      "version": "0.11.0~vaio1",
       "package": "pdfcraft-vaio",
       "port_base_revision": "98cbd38a8e0f5afe685258aa0fcab0f0012f7a8b"
     },

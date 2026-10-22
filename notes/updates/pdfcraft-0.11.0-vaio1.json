@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "package_sha256": "310b22ebb6366c775616b63bb63c919e159178bf617bd1f937d8ff53fb709840",
+  "steps": [
+    "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+    "CLI startup without display variables",
+    "pdfcraft_smoke.py",
+    "pdfcraft_native_dialogs.py"
+  ],
+  "measurements": [
+    {
+      "idle_cpu_percent": 0.0,
+      "probe": "pdfcraft_smoke.py",
+      "rss_kib": 85872
+    }
+  ],
+  "version_newer": true,
+  "archive_version_newer": true,
+  "source_revision": "3e3064532f04fd6ec769c6bd7b2c97464757970e",
+  "version": "0.11.0~vaio1"
+}

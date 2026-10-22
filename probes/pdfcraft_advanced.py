@@ -4,9 +4,9 @@ import json,os,subprocess,time
 from pathlib import Path
 base=Path('/tmp/vaio-everyday/pdfcraft-advanced');base.mkdir(parents=True,exist_ok=True,mode=0o700)
 cli=os.environ.get('VAIO_PDF_CLI','/tmp/vaio-everyday/pdfcraft-cli')
-source='/tmp/vaio-everyday/allowed-pdf-test.pdf'
-env=dict(os.environ,PDFCRAFT_MODELS='/tmp/vaio-everyday',LD_LIBRARY_PATH='/usr/lib/wordcraft-vaio/lib')
-if os.environ.get('VAIO_PDF_INSTALLED'):env.pop('PDFCRAFT_MODELS',None)
+source=str(base/'original.pdf')
+env=dict(os.environ,PDFCRAFT_MODELS=os.environ.get('VAIO_PDF_MODELS','/tmp/vaio-everyday'),LD_LIBRARY_PATH='/usr/lib/wordcraft-vaio/lib')
+if os.environ.get('VAIO_PDF_INSTALLED') and not os.environ.get('VAIO_PDF_MODELS'):env.pop('PDFCRAFT_MODELS',None)
 result={'checks':[],'timings':[]}
 def run(*args,timeout=45):
     at=time.monotonic();p=subprocess.run([cli]+list(args),env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE,universal_newlines=True,timeout=timeout)
@@ -16,6 +16,18 @@ def run(*args,timeout=45):
 def tools(name,steps,timeout=45):
     path=base/(name+'.json');path.write_text(json.dumps([{'tool':tool,'args':args} for tool,args in steps]))
     return json.loads(run('run','--script',str(path),'--root',str(base.parent),'--report',timeout=timeout))
+def original_fixture(path):
+    objects=[b'<< /Type /Catalog /Pages 2 0 R >>', b'<< /Type /Pages /Kids [4 0 R 6 0 R 8 0 R] /Count 3 >>', b'<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>']
+    for n in range(1,4):
+        body=('BT /F1 18 Tf 72 720 Td (Original VAIO PDF test page %d) Tj 0 -30 Td (Synthetic original document) Tj ET'%n).encode()
+        objects.extend([('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents %d 0 R >>'%(n*2+3)).encode(),('<< /Length %d >>\nstream\n'%len(body)).encode()+body+b'\nendstream'])
+    data=b'%PDF-1.4\n';offsets=[]
+    for n,obj in enumerate(objects,1):
+        offsets.append(len(data));data+=str(n).encode()+b' 0 obj\n'+obj+b'\nendobj\n'
+    at=len(data);data+=('xref\n0 %d\n0000000000 65535 f \n'%(len(objects)+1)).encode()+b''.join(('%010d 00000 n \n'%o).encode() for o in offsets)
+    data+=('trailer\n<< /Size %d /Root 1 0 R >>\nstartxref\n%d\n%%%%EOF\n'%(len(objects)+1,at)).encode()
+    Path(path).write_bytes(data)
+original_fixture(source)
 try:
     forms=base/'forms.pdf'
     tools('forms',[('doc_open',{'path':source}),('form_add_field',{'doc':1,'page':1,'type':'text','name':'SyntheticName','rect':[40,260,260,290]}),

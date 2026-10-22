@@ -59,6 +59,10 @@ Update All queues the selected applications through a shared APT transaction.
 The launcher itself updates through APT. No separate updater, login autostart,
 control server or MCP server starts automatically.
 
+Previous packages are retained for rollback in GitHub Releases. The
+[retired package map](retired-packages.json) gives download URLs and SHA256 hashes
+for older files no longer hosted in the Pages pool.
+
 Removal uses `sudo apt-get remove` and the relevant package names. Documents and
 settings are not packaged and are retained. Removing the source, preference and
 scoped public-key files disconnects the archive without removing applications.
@@ -78,15 +82,19 @@ These are short samples on synthetic files, not performance guarantees.
 
 Pinned upstream revisions:
 
-- WordCraft: `d6f20f93fd22deb441b2216ecfd65acb15ea8b64`
-- GridCraft: `c30fa3f1cf324603f3bfc0171689b1d4083b40e5`
-- PdfCraft: `98cbd38a8e0f5afe685258aa0fcab0f0012f7a8b`
-- DeckCraft: `cb78440a1618e6a2c1df55dd7bff74719685518c`
-- VectorCraft: `a466625c8987550635cda951ebf36e08e1e80a56`
-- DesignCraft: `ecd7e5d063eb12fa5e61fe61c9b8a77bb3c9110a`
-- FigCraft: `a0d1162976fac1e4a8b8fd49a3948e9d6bad6f40`
-- CADCraft: `0cc66ad3066e71f2c3d4cacb7de905e79ba1c95b`
-- Launcher: `9cef5d2a0f207da50d31547a726057ea40f7e5b4`
+- WordCraft: `2e6db0bd88795e80375176c01665cff7dbe2b057`
+- GridCraft: `2ebdf164c2c9c536122e0a2cffe79078b5c818ac`
+- PdfCraft: `3e3064532f04fd6ec769c6bd7b2c97464757970e`
+- DeckCraft: `fe510bdac68118f2c9a714e69d0ff572e3f9a0c7`
+- VectorCraft: `ad0566943ab9741e6356bbc9b53c3cc09895068d`
+- DesignCraft: `4d62a501c18fb3cf453c6e9f19f15cbc9c558e26`
+- FigCraft: `28de91d9ae72fc7fbc2199ac5ee2c8be237980d5`
+- CADCraft: `e86eacf094fefda1cdb6ba5137a336f29deb5d99`
+- Launcher: `ba3b0345f0b14f5cb892dcb8b917ca212c124cf9`
+
+For current packages, follow the [update coordinator guide](maintenance/README.md).
+The manual app sections below record the initial port builds and their older
+source/dependency observations.
 
 Original sources are at https://github.com/storytold/wordcraft,
 https://github.com/storytold/gridcraft, https://github.com/storytold/pdfcraft and
@@ -357,7 +365,7 @@ GitHub or the VAIO. A credential-free GitHub Actions template is included; it is
 the current publication token lacks workflow scope.
 
 
-Coordinator validation: 21 unit checks passed on the Mac; all eight app adapters
+Initial coordinator validation: 21 unit checks passed on the Mac; all eight app adapters
 and the launcher passed rootless real-VAIO package rehearsals. A fresh CADCraft
 source candidate built for Atom/i386/glibc 2.23 and passed the VAIO workflow checks.
 Its release gate correctly rejects publication until its separate host checks

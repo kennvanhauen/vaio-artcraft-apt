@@ -1,8 +1,8 @@
 # VAIO application ports and signed APT archive
 
 Unofficial native ports of WordCraft, GridCraft, PdfCraft, DeckCraft, VectorCraft, DesignCraft, FigCraft, CADCraft and SoundCraft for Ubuntu 16.04
-Xenial i386 on the Sony VAIO P. The VAIO App Launcher opens and manages the eight existing apps through APT.
-SoundCraft also has its own Multimedia menu entry. These are independent hardware adaptations of upstream alpha apps.
+Xenial i386 on the Sony VAIO P. The VAIO App Launcher opens and manages all nine apps through APT.
+The applications also have their own desktop-menu entries. These are independent hardware adaptations of upstream alpha apps.
 
 | Package | Version | Ordinary and advanced workflows checked on the VAIO |
 |---|---|---|
@@ -15,7 +15,7 @@ SoundCraft also has its own Multimedia menu entry. These are independent hardwar
 | figcraft-vaio | 0.9.0~vaio1 | Two-screen UI design, auto layout, components/instances, styles/variables, GUI text editing, prototype click navigation/preview, native/SVG/own-FIG round trips, seven exports, native Save As and idle draft recovery |
 | cadcraft-vaio | 0.10.0~vaio1 | Metric 2D drafting, rounded outline, layers, blocks, constraints, dimensions, TEXT/MTEXT, LISP, interactive editing, DXF save/reopen, own DWG round trip, SVG/PNG/PDF, A4 viewport plot, native Save As and autosave |
 | soundcraft-vaio | 0.12.1~vaio2 | Two-track headless editing, independent PCM/FLAC/resampling checks, native Save/Open, overwrite protection, GUI recovery and native ALSA/Pulse playback |
-| artcraft-launcher-vaio | 0.6.1~vaio2 | Eight-app APT backend, signed metadata refresh, offline reporting, saved settings and fixed package-operation allowlist |
+| artcraft-launcher-vaio | 0.6.1~vaio2 | Nine-app APT backend, signed metadata refresh, offline reporting, saved settings and fixed package-operation allowlist |
 
 All nine application engines retain their upstream features. This is a practical
 port, not a claim that every feature or external file works. Complex documents,
@@ -385,3 +385,9 @@ manages installation, updates and removal; no login daemon or self-updater is ad
 SoundCraft revision 2 also honors the configured shared document folder in its
 internal Open/Save prompts. Revision 1 remains retained and was superseded before
 the first VAIO installation.
+
+Launcher revision 2 adds SoundCraft detection, Open and APT controls. Its compact
+three-by-three VAIO grid keeps all nine apps visible, and the reduced-motion
+search caret stays steady to avoid continuous software rendering. Every maintained
+port must have a launcher card, Open target and APT permission; coverage and
+actual nine-app Open checks enforce that integration.

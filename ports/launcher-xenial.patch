@@ -103,30 +103,106 @@
              ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                  if bar == TitleBar::Custom {
                      widgets::window_buttons(ui, h);
-@@ -452,7 +451,7 @@
+@@ -387,20 +386,26 @@
+         }
+         let width = ui.available_width();
+         // Neighbouring cards share their 1 px hairline, like the site's `gap-px` grid.
+-        let cols = ((width / CARD_MIN_W).floor() as usize).max(1);
++        let compact = cfg!(all(target_os = "linux", target_arch = "x86")) && ids.len() > 8;
++        let cols = ((width / CARD_MIN_W).floor() as usize).max(1).min(if compact { 3 } else { usize::MAX });
++        let card_h = if compact { 164.0 } else { CARD_H };
+         let card_w = (width + (cols as f32 - 1.0)) / cols as f32;
+         let rows = ids.len().div_ceil(cols);
+-        let height = rows as f32 * (CARD_H - 1.0) + 1.0;
++        let height = rows as f32 * (card_h - 1.0) + 1.0;
+         let (area, _) = ui.allocate_exact_size(vec2(width, height), Sense::hover());
+         for (i, id) in ids.iter().enumerate() {
+             let (row, col) = (i / cols, i % cols);
+-            let min = area.min + vec2(col as f32 * (card_w - 1.0), row as f32 * (CARD_H - 1.0));
+-            self.card(ui, id, Rect::from_min_size(min, vec2(card_w, CARD_H)));
++            let min = area.min + vec2(col as f32 * (card_w - 1.0), row as f32 * (card_h - 1.0));
++            self.card(ui, id, Rect::from_min_size(min, vec2(card_w, card_h)));
+         }
+     }
+ 
+     fn card(&mut self, ui: &mut Ui, id: &str, rect: Rect) {
+         let Some(entry) = self.entry(id).cloned() else { return };
++        let compact = cfg!(all(target_os = "linux", target_arch = "x86")) && rect.height() < CARD_H;
++        let card_pad = if compact { 12.0 } else { CARD_PAD };
++        let strip_h = if compact { 28.0 } else { STRIP_H };
++        let vpad = if compact { 8.0 } else { 12.0 };
+         let t = Tokens::get(ui.ctx());
+         let app = entry.app;
+         let hovered = ui.rect_contains_pointer(rect);
+@@ -435,11 +440,11 @@
+         // The top strip: the version in the app's colour, and its GitHub page.
+         let status = entry.status(self.platform, self.caps.manage_apps);
+         let version = crate::card_parts::strip_version(&entry, &status);
+-        let strip = Rect::from_min_size(rect.min, vec2(rect.width(), STRIP_H));
++        let strip = Rect::from_min_size(rect.min, vec2(rect.width(), strip_h));
+         painter.hline(strip.x_range(), strip.bottom() - 0.5, t.hairline());
+         {
+             let mut strip_ui = ui.new_child(
+-                egui::UiBuilder::new().max_rect(strip.shrink2(vec2(CARD_PAD, 0.0))).layout(egui::Layout::left_to_right(egui::Align::Center)),
++                egui::UiBuilder::new().max_rect(strip.shrink2(vec2(card_pad, 0.0))).layout(egui::Layout::left_to_right(egui::Align::Center)),
+             );
+             if !version.is_empty() {
+                 let github_w = widgets::hud_galley(&strip_ui, &format!("{} ↗", tl!("GitHub")), t.muted).size().x;
+@@ -452,21 +457,21 @@
              });
          }
  
 -        let inner = Rect::from_min_max(egui::pos2(rect.left() + CARD_PAD, strip.bottom() + 18.0), rect.max - vec2(CARD_PAD, CARD_PAD));
-+        let inner = Rect::from_min_max(egui::pos2(rect.left() + CARD_PAD, strip.bottom() + 12.0), rect.max - vec2(CARD_PAD, 12.0));
++        let inner = Rect::from_min_max(egui::pos2(rect.left() + card_pad, strip.bottom() + vpad), rect.max - vec2(card_pad, vpad));
          // A detached child: the card's contents never move the next card along.
          let mut child = ui.new_child(egui::UiBuilder::new().max_rect(inner).layout(egui::Layout::top_down(egui::Align::Min)));
          child.set_clip_rect(rect.intersect(ui.clip_rect()));
-@@ -484,7 +483,7 @@
+         let ui = &mut child;
+         ui.horizontal(|ui| {
+-            const ICON: f32 = 56.0;
++            let icon_size = if compact { 44.0 } else { 56.0 };
+             let [name, tagline] = [FontId::new(22.0, theme::display()), FontId::proportional(13.5)];
+             const GAP: f32 = 4.0;
+             // The slot is as tall as the text beside it when that is taller, so the two share a centre.
+             let block = lines_height(ui, &[&name, &tagline], GAP);
+-            let (slot, icon_response) = ui.allocate_exact_size(vec2(ICON, block.max(ICON)), Sense::hover());
++            let (slot, icon_response) = ui.allocate_exact_size(vec2(icon_size, block.max(icon_size)), Sense::hover());
+             icon_response.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Image, true, fmt(tl!("{name} icon"), &[("name", app.name)])));
+             // The icon rises a little on hover, over a soft drop shadow (the site's only shadow).
+-            let icon_rect = Rect::from_center_size(slot.center(), vec2(ICON, ICON)).translate(vec2(0.0, -4.0 * lift));
++            let icon_rect = Rect::from_center_size(slot.center(), vec2(icon_size, icon_size)).translate(vec2(0.0, -4.0 * lift));
+             ui.painter().add(
+                 egui::epaint::Shadow { offset: [0, 6], blur: 14, spread: 0, color: Color32::from_black_alpha(71) }
+                     .as_shape(icon_rect.shrink(4.0), CornerRadius::same(12)),
+@@ -484,7 +489,7 @@
                  ui.add(egui::Label::new(RichText::new(tr_ctx(current(), app.id, app.tagline)).font(tagline.clone()).color(t.muted)).truncate());
              });
          });
 -        ui.add_space(14.0);
-+        ui.add_space(8.0);
++        ui.add_space(if compact { 4.0 } else { 8.0 });
          // Installed and up to date needs no badge: the strip has the version, and the group says the rest.
          if !matches!(status, AppStatus::UpToDate | AppStatus::Installed) {
              ui.horizontal(|ui| {
-@@ -504,10 +503,11 @@
-                 ui.add_space(8.0);
-             }
+@@ -494,20 +499,21 @@
+                     r.on_hover_text(fmt(tl!("Couldn't check for updates: {f}"), &[("f", f)]));
+                 }
+             });
+-            ui.add_space(8.0);
++            ui.add_space(if compact { 4.0 } else { 8.0 });
          }
+         // Until a version is known, the sentence that says why (no release yet, installed…) stays.
+         if version.is_empty() {
+             let line = version_line(&entry, &status);
+             if !line.trim().is_empty() {
+                 ui.label(RichText::new(line).size(12.5).color(t.muted));
+-                ui.add_space(8.0);
+-            }
+-        }
 -        if let Some(details) = AppDetails::by_id(id) {
-+        // Keep all eight cards visible on the VAIO; the details drawer retains the full description.
++                ui.add_space(if compact { 4.0 } else { 8.0 });
++            }
++        }
++        // Keep all verified cards visible on the VAIO; the details drawer retains the full description.
 +        if let Some(details) = AppDetails::by_id(id).filter(|_| !cfg!(all(target_os = "linux", target_arch = "x86"))) {
              crate::card_parts::blurb(ui, details.headline, t.muted, 4);
          }
@@ -191,3 +267,16 @@
                      host.quit();
                  }
              };
+--- a/crates/ui-egui/src/motion.rs
++++ b/crates/ui-egui/src/motion.rs
+@@ -14,6 +14,10 @@
+     let stock = egui::Style::default();
+     ctx.all_styles_mut(|style| {
+         style.animation_time = if reduce { 0.0 } else { stock.animation_time };
++        #[cfg(all(target_os = "linux", target_arch = "x86"))]
++        {
++            style.visuals.text_cursor.blink = !reduce && stock.visuals.text_cursor.blink;
++        }
+         style.scroll_animation = if reduce { egui::style::ScrollAnimation::none() } else { stock.scroll_animation };
+     });
+ }

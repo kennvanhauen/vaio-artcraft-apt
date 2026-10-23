@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "package_sha256": "b2bf34285d878a515485ece08c771009c9e784d457b34d4f79561faafe95f466",
+  "steps": [
+    "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+    "launcher_nine_open.py"
+  ],
+  "measurements": [
+    {
+      "probe": "launcher_nine_open.py",
+      "rss_kib": 71008,
+      "idle_cpu_percent": 0.0
+    }
+  ],
+  "version_newer": true,
+  "archive_version_newer": true,
+  "source_revision": "ba3b0345f0b14f5cb892dcb8b917ca212c124cf9",
+  "version": "0.6.1~vaio2"
+}

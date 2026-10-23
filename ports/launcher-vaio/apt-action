@@ -9,11 +9,11 @@ if test "$(id -u)" != 0; then
 fi
 case "${1-}" in install|remove) action=$1; shift;;
     *) echo 'Unsupported package operation'; exit 1;; esac
-if test "$#" -lt 1 || test "$#" -gt 8; then
-    echo 'Select one to eight VAIO application packages.'; exit 1
+if test "$#" -lt 1 || test "$#" -gt 9; then
+    echo 'Select one to nine VAIO application packages.'; exit 1
 fi
 for package do
-    case "$package" in wordcraft-vaio|gridcraft-vaio|pdfcraft-vaio|deckcraft-vaio|vectorcraft-vaio|designcraft-vaio|figcraft-vaio|cadcraft-vaio) ;;
+    case "$package" in wordcraft-vaio|gridcraft-vaio|pdfcraft-vaio|deckcraft-vaio|vectorcraft-vaio|designcraft-vaio|figcraft-vaio|cadcraft-vaio|soundcraft-vaio) ;;
         *) echo 'Unsupported package'; exit 1;; esac
 done
 run_operation() {

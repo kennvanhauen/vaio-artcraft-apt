@@ -187,7 +187,9 @@ def main():
             steps = [('soundcraft_headless.py', ['--cli', str(wrappers['soundcraft-cli']), '--parent', str(compatibility)], compatibility/'headless-result.json'),
                      ('soundcraft_gui.py', ['--binary', str(wrappers['soundcraft']), '--parent', str(compatibility)], compatibility/'gui-result.json')]
         elif app == 'launcher':
-            steps = [('launcher_eight_open.py', [], work/'vaio-cadcraft-test/launcher-eight-open/result.json')]
+            env['VAIO_LAUNCHER_BINARY'] = str(BASE/'launcher-wrapper')
+            env['VAIO_LAUNCHER_TEST_PARENT'] = str(work)
+            steps = [('launcher_nine_open.py', [], work/'launcher-nine-result.json')]
         else:
             steps = [(app+'_headless.py', [], compatibility/'headless-result.json'),
                      (app+'_gui.py', [], compatibility/'gui-result.json'),
@@ -204,7 +206,7 @@ def main():
             data = json.loads(filename.read_text())
             assert data.get('passed') is True, data
             result['steps'].append(script)
-            if script.endswith('_gui.py') or script.endswith('_smoke.py') or script == 'launcher_eight_open.py':
+            if script.endswith('_gui.py') or script.endswith('_smoke.py') or script in ('launcher_eight_open.py', 'launcher_nine_open.py'):
                 cpu, rss = idle_metrics(data)
                 measurements.append({'probe': script, 'idle_cpu_percent': cpu, 'rss_kib': rss})
                 assert cpu <= 5.0 and rss <= 350*1024, 'Idle CPU/RAM budget exceeded'

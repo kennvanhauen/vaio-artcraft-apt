@@ -85,6 +85,7 @@
   "probes/launcher_eight_open.py",
   "probes/launcher_five_open.py",
   "probes/launcher_four_open.py",
+  "probes/launcher_nine_open.py",
   "probes/launcher_seven_open.py",
   "probes/launcher_six_open.py",
   "probes/maintain_updates.py",
@@ -138,5 +139,6 @@
   "probes/zig_cc_xenial.py",
   "tests/test_update_archive_retention.py",
   "tests/test_update_coordinator.py",
+  "tests/test_update_launcher_catalog.py",
   "tests/test_update_package_spec.py"
 ]

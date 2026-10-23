@@ -206,3 +206,8 @@ never linked into a candidate or uploaded.
 SoundCraft uses its dedicated pinned build recipe and combined GUI/native-picker/recovery probe.
 Real audio listening, recording and hardware checks are separate explicit gates;
 headless or GUI success alone does not establish microphone/plugin support.
+
+Every maintained application must have a launcher card, Open backend and APT
+permission. The cross-layer coverage test rejects omissions, and the nine-app
+Open probe checks each real installed executable with isolated profiles and
+inherited document defaults. Launcher integration is part of each new port.

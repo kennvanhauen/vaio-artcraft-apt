@@ -41,7 +41,7 @@
     "launcher": {
       "repo": "storytold/craft-launcher",
       "revision": "ba3b0345f0b14f5cb892dcb8b917ca212c124cf9",
-      "version": "0.6.1~vaio1",
+      "version": "0.6.1~vaio2",
       "package": "artcraft-launcher-vaio",
       "port_base_revision": "ba3b0345f0b14f5cb892dcb8b917ca212c124cf9"
     },

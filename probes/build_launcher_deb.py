@@ -45,7 +45,7 @@ add(doc+'ATTRIBUTION-VAIO.md', (root/'ports/launcher-vaio/ATTRIBUTION.md').read_
 add(doc+'libxcb-COPYING', (root/'.build/libxcb-1.17.0/COPYING').read_bytes())
 add(doc+'README.VAIO', b'''VAIO App Launcher is an unofficial modification based on ArtCraft Launcher.
 The original ArtCraft trademarks have been removed and replaced with a generic tile icon.
-Offers WordCraft, GridCraft, PdfCraft, DeckCraft, VectorCraft, DesignCraft, FigCraft and CADCraft VAIO previews. Uses Glow and reduced motion.
+Offers WordCraft, GridCraft, PdfCraft, DeckCraft, VectorCraft, DesignCraft, FigCraft, CADCraft and SoundCraft VAIO previews. Uses Glow and reduced motion.
 Package state is read from dpkg. Refresh fetches and verifies signed project APT metadata
 into the user cache, without root access or a system-wide update. Cached results remain
 available offline; a failed refresh is reported. The existing system Check & Install

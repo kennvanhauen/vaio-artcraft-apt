@@ -1,0 +1,64 @@
+{
+  "package_version": "0.12.1~vaio1",
+  "source_revision": "e85a4801e9029c9a1f5ce536b11be65aea832ed8",
+  "package_sha256": "c7377eb47d696fbe172fbcff7788141e85f8742078a9fc44e93597d9018d94f9",
+  "binary_sha256": {
+    "soundcraft": "9283cdccdc81f8b1c7baffe1e895e345df225e139287fdf6745ec16f25cb5cec",
+    "soundcraft-cli": "6a10216708b9e7c08bdc4878c956f9d58ea217dc2dc2cde162602a8974351a7b"
+  },
+  "passed": true,
+  "host_tests": {
+    "passed": 813,
+    "ignored": 1,
+    "mac_au_test_separate": true,
+    "full_gpu_wasm_ci_claimed": false
+  },
+  "gui_checks": [
+    "GUI text entry and two-track import",
+    "dirty idle and background autosave",
+    "native bare-name Save As",
+    "existing session overwrite refused on Enter; cancelled",
+    "actual unsaved recovery UI retains both tracks and edit; bounce succeeds",
+    "native Open restores saved content"
+  ],
+  "headless_checks": [
+    "no-display confined MCP",
+    "two stereo WAV imports",
+    "track gain undo/redo",
+    "clip split undo/redo",
+    "second-clip gain",
+    "independent mixed PCM comparison",
+    "save/reopen with media",
+    "sample-identical reopened render",
+    "FLAC encode/decode with independent PCM comparison",
+    "48 kHz to 44.1 kHz resampling",
+    "malformed audio returns an ordinary error"
+  ],
+  "dirty_idle": {
+    "cpu_percent_one_logical_cpu": 0.09989826482585884,
+    "rss_kib": 83016,
+    "seconds": 10
+  },
+  "settled_idle": {
+    "cpu_percent_one_logical_cpu": 0.0,
+    "rss_kib": 82888,
+    "seconds": 10
+  },
+  "gui_active_playback": {
+    "seconds": 8,
+    "cpu_percent": 10.03881025250626,
+    "distinct_hardware_pointers": 53
+  },
+  "recovered_pcm": {
+    "channels": 2,
+    "frames": 96000,
+    "interior_max_absolute_error": 0.0,
+    "sample_rate": 48000,
+    "tolerance": 2e-05
+  },
+  "limits": [
+    "Small synthetic sessions only",
+    "Recording, MIDI hardware and third-party plugins not verified",
+    "Upstream pre-alpha"
+  ]
+}

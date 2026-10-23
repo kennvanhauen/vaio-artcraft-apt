@@ -12,6 +12,9 @@ import tomllib
 
 root = Path(__file__).resolve().parents[1]
 specs = {
+    'soundcraft': ('0.12.1~vaio1', 'e85a4801e9029c9a1f5ce536b11be65aea832ed8',
+                   'SoundCraft', 'AudioVideo;Audio;AudioVideoEditing;',
+                   'application/x-soundcraft;audio/x-wav;audio/flac;audio/mpeg;audio/x-aiff;'),
     'cadcraft': ('0.9.0~vaio1', '0cc66ad3066e71f2c3d4cacb7de905e79ba1c95b',
                  'CADCraft', 'Graphics;Engineering;', 'image/vnd.dxf;image/vnd.dwg;'),
     'figcraft': ('0.7.0~vaio1', 'a0d1162976fac1e4a8b8fd49a3948e9d6bad6f40',
@@ -44,7 +47,8 @@ def add(name, data, mode=0o644):
 
 hashes = {}
 for name in (app, app+'-cli'):
-    data = (root/'.build/wordcraft-target/i686-unknown-linux-gnu/release'/name).read_bytes()
+    target_dir = 'soundcraft-target' if app == 'soundcraft' else 'wordcraft-target'
+    data = (root/'.build'/target_dir/'i686-unknown-linux-gnu/release'/name).read_bytes()
     if data[:6] != b'\x7fELF\x01\x01' or int.from_bytes(data[18:20], 'little') != 3:
         raise SystemExit('Not an i386 ELF: '+name)
     if b'/Users/kennvanhauen' in data:
@@ -78,6 +82,14 @@ Categories={categories}
 MimeType={mime}
 '''
 add('usr/share/applications/'+package+'.desktop', desktop.encode())
+if app == 'soundcraft':
+    add('usr/share/mime/packages/soundcraft-vaio.xml', b'''<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-soundcraft">
+    <comment>SoundCraft audio session</comment><glob pattern="*.scraft"/>
+  </mime-type>
+</mime-info>
+''')
 if app == 'figcraft':
     add('usr/share/mime/packages/figcraft-vaio.xml', b'<?xml version="1.0" encoding="UTF-8"?>\n<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info"><mime-type type="application/x-figcraft"><comment>FigCraft interface design</comment><glob pattern="*.figcraft"/></mime-type></mime-info>\n')
 if app == 'designcraft':
@@ -108,7 +120,7 @@ if app == 'deckcraft':
   </mime-type>
 </mime-info>
 ''')
-icon=source/'assets/app-icon'/(app+'.svg')
+icon=source/'assets/app-icon'/('icon.svg' if app == 'soundcraft' else app+'.svg')
 if icon.exists():
     add('usr/share/icons/hicolor/scalable/apps/'+package+'.svg', icon.read_bytes())
 elif app == 'cadcraft':
@@ -149,6 +161,13 @@ metadata = dict(package_version=version, source_revision=revision, rust='1.95.0'
                 glibc_target='2.23', renderer='Glow', private_libxcb='1.17.0',
                 binary_sha256=hashes, port_patch_sha256=hashlib.sha256(
                     (root/'ports'/(app+'-xenial.patch')).read_bytes()).hexdigest())
+if app == 'soundcraft':
+    fonts_source=next((root/'.build/cargo/registry/src').glob('*/epaint_default_fonts-0.36.2/fonts'))
+    for path in fonts_source.glob('*.txt'):
+        add(doc+'egui-font-notices/'+path.name,path.read_bytes())
+    metadata['fonts']='egui defaults plus existing system fonts loaded at runtime; no system fonts redistributed'
+    metadata['default_audio_buffer_frames']=4096
+    metadata['vaio_meter_refresh_hz']=12
 if app in ('deckcraft', 'vectorcraft', 'designcraft', 'figcraft', 'cadcraft'):
     for path in (source/'licenses').rglob('*'):
         if path.is_file():
@@ -178,11 +197,12 @@ depends = ('zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6
            'libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, '
            'libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa')
 if app == 'deckcraft':depends += ', libasound2 (>= 1.1.0), shared-mime-info, xscreensaver'
+if app == 'soundcraft':depends += ', libasound2 (>= 1.1.0), shared-mime-info, fontconfig'
 if app in ('vectorcraft','designcraft','figcraft','cadcraft'):depends += ', shared-mime-info'
 control = f'''Package: {package}
 Version: {version}
 Architecture: i386
-Section: {'graphics' if app == 'vectorcraft' else 'editors'}
+Section: {'sound' if app == 'soundcraft' else 'graphics' if app == 'vectorcraft' else 'editors'}
 Priority: optional
 Maintainer: VAIO local build <vaio@localhost>
 Installed-Size: {(sum(len(v[0]) for v in files.values())+1023)//1024}

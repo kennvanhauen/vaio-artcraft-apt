@@ -1,8 +1,8 @@
 # VAIO application ports and signed APT archive
 
-Unofficial native ports of WordCraft, GridCraft, PdfCraft, DeckCraft, VectorCraft, DesignCraft, FigCraft and CADCraft for Ubuntu 16.04
-Xenial i386 on the Sony VAIO P. The VAIO App Launcher opens and manages all eight
-through APT. These are independent hardware adaptations of upstream alpha apps.
+Unofficial native ports of WordCraft, GridCraft, PdfCraft, DeckCraft, VectorCraft, DesignCraft, FigCraft, CADCraft and SoundCraft for Ubuntu 16.04
+Xenial i386 on the Sony VAIO P. The VAIO App Launcher opens and manages the eight existing apps through APT.
+SoundCraft also has its own Multimedia menu entry. These are independent hardware adaptations of upstream alpha apps.
 
 | Package | Version | Ordinary and advanced workflows checked on the VAIO |
 |---|---|---|
@@ -14,9 +14,10 @@ through APT. These are independent hardware adaptations of upstream alpha apps.
 | designcraft-vaio | 0.11.0~vaio1 | Three-page styles/images/threading/table/RTF workflow, GUI editing, native/IDML round trip, PDF/PNG/EPUB/PPTX/HTML/text export, parent pages, data merge, native Save As and automatic idle recovery |
 | figcraft-vaio | 0.9.0~vaio1 | Two-screen UI design, auto layout, components/instances, styles/variables, GUI text editing, prototype click navigation/preview, native/SVG/own-FIG round trips, seven exports, native Save As and idle draft recovery |
 | cadcraft-vaio | 0.10.0~vaio1 | Metric 2D drafting, rounded outline, layers, blocks, constraints, dimensions, TEXT/MTEXT, LISP, interactive editing, DXF save/reopen, own DWG round trip, SVG/PNG/PDF, A4 viewport plot, native Save As and autosave |
+| soundcraft-vaio | 0.12.1~vaio1 | Two-track headless editing, independent PCM/FLAC/resampling checks, native Save/Open, overwrite protection, GUI recovery and native ALSA/Pulse playback |
 | artcraft-launcher-vaio | 0.6.1~vaio1 | Eight-app APT backend, signed metadata refresh, offline reporting, saved settings and fixed package-operation allowlist |
 
-All eight application engines retain their upstream features. This is a practical
+All nine application engines retain their upstream features. This is a practical
 port, not a claim that every feature or external file works. Complex documents,
 large workbooks/scans, physical printing, real signing identities, complex scripts
 and external integrations need further validation. PdfCraft's optional Japanese
@@ -39,7 +40,7 @@ The target VAIO uses `/etc/apt/preferences.d/vaio-artcraft` to allow only these
 packages from this archive:
 
 ```
-Package: wordcraft-vaio gridcraft-vaio pdfcraft-vaio deckcraft-vaio vectorcraft-vaio designcraft-vaio figcraft-vaio cadcraft-vaio artcraft-launcher-vaio
+Package: wordcraft-vaio gridcraft-vaio pdfcraft-vaio deckcraft-vaio vectorcraft-vaio designcraft-vaio figcraft-vaio cadcraft-vaio soundcraft-vaio artcraft-launcher-vaio
 Pin: origin "kennvanhauen.github.io"
 Pin-Priority: 500
 
@@ -372,3 +373,11 @@ Its release gate correctly rejects publication until its separate host checks
 pass. This tooling update publishes no new app package or APT metadata. See
 [the validation record](notes/update-coordinator.md), [adapter evidence](notes/update-coordinator-rehearsals.json)
 and [clean-build evidence](notes/update-coordinator-clean-build.json).
+
+## SoundCraft preview
+
+SoundCraft keeps the upstream engine and CLI with Glow, a 4096-frame audio buffer,
+12 Hz meters and event-driven idle redraws. Small synthetic sessions passed on
+the real VAIO; recording, MIDI hardware, third-party plugins and large sessions
+need separate testing. No microphone was opened during these checks. Native APT
+manages installation, updates and removal; no login daemon or self-updater is added.

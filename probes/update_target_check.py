@@ -183,6 +183,9 @@ def main():
                      (app+'_native_dialogs.py', [], compatibility/('native-dialogs/result.json' if app == 'deckcraft' else app+'-dialogs/result.json'))]
             if app == 'pdfcraft':
                 fixture_pdf(compatibility/'allowed-pdf-test.pdf')
+        elif app == 'soundcraft':
+            steps = [('soundcraft_headless.py', ['--cli', str(wrappers['soundcraft-cli']), '--parent', str(compatibility)], compatibility/'headless-result.json'),
+                     ('soundcraft_gui.py', ['--binary', str(wrappers['soundcraft']), '--parent', str(compatibility)], compatibility/'gui-result.json')]
         elif app == 'launcher':
             steps = [('launcher_eight_open.py', [], work/'vaio-cadcraft-test/launcher-eight-open/result.json')]
         else:

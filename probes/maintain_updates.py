@@ -240,7 +240,7 @@ def build(path):
             commands = [(['sh', 'probes/build-vectorcraft.sh', '--locked'], {}),
                         (['sh', 'probes/build-vectorcraft.sh', '--locked', '-p', 'vectorcraft',
                           '--no-default-features', '--features', 'vaio'], {})]
-        elif app in ('designcraft', 'figcraft', 'cadcraft'):
+        elif app in ('designcraft', 'figcraft', 'cadcraft', 'soundcraft'):
             commands = [(['sh', 'probes/build-'+app+'.sh', '--locked'], {app.upper()+'_BUILD': kind})
                         for kind in ('cli', 'gui')]
         else:

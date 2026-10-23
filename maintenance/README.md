@@ -1,7 +1,7 @@
 # Maintaining the VAIO ports on the Mac
 
 `probes/maintain_updates.py` coordinates upstream checks, isolated builds,
-rootless real-VAIO acceptance and signed APT publication for all eight apps and
+rootless real-VAIO acceptance and signed APT publication for all nine apps and
 the launcher. Python 3.12+ runs the coordinator on the current Apple silicon Mac;
 the target runner supports the VAIO's Python 3.5. Existing Rust/Zig/Xenial inputs, Git, SSH, GnuPG
 and GitHub CLI authentication are reused. No build is performed on the laptop.
@@ -202,3 +202,7 @@ public release inputs. `maintenance/public-files.json` is the explicit recipe
 archive allowlist; the source archive additionally contains the selected public
 upstream source commit. The signing directory stays private on the Mac and is
 never linked into a candidate or uploaded.
+
+SoundCraft uses its dedicated pinned build recipe and combined GUI/native-picker/recovery probe.
+Real audio listening, recording and hardware checks are separate explicit gates;
+headless or GUI success alone does not establish microphone/plugin support.

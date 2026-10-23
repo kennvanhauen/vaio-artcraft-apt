@@ -1,0 +1,30 @@
+SoundCraft VAIO preview
+
+Unofficial SoundCraft adaptation for Ubuntu Xenial i386 on the Sony VAIO P.
+Based on SoundCraft 0.12.1, e85a4801e9029c9a1f5ce536b11be65aea832ed8.
+Not an official ArtCraft build. Original notices and contributor credits remain.
+
+The application and CLI keep the upstream engine, audio formats, DSP, MIDI,
+session editing and plugin-host code. The desktop uses Glow/OpenGL on this
+machine's software renderer. Initial preferences use a 1500 x 650 window and
+4096-frame audio buffer; later saved user choices are retained. VAIO cursor
+blinking/animations are disabled and live meters refresh at 12 Hz. Idle windows
+redraw on events; autosave writes and error notifications remain active. Existing
+system fonts are read at runtime, not redistributed; egui font notices are included.
+
+Commands: soundcraft-vaio and soundcraft-vaio-cli. The normal APT frontend owns
+installation, updates and removal. No self-updater or background login service.
+The private libxcb is application-local; system libraries are unchanged.
+
+SoundCraft is pre-alpha. Work on copies and keep original media. Headless
+editing, mixing, session save/reopen, FLAC/WAV and resampling have acceptance
+checks; the output-only fixture verifies native CPAL/ALSA playback separately.
+Third-party plugins require matching Linux i386 builds and may be expensive or
+unstable. No arbitrary plugin compatibility or incumbent-DAW parity is promised.
+Recording, external interfaces, MIDI hardware, suspend/resume and large-session
+capacity require separate verification. This port never upgrades the operating
+system or enables microphone capture during automated playback checks.
+
+Source/recipes and exact build hashes are in build.json and the corresponding
+source archive. Audio repair uses the existing snd_hda_intel position_fix=1
+configuration; this package does not install or change an audio driver.

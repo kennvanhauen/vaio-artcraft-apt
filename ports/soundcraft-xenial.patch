@@ -1,0 +1,434 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index 848fa2c..5aec3d5 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -1016,6 +1016,7 @@ dependencies = [
+  "egui-wgpu",
+  "egui-winit",
+  "egui_glow",
++ "glow",
+  "glutin",
+  "glutin-winit",
+  "image",
+@@ -3727,6 +3728,7 @@ dependencies = [
+  "serde_json",
+  "soundcraft-audio-io",
+  "soundcraft-dsp",
++ "soundcraft-engine",
+  "soundcraft-mix",
+  "soundcraft-model",
+  "soundcraft-time",
+diff --git a/apps/soundcraft/Cargo.toml b/apps/soundcraft/Cargo.toml
+index 0f30c7a..5c6dccd 100644
+--- a/apps/soundcraft/Cargo.toml
++++ b/apps/soundcraft/Cargo.toml
+@@ -34,3 +34,6 @@ winresource = "0.1"
+ muda = { version = "0.19.2", default-features = false }
+ objc2 = "0.6"
+ objc2-app-kit = { version = "0.3", default-features = false, features = ["NSApplication", "NSResponder"] }
++
++[target.'cfg(all(target_os = "linux", target_arch = "x86"))'.dependencies]
++eframe = { workspace = true, features = ["glow"] }
+diff --git a/apps/soundcraft/src/main.rs b/apps/soundcraft/src/main.rs
+index 808cdef..71cbf8e 100644
+--- a/apps/soundcraft/src/main.rs
++++ b/apps/soundcraft/src/main.rs
+@@ -92,7 +92,7 @@ impl eframe::App for App {
+     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+         self.0.guarded(|app| app.ui(ui));
+     }
+-    fn on_exit(&mut self) {
++    fn on_exit(&mut self, #[cfg(all(target_os = "linux", target_arch = "x86"))] _gl: Option<&eframe::glow::Context>) {
+         self.0.close_autosave();
+         save_prefs(&self.0.ui);
+         if let Some(logger) = self.1 {
+@@ -246,7 +246,7 @@ fn main() -> eframe::Result {
+     }
+ 
+     let engine = if demo { soundcraft_engine::demo::demo_engine() } else { Engine::default() };
+-    let prefs = load_prefs().unwrap_or_default();
++    let prefs = load_prefs().unwrap_or_else(default_prefs);
+     let mut options = eframe::NativeOptions {
+         viewport: egui::ViewportBuilder::default()
+             .with_title("SoundCraft")
+@@ -257,6 +257,10 @@ fn main() -> eframe::Result {
+             .with_app_id("ai.storyteller.soundcraft"),
+         ..Default::default()
+     };
++    #[cfg(all(target_os = "linux", target_arch = "x86"))]
++    {
++        options.renderer = eframe::Renderer::Glow;
++    }
+     if let Some(icon) = app_icon() {
+         options.viewport = options.viewport.with_icon(icon);
+     }
+@@ -304,6 +308,20 @@ fn main() -> eframe::Result {
+     )
+ }
+ 
++/// First-run VAIO preferences; saved user choices remain authoritative.
++fn default_prefs() -> UiState {
++    #[cfg(all(target_os = "linux", target_arch = "x86"))]
++    {
++        UiState {
++            window_size: [1500.0, 650.0],
++            audio: soundcraft_playback::AudioConfig { buffer_size: Some(4096), ..Default::default() },
++            ..Default::default()
++        }
++    }
++    #[cfg(not(all(target_os = "linux", target_arch = "x86")))]
++    UiState::default()
++}
++
+ /// A saved window size, or the default when the prefs file holds nonsense (NaN, negative, tiny).
+ fn sane_window_size([w, h]: [f32; 2]) -> [f32; 2] {
+     if w.is_finite() && h.is_finite() && w >= 960.0 && h >= 600.0 { [w.min(16_384.0), h.min(16_384.0)] } else { [1600.0, 1000.0] }
+diff --git a/crates/engine/src/autosave.rs b/crates/engine/src/autosave.rs
+index 01899d2..5b224f1 100644
+--- a/crates/engine/src/autosave.rs
++++ b/crates/engine/src/autosave.rs
+@@ -25,7 +25,14 @@ const STOPPED: &str = "the autosave thread stopped";
+ pub struct Autosaver {
+     jobs: Option<Sender<Job>>,
+     thread: Option<std::thread::JoinHandle<()>>,
+-    failure: Arc<Mutex<Option<String>>>,
++    failure: Arc<Failure>,
++}
++
++type ErrorWake = Arc<dyn Fn() + Send + Sync>;
++
++struct Failure {
++    latest: Mutex<Option<String>>,
++    wake: Option<ErrorWake>,
+ }
+ 
+ enum Job {
+@@ -38,8 +45,18 @@ enum Job {
+ impl Autosaver {
+     /// A writer for autosave folders under `root`.
+     pub fn new(root: PathBuf) -> Autosaver {
++        Self::new_with_error_wake(root, None)
++    }
++
++    /// Wake an event-driven host when a background write fails, without polling.
++    /// The callback should return quickly; a callback panic cannot stop the writer.
++    pub fn with_error_wake(root: PathBuf, wake: impl Fn() + Send + Sync + 'static) -> Autosaver {
++        Self::new_with_error_wake(root, Some(Arc::new(wake)))
++    }
++
++    fn new_with_error_wake(root: PathBuf, wake: Option<ErrorWake>) -> Autosaver {
+         let (tx, rx) = channel();
+-        let failure = Arc::new(Mutex::new(None));
++        let failure = Arc::new(Failure { latest: Mutex::new(None), wake });
+         let writer = Writer { root, failure: Arc::clone(&failure), folder: None, pending: None, last: None, written: Ok(()) };
+         let thread = std::thread::Builder::new().name("soundcraft-autosave".into()).spawn(move || writer.run(&rx));
+         if let Err(e) = &thread {
+@@ -73,7 +90,7 @@ impl Autosaver {
+ 
+     /// The newest failure since the last call.
+     pub fn failure(&self) -> Option<String> {
+-        self.failure.lock().unwrap_or_else(PoisonError::into_inner).take()
++        self.failure.latest.lock().unwrap_or_else(PoisonError::into_inner).take()
+     }
+ 
+     fn send(&self, job: Job) {
+@@ -96,7 +113,7 @@ impl Drop for Autosaver {
+ /// The writer thread.
+ struct Writer {
+     root: PathBuf,
+-    failure: Arc<Mutex<Option<String>>>,
++    failure: Arc<Failure>,
+     /// The open session's folder.
+     folder: Option<Autosave>,
+     /// The newest session not written yet.
+@@ -159,9 +176,12 @@ impl Writer {
+     }
+ }
+ 
+-fn report(failure: &Mutex<Option<String>>, e: String) {
++fn report(failure: &Failure, e: String) {
+     log::warn!("autosave failed: {e}");
+-    *failure.lock().unwrap_or_else(PoisonError::into_inner) = Some(e);
++    *failure.latest.lock().unwrap_or_else(PoisonError::into_inner) = Some(e);
++    if let Some(wake) = &failure.wake {
++        let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| wake()));
++    }
+ }
+ 
+ /// An open session's autosave folder, locked while the session is open so a later launch can tell
+@@ -427,6 +447,35 @@ mod tests {
+         dir
+     }
+ 
++    #[test]
++    fn background_write_failure_wakes_an_event_driven_host() {
++        let root = folder("autosave-error-wake");
++        std::fs::write(&root, b"not a directory").unwrap();
++        let (tx, rx) = channel();
++        let writer = Autosaver::with_error_wake(root.clone(), move || {
++            let _ = tx.send(());
++        });
++        writer.write(Arc::new(Session::default()), None, None);
++        assert!(writer.flush().is_err());
++        rx.recv_timeout(Duration::from_secs(2)).expect("background failure notification");
++        drop(writer);
++        std::fs::remove_file(root).unwrap();
++    }
++
++    #[test]
++    fn successful_background_write_does_not_wake_an_idle_host() {
++        let root = folder("autosave-success-no-wake");
++        let (tx, rx) = channel();
++        let writer = Autosaver::with_error_wake(root.clone(), move || {
++            let _ = tx.send(());
++        });
++        writer.write(Arc::new(Session::default()), None, None);
++        assert!(writer.flush().is_ok());
++        assert!(rx.try_recv().is_err());
++        drop(writer);
++        std::fs::remove_dir_all(root).unwrap();
++    }
++
+     fn record(e: &mut Engine, level: f32) {
+         let before = e.session_arc();
+         let s = e.session_mut();
+diff --git a/crates/playback/Cargo.toml b/crates/playback/Cargo.toml
+index 514879a..df9a134 100644
+--- a/crates/playback/Cargo.toml
++++ b/crates/playback/Cargo.toml
+@@ -29,6 +29,7 @@ asio = ["cpal/asio"]
+ 
+ [dev-dependencies]
+ serde_json.workspace = true
++soundcraft-engine.workspace = true
+ 
+ [lints]
+ workspace = true
+diff --git a/crates/ui-egui/src/edit_window.rs b/crates/ui-egui/src/edit_window.rs
+index 7e24a4c..c4c0664 100644
+--- a/crates/ui-egui/src/edit_window.rs
++++ b/crates/ui-egui/src/edit_window.rs
+@@ -2702,7 +2702,8 @@ fn overlay(app: &mut SoundApp, ui: &mut Ui, tl: Rect, area: Rect) {
+             }
+             *since
+         });
+-        let phase = (now - since) * 2.0;
++        let blink = !cfg!(all(target_os = "linux", target_arch = "x86"));
++        let phase = if blink { (now - since) * 2.0 } else { 0.0 };
+         if (phase as i64) % 2 == 0 {
+             for (id, r) in &app.edit_layout.rows {
+                 if s.edit.selected_tracks.contains(&TrackId(*id)) {
+@@ -2710,7 +2711,9 @@ fn overlay(app: &mut SoundApp, ui: &mut Ui, tl: Rect, area: Rect) {
+                 }
+             }
+         }
+-        ui.ctx().request_repaint_after_secs(((1.0 - phase.fract()) / 2.0) as f32);
++        if blink {
++            ui.ctx().request_repaint_after_secs(((1.0 - phase.fract()) / 2.0) as f32);
++        }
+     }
+     if app.is_playing() {
+         let x = x_of(s, tl, app.position());
+diff --git a/crates/ui-egui/src/lib.rs b/crates/ui-egui/src/lib.rs
+index 3fdd989..0b3e809 100644
+--- a/crates/ui-egui/src/lib.rs
++++ b/crates/ui-egui/src/lib.rs
+@@ -273,6 +273,8 @@ pub struct SoundApp {
+     pub autosave_dir: Option<std::path::PathBuf>,
+     /// Writes the open session's autosaves in the background, once there is something to write.
+     autosaver: Option<soundcraft_engine::autosave::Autosaver>,
++    /// Lets a failed background save wake a sleeping, event-driven UI.
++    background_repaint: Option<egui::Context>,
+     /// The document revision last handed to the autosaver (0 once that autosave is stale).
+     autosaved_rev: u64,
+     /// Unsaved work that earlier runs left in the autosave folder, offered for recovery.
+@@ -365,6 +367,7 @@ impl SoundApp {
+             native_menu_bar: false,
+             autosave_dir: None,
+             autosaver: None,
++            background_repaint: None,
+             autosaved_rev: 0,
+             leftovers: Vec::new(),
+             panic_rev: 0,
+@@ -687,7 +690,11 @@ impl SoundApp {
+     /// Hand the session to the autosaver for its folder under `root`.
+     fn queue_autosave(&mut self, root: std::path::PathBuf) {
+         self.autosaved_rev = self.engine.revision;
+-        let w = self.autosaver.get_or_insert_with(|| soundcraft_engine::autosave::Autosaver::new(root));
++        let repaint = self.background_repaint.clone();
++        let w = self.autosaver.get_or_insert_with(|| match repaint {
++            Some(ctx) => soundcraft_engine::autosave::Autosaver::with_error_wake(root, move || ctx.request_repaint()),
++            None => soundcraft_engine::autosave::Autosaver::new(root),
++        });
+         w.write(self.engine.session_arc(), self.engine.path.clone(), self.take_plan.clone());
+     }
+ 
+@@ -1137,6 +1144,7 @@ impl SoundApp {
+         if ctx.current_pass_index() > 0 {
+             return;
+         }
++        self.background_repaint = Some(ctx.clone());
+         // Fonts set now take effect next frame, so draw only from the frame after.
+         if !self.fonts_ready {
+             if self.fonts_installed {
+@@ -1150,6 +1158,11 @@ impl SoundApp {
+         let light = theme::wants_light(ctx, self.ui.theme);
+         if self.theme_applied != Some(light) || theme::is_light() != light {
+             theme::apply(ctx, light);
++            #[cfg(all(target_os = "linux", target_arch = "x86"))]
++            ctx.global_style_mut(|style| {
++                style.animation_time = 0.0;
++                style.visuals.text_cursor.blink = false;
++            });
+             self.theme_applied = Some(light);
+         }
+         let now = ctx.input(|i| i.time);
+@@ -1191,7 +1204,15 @@ impl SoundApp {
+         // Autosave and the macOS menu bar only run on frames, and plugin editors are native windows egui never hears from.
+         // egui takes its predicted frame time off every delay, so add it back.
+         let editors = self.player.as_ref().is_some_and(Player::any_editor_open);
+-        ctx.request_repaint_after_secs(if editors { 0.03 } else { 1.0 } + ctx.input(|i| i.predicted_dt));
++        if editors || !cfg!(all(target_os = "linux", target_arch = "x86")) {
++            ctx.request_repaint_after_secs(if editors { 0.03 } else { 1.0 } + ctx.input(|i| i.predicted_dt));
++        } else if self.autosave_dir.is_some() && self.engine.is_dirty() && !self.engine.transport.recording {
++            // Change autosaves already run on their worker. Only the two-minute
++            // plugin-state snapshot needs a timer; failures wake us explicitly.
++            let elapsed = self.last_autosave.map_or(std::time::Duration::ZERO, |last| last.elapsed());
++            let due = std::time::Duration::from_secs(120).saturating_sub(elapsed);
++            ctx.request_repaint_after(due + std::time::Duration::from_secs_f32(ctx.input(|i| i.predicted_dt)));
++        }
+         control::collect_screenshots(self, ctx);
+     }
+ 
+@@ -1265,7 +1286,13 @@ impl SoundApp {
+         dialogs::show(self, &ctx);
+         // Here, not in logic(): a covered or minimized window runs only logic(), with no vsync to pace it.
+         if self.meters_live() {
+-            let hz = if self.ui.window == MainWindow::Mix { 60 } else { 30 };
++            let hz = if cfg!(all(target_os = "linux", target_arch = "x86")) {
++                12
++            } else if self.ui.window == MainWindow::Mix {
++                60
++            } else {
++                30
++            };
+             ctx.request_repaint_after(std::time::Duration::from_millis(1000 / hz));
+         } else if self.meters.values().any(|m| m.level[0] > 0.0001) {
+             ctx.request_repaint_after(std::time::Duration::from_millis(80));
+@@ -1284,6 +1311,8 @@ impl SoundApp {
+             "position": self.position(),
+             "dialog": self.dialogs.open_name(),
+             "frame_ms": self.frame_ms,
++            "repaint_causes": format!("{:?}", ctx.repaint_causes()),
++            "cumulative_passes": ctx.cumulative_pass_nr(),
+             "audio_device": self.player.as_ref().map(|p| p.device_name.clone()),
+             "status": self.ui.status,
+         })
+diff --git a/crates/ui-egui/src/panels.rs b/crates/ui-egui/src/panels.rs
+index a208511..c4c3240 100644
+--- a/crates/ui-egui/src/panels.rs
++++ b/crates/ui-egui/src/panels.rs
+@@ -622,10 +622,10 @@ fn about(app: &mut SoundApp, ctx: &egui::Context) {
+             _ => {
+                 ui.label(egui::RichText::new("SoundCraft").font(bold(22.0)));
+                 ui.label(format!("Version {}", env!("CARGO_PKG_VERSION")));
+-                ui.label("An open-source digital audio workstation from the ArtCraft team.");
++                ui.label("VAIO preview based on SoundCraft by the ArtCraft team.");
+                 ui.label("Dual-licensed MIT OR Apache-2.0. Made with Rust and egui.");
+                 ui.hyperlink_to("getartcraft.com/apps/soundcraft", "https://getartcraft.com/apps/soundcraft");
+-                ui.hyperlink_to("Join us on Discord", "https://discord.gg/artcraft");
++                ui.hyperlink_to("Upstream community", "https://discord.gg/artcraft");
+             }
+         }
+     });
+diff --git a/crates/playback/examples/vaio_output.rs b/crates/playback/examples/vaio_output.rs
+new file mode 100644
+index 0000000..6d6d065
+--- /dev/null
++++ b/crates/playback/examples/vaio_output.rs
+@@ -0,0 +1,85 @@
++//! Original VAIO validation fixture. Output only; never creates a recorder.
++use serde_json::{Value, json};
++use soundcraft_engine::Engine;
++use soundcraft_playback::{AudioConfig, Player};
++use soundcraft_time::Range;
++use std::time::{Duration, Instant};
++
++fn run() -> Result<Value, String> {
++    let file = std::env::args().nth(1).ok_or("pass the synthetic session's WAV")?;
++    let seconds = std::env::args().nth(2).unwrap_or_else(|| "10".into()).parse::<u64>().map_err(|e| e.to_string())?;
++    if !(2..=30).contains(&seconds) {
++        return Err("duration must be between 2 and 30 seconds".into());
++    }
++    let gain_db = std::env::args().nth(3).unwrap_or_else(|| "-12".into()).parse::<f32>().map_err(|e| e.to_string())?;
++    if !gain_db.is_finite() || !(-24.0..=6.0).contains(&gain_db) {
++        return Err("fixture gain must be between -24 and +6 dB".into());
++    }
++    let mut engine = Engine::default();
++    engine.execute("session.new", &json!({"name":"VAIO output check","sample_rate":48000})).map_err(|e| e.to_string())?;
++    engine.execute("file.import_audio", &json!({"path":file})).map_err(|e| e.to_string())?;
++    engine.execute("edit.select_all", &json!({})).map_err(|e| e.to_string())?;
++    // Additional attenuation on already quiet, synthetic media.
++    engine.execute("mix.volume", &json!({"db":gain_db})).map_err(|e| e.to_string())?;
++    let end = engine.session().content_end();
++    if end < 48000 {
++        return Err("synthetic source must last at least one second".into());
++    }
++    let config = AudioConfig { sample_rate: Some(48000), buffer_size: Some(4096), ..Default::default() };
++    let player = Player::with_config(engine.session_arc(), &config);
++    if player.silent {
++        return Err("SoundCraft could not open a real output stream (silent-clock fallback)".into());
++    }
++    let device = player.device_name.clone();
++    let rate = player.device_rate;
++    let channels = player.device_channels;
++    let buffer = player.device_buffer;
++    let start = Instant::now();
++    player.play(0, None, Some(Range::new(0, end)));
++    let mut positions = Vec::new();
++    let mut max_peak = 0.0_f32;
++    while start.elapsed() < Duration::from_secs(seconds) {
++        std::thread::sleep(Duration::from_millis(100));
++        if let Some(trouble) = player.trouble() {
++            return Err(format!("output trouble: {trouble:?}"));
++        }
++        positions.push(player.position());
++        for peak in player.meters().main.peak {
++            max_peak = max_peak.max(peak);
++        }
++        if !player.is_playing() {
++            return Err("output stopped unexpectedly".into());
++        }
++    }
++    player.stop();
++    std::thread::sleep(Duration::from_millis(200));
++    if let Some(trouble) = player.trouble() {
++        return Err(format!("output trouble at stop: {trouble:?}"));
++    }
++    let changes = positions.windows(2).filter(|pair| pair.first() != pair.get(1)).count();
++    if changes < (seconds * 5) as usize {
++        return Err(format!("transport advanced only {changes} times"));
++    }
++    if !(0.00001..0.15).contains(&max_peak) {
++        return Err(format!("unexpected output peak {max_peak}"));
++    }
++    let result = json!({"passed":true,"device":device,"rate":rate,"channels":channels,
++                       "buffer":buffer,"silent":false,"seconds":seconds,
++                       "position_changes":changes,"elapsed_seconds":start.elapsed().as_secs_f64(),
++                       "stopped":!player.is_playing(),"recorder_created":false,"max_peak":max_peak,"track_gain_db":gain_db});
++    drop(player);
++    Ok(result)
++}
++
++fn main() -> std::process::ExitCode {
++    match run() {
++        Ok(result) => {
++            println!("{result}");
++            std::process::ExitCode::SUCCESS
++        }
++        Err(error) => {
++            eprintln!("{}", json!({"passed":false,"error":error}));
++            std::process::ExitCode::FAILURE
++        }
++    }
++}

@@ -21,7 +21,9 @@ import traceback
 class App:
     def __init__(self, binary, base):
         self.binary, self.base = binary, base
+        (base/'documents').mkdir(exist_ok=True)
         self.env = dict(os.environ, DISPLAY=':0', SOUNDCRAFT_CONFIG_DIR=str(base/'profile'),
+                        VAIO_ARTCRAFT_DOCUMENTS=str(base/'documents'),
                         XDG_CONFIG_HOME=str(base/'config'), XDG_DATA_HOME=str(base/'data'),
                         XDG_CACHE_HOME=str(base/'cache'))
         self.process = None
@@ -176,6 +178,12 @@ def main():
         reopened = app.rpc('session.inspect', {'detail': 'full'})
         assert reopened['tracks'][0]['name'] == 'tone-a' and len(reopened['tracks']) == 2
         result['checks'].append('native Open restores saved content')
+        app.rpc('ui.menu.invoke', {'id': 'session.save_as'}); time.sleep(1); app.shot('default-save.png')
+        app.key('Enter'); time.sleep(1)
+        default_saved = app.rpc('session.inspect', {'detail': 'full'})
+        expected = base/'documents'/reopened['name']/(reopened['name']+'.scraft')
+        assert default_saved['path'] == str(expected) and expected.is_file(), default_saved
+        result['checks'].append('internal Save As uses the configured document folder')
         result['settled_idle'] = app.idle(); app.shot('final.png')
         assert app.rpc('ui.inspect')['audio_device'] is None
         result['passed'] = True

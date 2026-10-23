@@ -12,7 +12,7 @@ import tomllib
 
 root = Path(__file__).resolve().parents[1]
 specs = {
-    'soundcraft': ('0.12.1~vaio1', 'e85a4801e9029c9a1f5ce536b11be65aea832ed8',
+    'soundcraft': ('0.12.1~vaio2', 'e85a4801e9029c9a1f5ce536b11be65aea832ed8',
                    'SoundCraft', 'AudioVideo;Audio;AudioVideoEditing;',
                    'application/x-soundcraft;audio/x-wav;audio/flac;audio/mpeg;audio/x-aiff;'),
     'cadcraft': ('0.9.0~vaio1', '0cc66ad3066e71f2c3d4cacb7de905e79ba1c95b',

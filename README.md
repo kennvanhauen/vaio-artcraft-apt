@@ -14,7 +14,7 @@ SoundCraft also has its own Multimedia menu entry. These are independent hardwar
 | designcraft-vaio | 0.11.0~vaio1 | Three-page styles/images/threading/table/RTF workflow, GUI editing, native/IDML round trip, PDF/PNG/EPUB/PPTX/HTML/text export, parent pages, data merge, native Save As and automatic idle recovery |
 | figcraft-vaio | 0.9.0~vaio1 | Two-screen UI design, auto layout, components/instances, styles/variables, GUI text editing, prototype click navigation/preview, native/SVG/own-FIG round trips, seven exports, native Save As and idle draft recovery |
 | cadcraft-vaio | 0.10.0~vaio1 | Metric 2D drafting, rounded outline, layers, blocks, constraints, dimensions, TEXT/MTEXT, LISP, interactive editing, DXF save/reopen, own DWG round trip, SVG/PNG/PDF, A4 viewport plot, native Save As and autosave |
-| soundcraft-vaio | 0.12.1~vaio1 | Two-track headless editing, independent PCM/FLAC/resampling checks, native Save/Open, overwrite protection, GUI recovery and native ALSA/Pulse playback |
+| soundcraft-vaio | 0.12.1~vaio2 | Two-track headless editing, independent PCM/FLAC/resampling checks, native Save/Open, overwrite protection, GUI recovery and native ALSA/Pulse playback |
 | artcraft-launcher-vaio | 0.6.1~vaio1 | Eight-app APT backend, signed metadata refresh, offline reporting, saved settings and fixed package-operation allowlist |
 
 All nine application engines retain their upstream features. This is a practical
@@ -381,3 +381,7 @@ SoundCraft keeps the upstream engine and CLI with Glow, a 4096-frame audio buffe
 the real VAIO; recording, MIDI hardware, third-party plugins and large sessions
 need separate testing. No microphone was opened during these checks. Native APT
 manages installation, updates and removal; no login daemon or self-updater is added.
+
+SoundCraft revision 2 also honors the configured shared document folder in its
+internal Open/Save prompts. Revision 1 remains retained and was superseded before
+the first VAIO installation.

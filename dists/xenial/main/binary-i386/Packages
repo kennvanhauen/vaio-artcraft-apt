@@ -143,18 +143,18 @@ MD5sum: 38d199f5a500fc57ebb572a93f134a73
 SHA256: 42a7a20d90c4c8a58ee3989eb0767fdc6bf173ae729d38d5849c435367d3a97c
 
 Package: soundcraft-vaio
-Version: 0.12.1~vaio1
+Version: 0.12.1~vaio2
 Architecture: i386
 Section: sound
 Priority: optional
 Maintainer: VAIO local build <vaio@localhost>
-Installed-Size: 43339
+Installed-Size: 43370
 Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa, libasound2 (>= 1.1.0), shared-mime-info, fontconfig
 Description: SoundCraft preview adapted for Ubuntu Xenial i386 on the Sony VAIO
  Unofficial native 32-bit build using Glow and a private XCB library.
  APT owns application files; existing user documents and settings are retained.
-Filename: pool/main/soundcraft-vaio_0.12.1~vaio1_i386.deb
-Size: 18064740
-MD5sum: 46b993b85ad4ea2cd3dd4a526467c8bd
-SHA256: c7377eb47d696fbe172fbcff7788141e85f8742078a9fc44e93597d9018d94f9
+Filename: pool/main/soundcraft-vaio_0.12.1~vaio2_i386.deb
+Size: 18080132
+MD5sum: ff37cfe52d527a0a5f5ecd345b189c66
+SHA256: 47f9f55202ca7fc5774b9be8766761b2b84fc96a9e0c491fbe3e023b4f5b0bc5
 

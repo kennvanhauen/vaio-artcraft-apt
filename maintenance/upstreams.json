@@ -55,7 +55,7 @@
     "soundcraft": {
       "repo": "storytold/soundcraft",
       "revision": "e85a4801e9029c9a1f5ce536b11be65aea832ed8",
-      "version": "0.12.1~vaio1",
+      "version": "0.12.1~vaio2",
       "package": "soundcraft-vaio",
       "port_base_revision": "e85a4801e9029c9a1f5ce536b11be65aea832ed8"
     },

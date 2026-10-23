@@ -1,0 +1,67 @@
+{
+  "package_version": "0.12.1~vaio2",
+  "source_revision": "e85a4801e9029c9a1f5ce536b11be65aea832ed8",
+  "package_sha256": "47f9f55202ca7fc5774b9be8766761b2b84fc96a9e0c491fbe3e023b4f5b0bc5",
+  "binary_sha256": {
+    "soundcraft": "10d256ee903068b269aa3a5a7bcb528b505488f94fb8542ee6528318bf6f269b",
+    "soundcraft-cli": "6a10216708b9e7c08bdc4878c956f9d58ea217dc2dc2cde162602a8974351a7b"
+  },
+  "passed": true,
+  "host_tests": {
+    "passed": 813,
+    "ignored": 1,
+    "mac_au_test_separate": true,
+    "full_gpu_wasm_ci_claimed": false
+  },
+  "gui_checks": [
+    "GUI text entry and two-track import",
+    "dirty idle and background autosave",
+    "native bare-name Save As",
+    "existing session overwrite refused on Enter; cancelled",
+    "actual unsaved recovery UI retains both tracks and edit; bounce succeeds",
+    "native Open restores saved content",
+    "internal Save As uses the configured document folder"
+  ],
+  "headless_checks": [
+    "no-display confined MCP",
+    "two stereo WAV imports",
+    "track gain undo/redo",
+    "clip split undo/redo",
+    "second-clip gain",
+    "independent mixed PCM comparison",
+    "save/reopen with media",
+    "sample-identical reopened render",
+    "FLAC encode/decode with independent PCM comparison",
+    "48 kHz to 44.1 kHz resampling",
+    "malformed audio returns an ordinary error"
+  ],
+  "dirty_idle": {
+    "rss_kib": 82952,
+    "cpu_percent_one_logical_cpu": 0.0,
+    "seconds": 10
+  },
+  "settled_idle": {
+    "rss_kib": 82924,
+    "cpu_percent_one_logical_cpu": 0.0,
+    "seconds": 10
+  },
+  "gui_active_playback": {
+    "seconds": 8,
+    "cpu_percent": 10.03881025250626,
+    "distinct_hardware_pointers": 53
+  },
+  "recovered_pcm": {
+    "channels": 2,
+    "frames": 96000,
+    "interior_max_absolute_error": 0.0,
+    "sample_rate": 48000,
+    "tolerance": 2e-05
+  },
+  "limits": [
+    "Small synthetic sessions only",
+    "Recording, MIDI hardware and third-party plugins not verified",
+    "Upstream pre-alpha"
+  ],
+  "added_in_revision_2": "Honor an existing VAIO_ARTCRAFT_DOCUMENTS folder in internal Open/Save prompts",
+  "gui_playback_measurement_revision": "vaio1; playback code unchanged in vaio2"
+}

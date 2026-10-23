@@ -9,7 +9,8 @@ session editing and plugin-host code. The desktop uses Glow/OpenGL on this
 machine's software renderer. Initial preferences use a 1500 x 650 window and
 4096-frame audio buffer; later saved user choices are retained. VAIO cursor
 blinking/animations are disabled and live meters refresh at 12 Hz. Idle windows
-redraw on events; autosave writes and error notifications remain active. Existing
+redraw on events; autosave writes and error notifications remain active. The
+per-user VAIO Documents integration also sets the internal Open/Save default. Existing
 system fonts are read at runtime, not redistributed; egui font notices are included.
 
 Commands: soundcraft-vaio and soundcraft-vaio-cli. The normal APT frontend owns

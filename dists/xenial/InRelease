@@ -8,26 +8,26 @@ Codename: xenial
 Architectures: i386
 Components: main
 Description: Unofficial ArtCraft previews for Ubuntu Xenial i386
-Date: Sun, 08 Nov 2026 22:13:19 GMT
+Date: Sun, 08 Nov 2026 22:14:07 GMT
 MD5Sum:
- 39a037b3870c8aae09766ada028c133d 8168 main/binary-i386/Packages
- 02361e0ebec419c0e96638a6f7ab7489 1737 main/binary-i386/Packages.gz
+ bacc9ecd88df8b5796a79e39cc9ee7fb 8170 main/binary-i386/Packages
+ baf48880dbef82422bf79d637ec0acb9 1732 main/binary-i386/Packages.gz
  52608ca0ec5dea6c5b78c2850ab09913 51 main/binary-i386/Release
 SHA256:
- c9530cc6267bd8e4f36b2ed2ca3daa9ebf3992d8f77f818188f3efb414923f9a 8168 main/binary-i386/Packages
- 84cbea78b10e283e2983d7106e61f6ab427ad8ec74dde342703a97d7873dba20 1737 main/binary-i386/Packages.gz
+ d83ac5a8221ffd62a0be9aa2f8e742c7c4c1c16115860143f25a686a7a0646b5 8170 main/binary-i386/Packages
+ 3641e7a6e8b99cdd3c2a8b3433e8d73a69b003c19f3c4c35d6602d9e4dada8d1 1732 main/binary-i386/Packages.gz
  8b5b8e1eea0817645ced68a21422690999cdb19ab64c6127115c99570dc1d93b 51 main/binary-i386/Release
 -----BEGIN PGP SIGNATURE-----
 
-iQGzBAEBCAAdFiEERBYWxlqrabmW42e9oH8n7A8ST4cFAmrw8/8ACgkQoH8n7A8S
-T4f1pgwAmLjEWiMiqq4dgJsqsgQHkuteoGl2Zv+X9BrswPR2hoStRYxR+AlGOSeX
-C4jLOXFeINo/oGl4mXmDllCL8xUPTfWhUENrKH03rFTv8CK/LCzrUlU/3x3IdB7j
-UH2XFPeVrQxtfcNXhTczdtURtA5cRBWu95WpsN0Z4g698gVcccMaRn8+7rbqU3Ra
-QHq3odIeYbUEFRinNze/6N0eEzUvSMYGnvs4OVaIYvT98H9l8T6cYY/yXq8ep+Pq
-EmNoJyhZrD848bBhn6Q5ZDzvrBZJkj+sexgoCNTIy2XQ6mcKx/D7wRxzvDsjyRju
-CmCjUDyd10wmYMmo79xzlRChFnh81VQCmqKLKaRvgDlD8gS8ZzIAJoX5L++XZdNZ
-2kJadqJ/PpX8WGQofrTIejWqUv+//fp+uJw+H7BYvm7VPozYOJOaOfxiTonjdcIW
-K/H+w0kL5+aJN0HDF8MuZmrwS3et0tQBpIKbpsJcgSM4u21GEv8evgI/oXBBJ3Fl
-Z34Nn7hm
-=esDu
+iQGzBAEBCAAdFiEERBYWxlqrabmW42e9oH8n7A8ST4cFAmrw9C8ACgkQoH8n7A8S
+T4cihQwAlQaPCSE8MpnqmWTEVg7MN/fEAwjaSBcTYvc+RIKJ7D1tiqy48vJas/Nv
+KbbxPQ3ww8IlxTWY4y0AGEJBfubWuDtyc6vCDUCtKhFRTNL5aCWJgjDsVWPuPgNi
+C9zmjLBHA/QX2T48z1pID3u/yRHk3OIEurgSCknoGVV6UIS4L3hN6vh/SImMt6lK
+R+twJ2q4dK2Wj+SU9GRx2Rs7a/Cg5aV41cAf5eoxWI8c2rgBeFXyTeOUJEI391rV
+2QYp6riwFz04rczGd08r02Xv1H1c4Ip4LAWVZo3LuGBhFOnTOj1YaJA+f+edFArr
+vX4oTKgVZW2YfQm2SbVoH8FEQo/J+N+1ADswklvRE8KhzqZ7El2FZy+gXQf76QPe
+xCJfkpS5du9xYkVT6pHb+oaoBQB6llZ+ocJeGEibKJwJMqqvEvSy5jaeoCCfX49O
+6WkysBvZN7uXxAU/9bjHcO+Th+S9NFUL8Dj1EWzef0ZMIT43sBlbJMCglTueyxbH
+zCgEG9hI
+=CET1
 -----END PGP SIGNATURE-----

@@ -62,22 +62,6 @@ Size: 81493688
 MD5sum: 3955a6a77de966e84291c38303446c04
 SHA256: 7d22def37b8dc8324386843ca934f08abfa8408956c92c8e6fbff16ef7f11b44
 
-Package: pdfcraft-vaio
-Version: 0.11.0~vaio1
-Architecture: i386
-Section: editors
-Priority: optional
-Maintainer: VAIO local build <vaio@localhost>
-Installed-Size: 115950
-Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa
-Description: PdfCraft preview adapted for Ubuntu Xenial i386 on the Sony VAIO
- Unofficial native 32-bit build using Glow and a private XCB library.
- APT owns application files; existing user documents and settings are retained.
-Filename: pool/main/pdfcraft-vaio_0.11.0~vaio1_i386.deb
-Size: 57193102
-MD5sum: e882145ac08c90b6f49a0c24ca794fbb
-SHA256: 310b22ebb6366c775616b63bb63c919e159178bf617bd1f937d8ff53fb709840
-
 Package: soundcraft-vaio
 Version: 0.12.1~vaio2
 Architecture: i386
@@ -157,4 +141,20 @@ Filename: pool/main/vectorcraft-vaio_0.17.0~vaio1_i386.deb
 Size: 93742126
 MD5sum: 27b1ab7677851068fe31af42842158b5
 SHA256: 90489f275c7ddcf71d8dcbc0f69f77243b063f6fafd0091a39b7be1a35f1dfad
+
+Package: pdfcraft-vaio
+Version: 0.14.0~vaio1
+Architecture: i386
+Section: editors
+Priority: optional
+Maintainer: VAIO local build <vaio@localhost>
+Installed-Size: 121386
+Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa
+Description: PdfCraft preview adapted for Ubuntu Xenial i386 on the Sony VAIO
+ Unofficial native 32-bit build using Glow and a private XCB library.
+ APT owns application files; existing user documents and settings are retained.
+Filename: pool/main/pdfcraft-vaio_0.14.0~vaio1_i386.deb
+Size: 59519306
+MD5sum: 32a8d6c94cb8376e78830eae41ea128a
+SHA256: c94e21d23be314916921aba7065ca4fde01f4205fe914768450c823c9dba6e4c
 

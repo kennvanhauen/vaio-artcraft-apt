@@ -33,8 +33,8 @@
     },
     "gridcraft": {
       "repo": "storytold/gridcraft",
-      "revision": "2ebdf164c2c9c536122e0a2cffe79078b5c818ac",
-      "version": "0.10.0~vaio1",
+      "revision": "f86aec12dabc744b5f75e1033f87bfe685e78481",
+      "version": "0.12.1~vaio1",
       "package": "gridcraft-vaio",
       "port_base_revision": "f86aec12dabc744b5f75e1033f87bfe685e78481"
     },

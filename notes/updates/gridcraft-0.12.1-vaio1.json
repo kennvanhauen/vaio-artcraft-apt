@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "package_sha256": "e8351003ef72bc3979c01018a2a04524ac8d1f2816ce2199a9516916bd37a7c2",
+  "steps": [
+    "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+    "CLI startup without display variables",
+    "gridcraft_smoke.py",
+    "gridcraft_native_dialogs.py"
+  ],
+  "measurements": [
+    {
+      "probe": "gridcraft_smoke.py",
+      "rss_kib": 84204,
+      "idle_cpu_percent": 0.0
+    }
+  ],
+  "version_newer": true,
+  "archive_version_newer": true,
+  "source_revision": "f86aec12dabc744b5f75e1033f87bfe685e78481",
+  "version": "0.12.1~vaio1"
+}

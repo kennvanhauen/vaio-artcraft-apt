@@ -1,19 +1,3 @@
-Package: gridcraft-vaio
-Version: 0.10.0~vaio1
-Architecture: i386
-Section: editors
-Priority: optional
-Maintainer: VAIO local build <vaio@localhost>
-Installed-Size: 51608
-Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa
-Description: GridCraft preview adapted for Ubuntu Xenial i386 on the Sony VAIO
- Unofficial native 32-bit build using Glow and a private XCB library.
- APT owns application files; existing user documents and settings are retained.
-Filename: pool/main/gridcraft-vaio_0.10.0~vaio1_i386.deb
-Size: 21896556
-MD5sum: a88d392f891872502794baeb8d53d2fe
-SHA256: efa4dedd699aaf4a9bad4464734f2feab56507e7ccb269fb963f089c0cb82a48
-
 Package: deckcraft-vaio
 Version: 0.9.0~vaio1
 Architecture: i386
@@ -157,4 +141,20 @@ Filename: pool/main/wordcraft-vaio_0.11.0~vaio1_i386.deb
 Size: 45427396
 MD5sum: f879fc9b3e33cf246bac217d67a0250f
 SHA256: 05b277ba72de805e575588a63dac6c84034683210ce29dc1a59dfa14c64aea70
+
+Package: gridcraft-vaio
+Version: 0.12.1~vaio1
+Architecture: i386
+Section: editors
+Priority: optional
+Maintainer: VAIO local build <vaio@localhost>
+Installed-Size: 53771
+Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa
+Description: GridCraft preview adapted for Ubuntu Xenial i386 on the Sony VAIO
+ Unofficial native 32-bit build using Glow and a private XCB library.
+ APT owns application files; existing user documents and settings are retained.
+Filename: pool/main/gridcraft-vaio_0.12.1~vaio1_i386.deb
+Size: 22820852
+MD5sum: 97813ec4d63b63c707b11b5a1103495c
+SHA256: e8351003ef72bc3979c01018a2a04524ac8d1f2816ce2199a9516916bd37a7c2
 

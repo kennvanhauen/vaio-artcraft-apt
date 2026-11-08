@@ -8,26 +8,26 @@ Codename: xenial
 Architectures: i386
 Components: main
 Description: Unofficial ArtCraft previews for Ubuntu Xenial i386
-Date: Sun, 08 Nov 2026 22:10:40 GMT
+Date: Sun, 08 Nov 2026 22:11:09 GMT
 MD5Sum:
- 4022e3ebd92f408d9becd5277346c6ed 8166 main/binary-i386/Packages
- 9b6492a4c77dde6ecf578d34bfb5346f 1709 main/binary-i386/Packages.gz
+ 6a6a4ead68f6d12c257cfca3f1f2371c 8166 main/binary-i386/Packages
+ 807c14f5cc324abd5af79fa152f3d17f 1712 main/binary-i386/Packages.gz
  52608ca0ec5dea6c5b78c2850ab09913 51 main/binary-i386/Release
 SHA256:
- fb8947174d99c7d9a84029a593f0cf9fd8dc362423c12608e04eb6159fddbbdb 8166 main/binary-i386/Packages
- 79d4890d41d928242f0c0a1cdae3abe1b35ee619357548df31ff3f0708bd1196 1709 main/binary-i386/Packages.gz
+ cce7ac7b86ce8fbc403c9629d77e487547daa00e34388d4baf46a6aabdfe5316 8166 main/binary-i386/Packages
+ bff0ad64deadeb892f129c7d4783499ec0c47eca5efeee88d094271330a7261b 1712 main/binary-i386/Packages.gz
  8b5b8e1eea0817645ced68a21422690999cdb19ab64c6127115c99570dc1d93b 51 main/binary-i386/Release
 -----BEGIN PGP SIGNATURE-----
 
-iQGzBAEBCAAdFiEERBYWxlqrabmW42e9oH8n7A8ST4cFAmrw82AACgkQoH8n7A8S
-T4fxEwwAsH3I7wtqLyYzIvRwjJc/xpty+y61tN2NieNqoGbHeFdOIYx/TONYLgm2
-xd128wj8gSgtzzh4q97QHClYsItHaOE9jukFpvgblkX7ppVfqJ4IrSUMN5yrbYlt
-6kla8HV5m2w9c7RWzOJFzRIBZZAoBT36l0xvTSVfq/7pyTwL7/8CxUEaIHXkXqYl
-g8O56sB06LMyoQ6b6d0rqX88TwiR0IXoVkmXu+lmpveeCvm+0328zFXPAcqAb1FT
-UHVyPJ8kCmWhIXDJ+sjfrw+m5q9g4uMRT3JN56QVyY7c1GPByklcw9xbpGAscJPH
-PEiPn6AnXv4yu7hoh3typdTENr7DDwJhRaa5YmkQ0UowSJaklCuP72Fr9YZeoa06
-TeC7CP55VmTaw/IezdPNROereX9JxxZ0XUdSTMvB6E6KBS6dNl+Gls6ZoHM0tbBA
-j08zAaaHEpmgWZfkxvK8OImxU9med3SzMEgvXCEFn+MOg+pQYx8DghM/RNLZYopN
-FtyzLBtp
-=hqMg
+iQGzBAEBCAAdFiEERBYWxlqrabmW42e9oH8n7A8ST4cFAmrw830ACgkQoH8n7A8S
+T4eMUQwAnXPHmQrRzMIbRzIVbgBQ+DwOw27LJHDWoatMqdcnFGx+xAoal4LV7dvg
+9V70adIEREVFKnTdiYg6qrBBwbOohiMzkLk4XcaTXa8BZJmFwSsR0mMuCJb9Y0pi
+S24froQjdIGSk+fiCvMgOO/PkzpAHcFh2mW3KIKM/Y9lBnl7Yfv1vcJG5Qh6YDIm
+Vz1eTFdzKu8Gg12USUDk4E4VzW4OIZ6Zw7ELcm4MBOP4WoOQK+xYxRkXkes0qQqu
+xRORZ5AWqmwf6HniRVpHdBBVqKfhtGIApY5lKAuxaSByKLX9yMjzFFMHfugz13mQ
+XdWwJF7MwwwKWHmgrRw1in5EKPyDyJrwqFcwiYQ76GVJ72cwc6l/DLfMXhfUzb2y
+u5/ZeZZYwV5AOnAfTy0WRVgElP2kyLmUg/KRvXCSmy3RxcIpugQ+H1pB7LZFDBS6
+jQC7/hNIic0Os1xwAWfj7/SmAYtjcC8DO1+nb0vu/L3r3rfvSAoItvCXxwQ6ujne
+hfCWWgR+
+=ZReK
 -----END PGP SIGNATURE-----

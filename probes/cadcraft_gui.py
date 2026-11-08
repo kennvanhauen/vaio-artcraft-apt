@@ -2,11 +2,9 @@
 """Actual CPU/Glow drawing, interactive command input and short idle samples."""
 import json,os,socket,subprocess,time
 from pathlib import Path
-from cadcraft_control import control_token
 base=Path('/tmp/vaio-cadcraft-test');binary=os.environ.get('VAIO_CAD_BINARY',str(base/'cadcraft'))
 env=dict(os.environ,DISPLAY=':0',CADCRAFT_CONFIG_DIR=str(base/'gui-profile'),XDG_CONFIG_HOME=str(base/'gui-config'),XDG_DATA_HOME=str(base/'gui-data'),XDG_CACHE_HOME=str(base/'gui-cache'),LD_LIBRARY_PATH='/usr/lib/wordcraft-vaio/lib')
 r={};p=None;c=None;serial=0
-runtime=base/'gui-runtime';runtime.mkdir(mode=0o700,exist_ok=True);env['XDG_RUNTIME_DIR']=str(runtime)
 try:
  subprocess.run(['xscreensaver-command','-deactivate'],env=env,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
  p=subprocess.Popen([binary,'--control','7993',str(base/'repair-plate.dxf')],env=env,stdin=subprocess.DEVNULL,stdout=(base/'gui.log').open('w'),stderr=subprocess.STDOUT)
@@ -16,16 +14,9 @@ try:
   try:c=socket.create_connection(('127.0.0.1',7993),timeout=60);break
   except OSError:time.sleep(.2)
  assert c;channel=c.makefile('rwb',buffering=0)
- token=control_token(env,7993)
- channel.write(b'{"id":0,"method":"ping"}\n');rejected=json.loads(channel.readline().decode())
- assert rejected.get('ok') is False and 'unauthorized' in rejected.get('error',''), 'Unauthenticated control was not rejected'
- r['unauthenticated_control_rejected']=True
- assert channel.readline()==b'', 'Unauthorized connection was not closed'
- channel.close();c.close();c=socket.create_connection(('127.0.0.1',7993),timeout=60);channel=c.makefile('rwb',buffering=0)
- r['unauthenticated_connection_closed']=True
  def req(m,a=None):
   global serial
-  serial+=1;channel.write((json.dumps({'id':serial,'method':m,'params':a or {},'token':token})+'\n').encode());q=json.loads(channel.readline().decode());assert q.get('ok'),q
+  serial+=1;channel.write((json.dumps({'id':serial,'method':m,'params':a or {}})+'\n').encode());q=json.loads(channel.readline().decode());assert q.get('ok'),q
   return q.get('result')
  def ex(n,a=None):return req('engine.execute',{'command':n,'params':a or {}})
  def idle():

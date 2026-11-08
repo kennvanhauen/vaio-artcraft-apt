@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "package_sha256": "0bf0bd0469da304cac15d435ae2fcf8a0d2379b8a187f9a4d76da85edc04f843",
+  "steps": [
+    "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+    "soundcraft_headless.py",
+    "soundcraft_gui.py"
+  ],
+  "measurements": [
+    {
+      "idle_cpu_percent": 0.0,
+      "rss_kib": 83812,
+      "probe": "soundcraft_gui.py"
+    }
+  ],
+  "version_newer": true,
+  "archive_version_newer": true,
+  "source_revision": "01b39850ad16e84b45904ba07bd5cec7cf96c4b7",
+  "version": "0.13.1~vaio1"
+}

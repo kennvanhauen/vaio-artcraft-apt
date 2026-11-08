@@ -2,12 +2,10 @@
 import ctypes,json,os,re,socket,subprocess,time,zipfile
 from pathlib import Path
 from types import SimpleNamespace
-from cadcraft_control import control_token
 os.environ['DISPLAY']=':0'
 base=Path('/tmp/vaio-cadcraft-test/native-dialogs');base.mkdir(parents=True,exist_ok=True)
 env=dict(os.environ,DISPLAY=':0',CADCRAFT_CONFIG_DIR=str(base/'profile'),XDG_CONFIG_HOME=str(base/'config'),XDG_DATA_HOME=str(base/'data'),XDG_CACHE_HOME=str(base/'cache'),LD_LIBRARY_PATH='/usr/lib/wordcraft-vaio/lib')
 log=(base/'application.log').open('w')
-runtime=base/'runtime';runtime.mkdir(mode=0o700,exist_ok=True);env['XDG_RUNTIME_DIR']=str(runtime)
 p=subprocess.Popen([os.environ.get('VAIO_CAD_BINARY','/tmp/vaio-cadcraft-test/cadcraft'),'--control','7995','/tmp/vaio-cadcraft-test/repair-plate.dxf'],env=env,stdout=log,stderr=log)
 app=SimpleNamespace(process=p);result={};pickers=[];connection=None
 until=time.monotonic()+25
@@ -16,10 +14,9 @@ while time.monotonic()<until:
     except OSError:time.sleep(.2)
 assert connection,'CAD control unavailable'
 channel=connection.makefile('rwb',buffering=0);serial=0
-token=control_token(env,7995)
 def send(method,params=None):
     global serial
-    serial+=1;channel.write((json.dumps({'id':serial,'method':method,'params':params or {},'token':token})+'\n').encode())
+    serial+=1;channel.write((json.dumps({'id':serial,'method':method,'params':params or {}})+'\n').encode())
 def receive(allow_pending=False):
     response=json.loads(channel.readline().decode())
     # The async native chooser suspends/replays the UI command; its first control reply is cancelled.

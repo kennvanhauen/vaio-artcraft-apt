@@ -14,7 +14,7 @@ The applications also have their own desktop-menu entries. These are independent
 | designcraft-vaio | 0.13.0~vaio1 | Three-page styles/images/threading/table/RTF workflow, GUI editing, native/IDML round trip, PDF/PNG/EPUB/PPTX/HTML/text export, parent pages, data merge, native Save As and automatic idle recovery |
 | figcraft-vaio | 0.11.2~vaio1 | Two-screen UI design, auto layout, components/instances, styles/variables, GUI text editing, prototype click navigation/preview, native/SVG/own-FIG round trips, seven exports, native Save As and idle draft recovery |
 | cadcraft-vaio | 0.13.0~vaio1 | Metric 2D drafting, rounded outline, layers, blocks, constraints, dimensions, TEXT/MTEXT, LISP, interactive editing, DXF save/reopen, own DWG round trip, SVG/PNG/PDF, A4 viewport plot, native Save As and autosave |
-| soundcraft-vaio | 0.12.1~vaio2 | Two-track headless editing, independent PCM/FLAC/resampling checks, native Save/Open, overwrite protection, GUI recovery and native ALSA/Pulse playback |
+| soundcraft-vaio | 0.13.1~vaio1 | Two-track headless editing, independent PCM/FLAC/resampling checks, native Save/Open, overwrite protection, GUI recovery and native ALSA/Pulse playback |
 | artcraft-launcher-vaio | 0.6.1~vaio2 | Nine-app APT backend, signed metadata refresh, offline reporting, saved settings and fixed package-operation allowlist |
 
 All nine application engines retain their upstream features. This is a practical

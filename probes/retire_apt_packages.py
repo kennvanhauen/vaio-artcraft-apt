@@ -65,12 +65,10 @@ def apply(path):
     readme=PUBLIC/'README.md'
     readme_text=readme.read_text().replace('Previous packages remain in\nthe pool for rollback.',
         'Previous packages remain available in GitHub Releases for rollback.\nOlder unindexed Pages copies may be retired after verifying downloaded backups;\n[retired-packages.json](retired-packages.json) records their URLs and SHA256 hashes.')
-    guide=(ROOT/'maintenance/README.md').read_bytes()
     # All package, backup and document preflights finish before any tracked file is removed.
     for row in data['files']:subprocess.run(['git','-C',str(PUBLIC),'rm','--',row['filename']],check=True,stdout=subprocess.DEVNULL)
     dump(record,dict(schema=1,files=list(known.values())))
     readme.write_text(readme_text)
-    (PUBLIC/'maintenance/README.md').write_bytes(guide)
     if sha(index)!=data['index_sha256']:raise RuntimeError('Package index unexpectedly changed')
     subprocess.run(['git','-C',str(PUBLIC),'add','retired-packages.json','README.md','maintenance/README.md'],check=True)
     subprocess.run(['git','-C',str(PUBLIC),'commit','-m','Archive unindexed packages in verified GitHub Release backups'],check=True)

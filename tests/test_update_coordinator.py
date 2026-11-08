@@ -195,6 +195,18 @@ class ReleaseGateTests(unittest.TestCase):
     def test_target_runner_has_python35_syntax(self):
         ast.parse((ROOT/'probes/update_target_check.py').read_text(), feature_version=(3, 5))
 
+    def test_public_operator_guide_never_uses_private_root_or_candidate_guide(self):
+        for prefix in (self.root, self.root/'candidate'):
+            (prefix/'maintenance').mkdir(parents=True, exist_ok=True)
+            (prefix/'maintenance/README.md').write_text('PRIVATE session history')
+        public = self.root/'.build/apt-public/maintenance/README.md'
+        public.parent.mkdir(parents=True)
+        public.write_text('Public maintenance instructions')
+        with patch.object(m, 'ROOT', self.root):
+            source = m.public_recipe_source(self.root/'candidate', 'maintenance/README.md')
+        self.assertEqual(source, public)
+        self.assertNotIn('PRIVATE', source.read_text())
+
     def test_fixture_has_three_pages_and_valid_offsets(self):
         path = self.root/'fixture.pdf'; target.fixture_pdf(path)
         data = path.read_bytes()

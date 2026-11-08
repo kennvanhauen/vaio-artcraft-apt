@@ -1,16 +1,16 @@
 --- a/apps/vectorcraft/Cargo.toml
 +++ b/apps/vectorcraft/Cargo.toml
-@@ -15,6 +15,7 @@
+@@ -15,6 +15,7 @@ wgpu = ["eframe/wgpu", "dep:winsafe"]
  accessibility = ["eframe/accesskit"]
  # Build with --no-default-features --features windows7 and the win7 Rust target.
  windows7 = ["eframe/glow"]
 +vaio = ["eframe/glow"]
  
  [dependencies]
- vectorcraft-engine = { workspace = true }
+ vectorcraft-engine = { workspace = true, features = ["bundled-fonts"] }
 --- a/apps/vectorcraft/src/main.rs
 +++ b/apps/vectorcraft/src/main.rs
-@@ -111,12 +111,12 @@
+@@ -125,12 +125,12 @@ impl eframe::App for App {
              discard_marked_text();
          }
      }
@@ -25,7 +25,7 @@
      fn on_exit(&mut self, _gl: Option<&eframe::glow::Context>) {
          file_access::unconfined(|| save_prefs(&self.app));
      }
-@@ -642,7 +642,7 @@
+@@ -750,7 +750,7 @@ fn native_options(custom_titlebar: bool) -> eframe::NativeOptions {
      eframe::NativeOptions {
          viewport: egui::ViewportBuilder::default()
              .with_title("VectorCraft")
@@ -34,7 +34,7 @@
              .with_min_inner_size(window::MIN_SIZE)
              .with_drag_and_drop(true)
              .with_decorations(!custom_titlebar)
-@@ -651,7 +651,7 @@
+@@ -759,7 +759,7 @@ fn native_options(custom_titlebar: bool) -> eframe::NativeOptions {
              .with_title_shown(false)
              .with_icon(app_icon())
              .with_app_id("ai.storyteller.vectorcraft"),

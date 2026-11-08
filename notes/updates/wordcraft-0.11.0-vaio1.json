@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "package_sha256": "05b277ba72de805e575588a63dac6c84034683210ce29dc1a59dfa14c64aea70",
+  "steps": [
+    "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+    "CLI startup without display variables",
+    "wordcraft_smoke.py",
+    "native_dialog_test.py"
+  ],
+  "measurements": [
+    {
+      "probe": "wordcraft_smoke.py",
+      "rss_kib": 103928,
+      "idle_cpu_percent": 0.0
+    }
+  ],
+  "version_newer": true,
+  "archive_version_newer": true,
+  "source_revision": "e31f2f06a5f8004ceaa88f68c00b47908e321aa4",
+  "version": "0.11.0~vaio1"
+}

@@ -8,26 +8,26 @@ Codename: xenial
 Architectures: i386
 Components: main
 Description: Unofficial ArtCraft previews for Ubuntu Xenial i386
-Date: Fri, 23 Oct 2026 23:04:38 GMT
+Date: Sun, 08 Nov 2026 22:10:40 GMT
 MD5Sum:
- c8b93bcb84d8b86b8a7cca35c08a8dfc 8164 main/binary-i386/Packages
- 89ad69627a16f013a9b733660c30a0bd 1707 main/binary-i386/Packages.gz
+ 4022e3ebd92f408d9becd5277346c6ed 8166 main/binary-i386/Packages
+ 9b6492a4c77dde6ecf578d34bfb5346f 1709 main/binary-i386/Packages.gz
  52608ca0ec5dea6c5b78c2850ab09913 51 main/binary-i386/Release
 SHA256:
- dd40a3bd5caf241021622a882dae4405cbc05209a89e8d4c2fc3fa1e31bf74af 8164 main/binary-i386/Packages
- 6c87722d5e75d7c152e3b4dba29bf603c95e533bd7aaa8419eaad9a3e1c6b1f6 1707 main/binary-i386/Packages.gz
+ fb8947174d99c7d9a84029a593f0cf9fd8dc362423c12608e04eb6159fddbbdb 8166 main/binary-i386/Packages
+ 79d4890d41d928242f0c0a1cdae3abe1b35ee619357548df31ff3f0708bd1196 1709 main/binary-i386/Packages.gz
  8b5b8e1eea0817645ced68a21422690999cdb19ab64c6127115c99570dc1d93b 51 main/binary-i386/Release
 -----BEGIN PGP SIGNATURE-----
 
-iQGzBAEBCAAdFiEERBYWxlqrabmW42e9oH8n7A8ST4cFAmrb6AYACgkQoH8n7A8S
-T4fpawv8Ch9W8agGlDqCFoZnx2SQfBe3waE0Sph3vhlb0Xh7oNQDj1kYSxA6U91A
-+eHFKjSneGcUo3l9VxkicQCKxiP0FPTZle8TGRfkf5QnerFjN+u9ErP+evZm8coh
-t3WPCRaSAhkW4jcNqPIy7Fbz1HeAnb5kqQ2QO97bYNOFxaKGAs/h2UlaGS9vpgI6
-KYnZ6nwuJ3oQGHd+2Fs1x4ROF4OjUHV35RrvUR4tKYUxnlNpFB2NRpv5UazCmVb4
-ICqDdsNAR8gkE4sM/LrKZC6A4+2bjiCIlksjNUtYfBNlgLvTJb4PZLkCs2wqaeXd
-e4JpWu7fIVEbohbgMcs6roUdHuCaTzUyF8+9mMvIJqT4GZHPYCev4tSZ8lIV9QjM
-LuXyGrj0/q74RN1bScdWMsZJToCTSSGpn6XY8AKF0B+TZph2yl6gMQLUN03akYIe
-ZHrfxNNQythz11D6hPY3vZkCC/Imp4OWKPUvZoL1kylLaL97mnJtZJoUEOEeHime
-9jd8TPxJ
-=bX59
+iQGzBAEBCAAdFiEERBYWxlqrabmW42e9oH8n7A8ST4cFAmrw82AACgkQoH8n7A8S
+T4fxEwwAsH3I7wtqLyYzIvRwjJc/xpty+y61tN2NieNqoGbHeFdOIYx/TONYLgm2
+xd128wj8gSgtzzh4q97QHClYsItHaOE9jukFpvgblkX7ppVfqJ4IrSUMN5yrbYlt
+6kla8HV5m2w9c7RWzOJFzRIBZZAoBT36l0xvTSVfq/7pyTwL7/8CxUEaIHXkXqYl
+g8O56sB06LMyoQ6b6d0rqX88TwiR0IXoVkmXu+lmpveeCvm+0328zFXPAcqAb1FT
+UHVyPJ8kCmWhIXDJ+sjfrw+m5q9g4uMRT3JN56QVyY7c1GPByklcw9xbpGAscJPH
+PEiPn6AnXv4yu7hoh3typdTENr7DDwJhRaa5YmkQ0UowSJaklCuP72Fr9YZeoa06
+TeC7CP55VmTaw/IezdPNROereX9JxxZ0XUdSTMvB6E6KBS6dNl+Gls6ZoHM0tbBA
+j08zAaaHEpmgWZfkxvK8OImxU9med3SzMEgvXCEFn+MOg+pQYx8DghM/RNLZYopN
+FtyzLBtp
+=hqMg
 -----END PGP SIGNATURE-----

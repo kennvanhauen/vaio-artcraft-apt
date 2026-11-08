@@ -1,6 +1,6 @@
 --- a/Cargo.lock
 +++ b/Cargo.lock
-@@ -927,6 +927,7 @@
+@@ -936,6 +936,7 @@ dependencies = [
   "egui-wgpu",
   "egui-winit",
   "egui_glow",
@@ -10,7 +10,7 @@
   "image",
 --- a/apps/gridcraft/Cargo.toml
 +++ b/apps/gridcraft/Cargo.toml
-@@ -52,3 +52,6 @@
+@@ -53,3 +53,6 @@ objc2-app-kit = { version = "=0.3.2", default-features = false, features = ["std
  [[test]]
  name = "mac_menu_appkit"
  harness = false
@@ -19,7 +19,7 @@
 +eframe = { workspace = true, features = ["glow"] }
 --- a/apps/gridcraft/src/main.rs
 +++ b/apps/gridcraft/src/main.rs
-@@ -57,7 +57,7 @@
+@@ -57,7 +57,7 @@ impl eframe::App for App {
      fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
          self.0.ui(ui);
      }
@@ -28,7 +28,7 @@
          print::finish_pending_jobs();
          save_prefs(&self.0);
          // macOS (#117): end the process here, before eframe tears the window down. AccessKit's
-@@ -190,7 +190,18 @@
+@@ -190,7 +190,18 @@ fn services() -> Services {
              for (label, x) in TYPES.iter().filter(|(_, x)| *x == ext).chain(TYPES.iter().filter(|(_, x)| *x != ext)) {
                  dialog = dialog.add_filter(*label, &[*x]);
              }
@@ -48,7 +48,7 @@
          })),
          open_url: Some(Box::new(|url: &str| open_with_system(url))),
          printers: Some(print::discover()),
-@@ -321,6 +332,13 @@
+@@ -321,6 +332,13 @@ fn main() -> eframe::Result<()> {
          viewport = viewport.with_icon(i);
      }
      let options = eframe::NativeOptions { viewport, ..Default::default() };
@@ -64,12 +64,12 @@
      #[cfg(target_os = "windows")]
 --- a/crates/ui-egui/src/lib.rs
 +++ b/crates/ui-egui/src/lib.rs
-@@ -101,7 +101,7 @@
+@@ -106,7 +106,7 @@ impl Default for UiState {
              ribbon_collapsed: false,
              formula_bar_expanded: false,
              status_bar: true,
 -            animations: true,
 +            animations: !cfg!(all(target_os = "linux", target_arch = "x86")),
              autocomplete: true,
+             autosave: false,
              recent: vec![],
-             keytip_invoke: None,

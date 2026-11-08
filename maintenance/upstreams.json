@@ -8,35 +8,35 @@
       "revision": "e86eacf094fefda1cdb6ba5137a336f29deb5d99",
       "version": "0.10.0~vaio1",
       "package": "cadcraft-vaio",
-      "port_base_revision": "0cc66ad3066e71f2c3d4cacb7de905e79ba1c95b"
+      "port_base_revision": "1fcf654ea8414ea2ef052ca2b3b77411f2026f78"
     },
     "deckcraft": {
       "repo": "storytold/deckcraft",
       "revision": "fe510bdac68118f2c9a714e69d0ff572e3f9a0c7",
       "version": "0.9.0~vaio1",
       "package": "deckcraft-vaio",
-      "port_base_revision": "cb78440a1618e6a2c1df55dd7bff74719685518c"
+      "port_base_revision": "9ec39267931c0163dd5648c879043edcb9603cb8"
     },
     "designcraft": {
       "repo": "storytold/designcraft",
       "revision": "4d62a501c18fb3cf453c6e9f19f15cbc9c558e26",
       "version": "0.11.0~vaio1",
       "package": "designcraft-vaio",
-      "port_base_revision": "ecd7e5d063eb12fa5e61fe61c9b8a77bb3c9110a"
+      "port_base_revision": "dcce40fb8731213c1f8e31cdd23444995afc62ce"
     },
     "figcraft": {
       "repo": "storytold/figcraft",
       "revision": "28de91d9ae72fc7fbc2199ac5ee2c8be237980d5",
       "version": "0.9.0~vaio1",
       "package": "figcraft-vaio",
-      "port_base_revision": "28de91d9ae72fc7fbc2199ac5ee2c8be237980d5"
+      "port_base_revision": "d4a303d4708602a9df1738960852d18b185a616b"
     },
     "gridcraft": {
       "repo": "storytold/gridcraft",
       "revision": "2ebdf164c2c9c536122e0a2cffe79078b5c818ac",
       "version": "0.10.0~vaio1",
       "package": "gridcraft-vaio",
-      "port_base_revision": "c30fa3f1cf324603f3bfc0171689b1d4083b40e5"
+      "port_base_revision": "f86aec12dabc744b5f75e1033f87bfe685e78481"
     },
     "launcher": {
       "repo": "storytold/craft-launcher",
@@ -50,28 +50,28 @@
       "revision": "3e3064532f04fd6ec769c6bd7b2c97464757970e",
       "version": "0.11.0~vaio1",
       "package": "pdfcraft-vaio",
-      "port_base_revision": "98cbd38a8e0f5afe685258aa0fcab0f0012f7a8b"
+      "port_base_revision": "5a78b223871add8e3883856205cc653d741e0e94"
     },
     "soundcraft": {
       "repo": "storytold/soundcraft",
       "revision": "e85a4801e9029c9a1f5ce536b11be65aea832ed8",
       "version": "0.12.1~vaio2",
       "package": "soundcraft-vaio",
-      "port_base_revision": "e85a4801e9029c9a1f5ce536b11be65aea832ed8"
+      "port_base_revision": "01b39850ad16e84b45904ba07bd5cec7cf96c4b7"
     },
     "vectorcraft": {
       "repo": "storytold/vectorcraft",
       "revision": "ad0566943ab9741e6356bbc9b53c3cc09895068d",
       "version": "0.14.0~vaio1",
       "package": "vectorcraft-vaio",
-      "port_base_revision": "a466625c8987550635cda951ebf36e08e1e80a56"
+      "port_base_revision": "43313f9451de7ab5b909801006b8881458f2bf04"
     },
     "wordcraft": {
       "repo": "storytold/wordcraft",
-      "revision": "2e6db0bd88795e80375176c01665cff7dbe2b057",
-      "version": "0.9.0~vaio1",
+      "revision": "e31f2f06a5f8004ceaa88f68c00b47908e321aa4",
+      "version": "0.11.0~vaio1",
       "package": "wordcraft-vaio",
-      "port_base_revision": "2e6db0bd88795e80375176c01665cff7dbe2b057"
+      "port_base_revision": "e31f2f06a5f8004ceaa88f68c00b47908e321aa4"
     }
   }
 }

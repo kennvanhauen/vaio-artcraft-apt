@@ -1,6 +1,6 @@
 --- a/Cargo.lock
 +++ b/Cargo.lock
-@@ -1315,6 +1315,7 @@
+@@ -1313,6 +1313,7 @@ dependencies = [
   "egui-wgpu",
   "egui-winit",
   "egui_glow",
@@ -10,7 +10,7 @@
   "image",
 --- a/apps/deckcraft/Cargo.toml
 +++ b/apps/deckcraft/Cargo.toml
-@@ -31,3 +31,6 @@
+@@ -39,3 +39,6 @@ fmv-macos-events = "=0.1.0"
  
  [target.'cfg(all(unix, not(target_os = "macos")))'.dependencies]
  winit = { version = "0.30", default-features = false, features = ["x11"] }
@@ -19,7 +19,7 @@
 +eframe = { workspace = true, features = ["glow"] }
 --- a/apps/deckcraft/src/main.rs
 +++ b/apps/deckcraft/src/main.rs
-@@ -23,23 +23,40 @@
+@@ -25,6 +25,9 @@ mod graphics;
  mod logging;
  #[cfg(not(target_arch = "wasm32"))]
  mod pasteboard;
@@ -29,22 +29,19 @@
  
  use deckcraft_engine::Session;
  use deckcraft_ui_egui::{Services, SlideApp};
- 
--struct App(SlideApp);
-+struct App(SlideApp, #[cfg(all(target_os = "linux", target_arch = "x86"))] screensaver::Inhibitor);
-+
-+impl App {
-+    fn new(app: SlideApp) -> Self {
-+        Self(
-+            app,
-+            #[cfg(all(target_os = "linux", target_arch = "x86"))]
-+            screensaver::Inhibitor::default(),
-+        )
-+    }
-+}
+@@ -34,6 +37,9 @@ struct App(
+     /// Files opened from Finder and quit requests (see `apple_events`).
+     #[cfg(target_os = "macos")]
+     fmv_macos_events::Inbox,
++    /// VAIO preview: keeps the screensaver away while a slide show runs.
++    #[cfg(all(target_os = "linux", target_arch = "x86"))]
++    screensaver::Inhibitor,
+ );
  
  impl eframe::App for App {
-     fn logic(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+@@ -41,14 +47,18 @@ impl eframe::App for App {
+         #[cfg(target_os = "macos")]
+         apple_events::poll(&self.1, &mut self.0, ctx);
          self.0.logic(ctx);
 +        #[cfg(all(target_os = "linux", target_arch = "x86"))]
 +        self.1.update(self.0.show.is_some());
@@ -54,16 +51,15 @@
      }
      fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
          self.0.ui(ui);
--    }
--    fn on_exit(&mut self) {
 +        #[cfg(all(target_os = "linux", target_arch = "x86"))]
 +        self.1.update(self.0.show.is_some());
-+    }
+     }
+-    fn on_exit(&mut self) {
 +    fn on_exit(&mut self, #[cfg(all(target_os = "linux", target_arch = "x86"))] _gl: Option<&eframe::glow::Context>) {
          save_prefs(&self.0);
          // macOS (#279): end the process here, before eframe tears the window down. AccessKit's
          // macOS adapter subclasses the window's content view and restores its class on teardown;
-@@ -111,7 +128,23 @@
+@@ -120,7 +130,23 @@ fn services() -> Services {
              };
              d.pick_file().map(|p| p.to_string_lossy().to_string())
          })),
@@ -88,7 +84,7 @@
          read: Some(Box::new(|p: &str| std::fs::read(p).map_err(|e| e.to_string()))),
          write: Some(Box::new(|p: &str, b: &[u8]| std::fs::write(p, b).map_err(|e| e.to_string()))),
          clipboard_image: Some(Box::new(pasteboard::image_png)),
-@@ -209,6 +242,11 @@
+@@ -220,6 +246,11 @@ fn main() -> eframe::Result {
              .with_title_shown(false),
          ..Default::default()
      };
@@ -100,25 +96,25 @@
      options.viewport = options.viewport.with_app_id(APP_ID);
      if let Some(icon) = app_icon() {
          options.viewport = options.viewport.with_icon(icon);
-@@ -264,7 +302,7 @@
-             if show {
-                 app.start_show(0, false);
-             }
--            Ok(Box::new(App(app)))
-+            Ok(Box::new(App::new(app)))
+@@ -285,6 +316,8 @@ fn main() -> eframe::Result {
+                 app,
+                 #[cfg(target_os = "macos")]
+                 apple_events.connect(&cc.egui_ctx),
++                #[cfg(all(target_os = "linux", target_arch = "x86"))]
++                screensaver::Inhibitor::default(),
+             )))
          }),
      )
- }
-@@ -278,7 +316,7 @@
-     #[test]
-     fn on_exit_ends_the_process_on_macos() {
-         if std::env::var_os("DECKCRAFT_TEST_ON_EXIT").is_some() {
--            let mut app = App(SlideApp::new(Session::new(), Services::default()));
-+            let mut app = App::new(SlideApp::new(Session::new(), Services::default()));
+@@ -303,6 +336,8 @@ mod tests {
+                 SlideApp::new(Session::new(), Services::default()),
+                 #[cfg(target_os = "macos")]
+                 fmv_macos_events::Inbox::default(),
++                #[cfg(all(target_os = "linux", target_arch = "x86"))]
++                screensaver::Inhibitor::default(),
+             );
              println!("calling on_exit");
              eframe::App::on_exit(&mut app);
-             println!("on_exit returned");
---- a/apps/deckcraft/src/save_names.rs
+--- /dev/null
 +++ b/apps/deckcraft/src/save_names.rs
 @@ -0,0 +1,24 @@
 +//! Keep the chosen format when older Zenity returns a bare save filename.
@@ -145,7 +141,7 @@
 +        assert_eq!(selected_path(Path::new("/tmp/archive.v1/talk"), "draft"), Path::new("/tmp/archive.v1/talk.deckcraft"));
 +    }
 +}
---- a/apps/deckcraft/src/screensaver.rs
+--- /dev/null
 +++ b/apps/deckcraft/src/screensaver.rs
 @@ -0,0 +1,49 @@
 +//! Keep this VAIO's existing XScreenSaver awake only while presenting.
@@ -199,7 +195,7 @@
 +}
 --- a/crates/ui-egui/src/canvas.rs
 +++ b/crates/ui-egui/src/canvas.rs
-@@ -904,8 +904,11 @@
+@@ -1041,8 +1041,11 @@ fn overlays(app: &mut SlideApp, ui: &Ui, painter: &egui::Painter, xf: Xf, t: &To
              painter.line_segment([xf.to_screen(a), xf.to_screen(b)], Stroke::new(if thick { 2.0 } else { 1.0 }, t.caret));
          }
          if !ts.is_range() {
@@ -215,7 +211,7 @@
                  // In the colour of the text being typed: a black caret is lost on a dark slide.
 --- a/crates/ui-egui/src/lib.rs
 +++ b/crates/ui-egui/src/lib.rs
-@@ -296,7 +296,7 @@
+@@ -301,7 +301,7 @@ impl Default for UiState {
              zoom: None,
              sorter_zoom: 1.0,
              recent: vec![],
@@ -224,7 +220,7 @@
              ui_scale: 1.0,
              format_tab: "fill".into(),
              smartart_row: 0,
-@@ -1581,12 +1581,19 @@
+@@ -1632,12 +1632,19 @@ impl SlideApp {
              }
          }
          // AutoRecover: unsaved presentations are written to the recovery folder periodically.
@@ -252,8 +248,8 @@
          // On the web, dropped files can only be read asynchronously: the host reads them and
 --- a/crates/ui-egui/src/show.rs
 +++ b/crates/ui-egui/src/show.rs
-@@ -921,7 +921,11 @@
-     } else if now - show.last_move > 2.5 && !show.reading {
+@@ -1115,7 +1115,11 @@ pub fn ui(app: &mut SlideApp, ui: &mut Ui) {
+     } else if !show.pointer_awake(now) && !show.reading {
          // Idle first: a still pointer hides also over a clickable shape, such as a playing clip.
          ctx.set_cursor_icon(egui::CursorIcon::None);
 -        ctx.request_repaint_after(std::time::Duration::from_millis(500));

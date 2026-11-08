@@ -241,7 +241,9 @@ def build(path):
                         (['sh', 'probes/build-vectorcraft.sh', '--locked', '-p', 'vectorcraft',
                           '--no-default-features', '--features', 'vaio'], {})]
         elif app in ('designcraft', 'figcraft', 'cadcraft', 'soundcraft'):
-            commands = [(['sh', 'probes/build-'+app+'.sh', '--locked'], {app.upper()+'_BUILD': kind})
+            # build-soundcraft.sh pins --locked itself; cargo rejects the flag twice.
+            flags = [] if app == 'soundcraft' else ['--locked']
+            commands = [(['sh', 'probes/build-'+app+'.sh']+flags, {app.upper()+'_BUILD': kind})
                         for kind in ('cli', 'gui')]
         else:
             commands = [(['sh', 'probes/build-'+app+'.sh']+([] if app == 'wordcraft' else ['--locked']), {})]
@@ -426,6 +428,17 @@ def release_gate(root, state):
     return package
 
 
+def public_recipe_source(candidate_root, name):
+    # The local operator guide contains private session policy/history. Keep the
+    # separately maintained public guide in website exports and source archives.
+    if name == 'maintenance/README.md':
+        return ROOT/'.build/apt-public/maintenance/README.md'
+    if name in ('probes/maintain_updates.py', 'probes/retire_apt_packages.py'):
+        return ROOT/name  # Pair current publication/retention gates with current tests.
+    source = candidate_root/name
+    return source if source.is_file() else ROOT/name
+
+
 def stage_public_recipes(candidate_root, destination):
     """Keep the public maintenance checkout usable after a port patch changes."""
     names = read(ROOT/'maintenance/public-files.json')
@@ -436,9 +449,7 @@ def stage_public_recipes(candidate_root, destination):
             raise RuntimeError('Unsafe public recipe path')
         if name == 'maintenance/upstreams.json':
             continue  # Publication writes the advanced baseline separately.
-        source = candidate_root/relative
-        if not source.is_file():
-            source = ROOT/relative
+        source = public_recipe_source(candidate_root, name)
         target = destination/relative
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, target)
@@ -488,9 +499,7 @@ def publish(path):
     source_archive = root/(tag+'-source.tar.gz')
     with tarfile.open(source_archive, 'w:gz') as archive:
         for name in read(ROOT/'maintenance/public-files.json'):
-            path = root/name
-            if not path.exists():
-                path = ROOT/name
+            path = public_recipe_source(root, name)
             archive.add(path, arcname=name)
         archive.add(root/'candidate.json', arcname='candidate.json')
         archive.add(root/'.build'/(state['app']+'-port')/'Cargo.lock', arcname='downstream/Cargo.lock')

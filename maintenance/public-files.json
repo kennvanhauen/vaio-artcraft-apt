@@ -54,6 +54,7 @@
   "probes/build_office_deb.py",
   "probes/build_public_apt.py",
   "probes/cadcraft_gui.py",
+  "probes/cadcraft_control.py",
   "probes/cadcraft_headless.py",
   "probes/cadcraft_installed_checks.py",
   "probes/cadcraft_installed_proof.py",

@@ -1,6 +1,6 @@
 --- a/Cargo.lock
 +++ b/Cargo.lock
-@@ -1076,6 +1076,7 @@
+@@ -1302,6 +1302,7 @@ dependencies = [
   "egui-wgpu",
   "egui-winit",
   "egui_glow",
@@ -10,7 +10,7 @@
   "image",
 --- a/apps/wordcraft/Cargo.toml
 +++ b/apps/wordcraft/Cargo.toml
-@@ -19,7 +19,7 @@
+@@ -19,7 +19,7 @@ wordcraft-fonts = { workspace = true }
  wordcraft-ui-egui = { workspace = true }
  # The control key file's location (shared with the MCP bridge).
  wordcraft-control-key = { workspace = true }
@@ -19,45 +19,22 @@
  egui = { workspace = true }
  serde_json = { workspace = true }
  log = { workspace = true }
-@@ -27,6 +27,12 @@
- [build-dependencies]
+@@ -29,6 +29,12 @@ chrono = { workspace = true }
  # Icon + VERSIONINFO for wordcraft.exe; build.rs only uses it when the target is Windows.
  winresource = "0.1"
-+
+ 
 +[target.'cfg(all(target_os = "linux", target_arch = "x86"))'.dependencies]
 +eframe = { workspace = true, features = ["glow"] }
 +
 +[target.'cfg(not(all(target_os = "linux", target_arch = "x86")))'.dependencies]
 +eframe = { workspace = true, features = ["wgpu"] }
- 
++
  [target.'cfg(target_os = "macos")'.dependencies]
  # Finder double-click, Open With, Dock drops and `open -a WordCraft letter.docx` arrive as a
---- a/apps/wordcraft/src/main.rs
-+++ b/apps/wordcraft/src/main.rs
-@@ -92,7 +92,7 @@
-         self.0.ui(ui);
-         self.3.show(frame);
-     }
--    fn on_exit(&mut self) {
-+    fn on_exit(&mut self, #[cfg(all(target_os = "linux", target_arch = "x86"))] _gl: Option<&eframe::glow::Context>) {
-         print::finish_pending_jobs();
-         save_prefs(&self.0);
-         if let Some(key_file) = &self.2 {
-@@ -381,6 +381,11 @@
-             .with_title_shown(false),
-         ..Default::default()
-     };
-+    #[cfg(all(target_os = "linux", target_arch = "x86"))]
-+    {
-+        options.renderer = eframe::Renderer::Glow;
-+        options.viewport = options.viewport.with_inner_size([1100.0, 650.0]);
-+    }
-     if let Some(icon) = app_icon() {
-         options.viewport = options.viewport.with_icon(icon);
-     }
+ # kAEOpenDocuments Apple event, which winit 0.30 doesn't handle (#27). This audited crate (also used
 --- a/apps/wordcraft/src/file_dialogs.rs
 +++ b/apps/wordcraft/src/file_dialogs.rs
-@@ -33,7 +33,7 @@
+@@ -33,7 +33,7 @@ type Request = (FileDialogRequest, Sender<FileDialogAnswer>);
  pub type Hook = Box<dyn Fn(FileDialogRequest) -> Receiver<FileDialogAnswer>>;
  
  /// A picker's answer, waited for off the UI thread.
@@ -66,7 +43,7 @@
  
  /// Shows the dialogs the app queued; lives in the eframe app, which has the window.
  pub struct Launcher {
-@@ -60,9 +60,14 @@
+@@ -60,9 +60,14 @@ impl Launcher {
      pub fn show(&self, parent: &eframe::Frame) {
          while let Ok((req, answer)) = self.queue.try_recv() {
              // Built here, on the UI thread: macOS shows the panel as a sheet on the window now.
@@ -83,7 +60,7 @@
              let ctx = self.ctx.clone();
              let waiting = std::thread::Builder::new().name("file dialog".into()).spawn(move || {
                  // The pickers only start when first polled: without a system dialog they never do.
-@@ -74,7 +79,7 @@
+@@ -74,7 +79,7 @@ impl Launcher {
                          let picked = pick(picking, unparented, TOO_QUICK);
                          #[cfg(not(all(unix, not(target_os = "macos"))))]
                          let picked: Result<_, String> = Ok(pollster::block_on(picking));
@@ -92,7 +69,7 @@
                      }
                  };
                  let _ = answer.send(picked);
-@@ -89,16 +94,28 @@
+@@ -89,10 +94,10 @@ impl Launcher {
  }
  
  /// The picker for `req` on `dialog`.
@@ -103,8 +80,10 @@
 -        FileDialogRequest::OpenMany { purpose } => Box::pin(async move { open_filters(dialog, &purpose).pick_files().await.unwrap_or_default() }),
 +        FileDialogRequest::Open { purpose } => Box::pin(async move { open_filters(dialog, &purpose).pick_file().await.into_iter().map(|handle| handle.path().to_path_buf()).collect() }),
 +        FileDialogRequest::OpenMany { purpose } => Box::pin(async move { open_filters(dialog, &purpose).pick_files().await.unwrap_or_default().into_iter().map(|handle| handle.path().to_path_buf()).collect() }),
-         FileDialogRequest::Save { name } => {
+         FileDialogRequest::Save { name, dir } => {
              let mut dialog = dialog.set_file_name(name.clone());
+             // Save as Word Template starts in the user templates folder (#2852).
+@@ -102,7 +107,19 @@ fn picker(dialog: rfd::AsyncFileDialog, req: &FileDialogRequest) -> Picking {
              for (label, exts) in save_filters(&name) {
                  dialog = dialog.add_filter(label, &exts);
              }
@@ -125,7 +104,7 @@
          }
      }
  }
-@@ -195,6 +212,16 @@
+@@ -199,6 +216,16 @@ fn on_path(program: &str) -> bool {
      std::env::var_os("PATH").is_some_and(|paths| std::env::split_paths(&paths).any(|dir| dir.join(program).is_file()))
  }
  
@@ -142,7 +121,7 @@
  /// The file types Save As offers: every format the engine saves, with the suggested name's own
  /// format first. rfd makes a filter's first extension the dialog's default, which the Windows,
  /// macOS and Linux panels append to a file name the user typed without one; with no filter at
-@@ -245,7 +272,16 @@
+@@ -249,7 +276,16 @@ fn format_name(ext: &str) -> String {
  
  #[cfg(test)]
  mod tests {
@@ -160,25 +139,54 @@
      use std::time::Duration;
  
      /// #2999: a dialog that "cancels" at once is a portal that failed: asked again without a
---- a/crates/ui-egui/src/control.rs
-+++ b/crates/ui-egui/src/control.rs
-@@ -61,7 +61,12 @@
-         "focused": app.canvas.focused,
-         "title": app.title_stem(),
-         "dirty": app.session.dirty,
--        "perf": {"frameMs": app.frame_ms, "renderMs": app.canvas.render_ms, "layoutMs": app.session.layout().ms},
-+        "perf": {
-+            "frameMs": app.frame_ms, "renderMs": app.canvas.render_ms, "layoutMs": app.session.layout().ms,
-+            "frameNr": ctx.cumulative_frame_nr(),
-+            "repaintCauses": ctx.repaint_causes().iter().map(ToString::to_string).collect::<Vec<_>>(),
-+            "inputEvents": ctx.input(|i| i.raw.events.len()),
-+        },
-     })
- }
- 
+--- a/apps/wordcraft/src/main.rs
++++ b/apps/wordcraft/src/main.rs
+@@ -92,7 +92,7 @@ impl eframe::App for App {
+         self.0.ui(ui);
+         self.3.show(frame);
+     }
+-    fn on_exit(&mut self) {
++    fn on_exit(&mut self, #[cfg(all(target_os = "linux", target_arch = "x86"))] _gl: Option<&eframe::glow::Context>) {
+         print::finish_pending_jobs();
+         self.0.session.finish_recovery();
+         save_prefs(&self.0);
+@@ -385,6 +385,11 @@ fn main() -> eframe::Result {
+             .with_title_shown(false),
+         ..Default::default()
+     };
++    #[cfg(all(target_os = "linux", target_arch = "x86"))]
++    {
++        options.renderer = eframe::Renderer::Glow;
++        options.viewport = options.viewport.with_inner_size([1100.0, 650.0]);
++    }
+     if let Some(icon) = app_icon() {
+         options.viewport = options.viewport.with_icon(icon);
+     }
+--- a/crates/ui-egui/src/canvas.rs
++++ b/crates/ui-egui/src/canvas.rs
+@@ -1641,7 +1641,9 @@ pub fn show(app: &mut WordApp, ui: &mut Ui) {
+                     painter.line_segment(look.bar, Stroke::new(1.5, caret_color.gamma_multiply(look.opacity)));
+                 }
+                 if focused {
+-                    ui.ctx().request_repaint_after(std::time::Duration::from_millis(530 - (since as u64 % 530)));
++                    if !crate::caret_glide::static_caret() {
++                        ui.ctx().request_repaint_after(std::time::Duration::from_millis(530 - (since as u64 % 530)));
++                    }
+                     let cr = Rect::from_min_max(pos2(x, y0), pos2(x + 1.0, y1));
+                     ui.ctx().output_mut(|o| {
+                         o.ime = Some(egui::output::IMEOutput {
+@@ -1714,7 +1716,7 @@ pub fn show(app: &mut WordApp, ui: &mut Ui) {
+                 let color = preedit_color.unwrap_or_else(|| caret_color(app));
+                 painter.line_segment(look.bar, Stroke::new(1.5, color.gamma_multiply(look.opacity)));
+             }
+-            if focused {
++            if focused && !crate::caret_glide::static_caret() {
+                 ui.ctx().request_repaint_after(std::time::Duration::from_millis(530 - (since as u64 % 530)));
+             }
+             // IME candidate window placement.
 --- a/crates/ui-egui/src/caret_glide.rs
 +++ b/crates/ui-egui/src/caret_glide.rs
-@@ -35,6 +35,13 @@
+@@ -35,6 +35,13 @@ use egui::{Pos2, Rect, Ui};
  use crate::WordApp;
  use crate::canvas::Geometry;
  
@@ -192,7 +200,7 @@
  /// How long a glide, and each fade of the blink, takes (seconds).
  pub const GLIDE_SECS: f64 = 0.10;
  /// The caret is on for this long, then off for this long (seconds).
-@@ -349,6 +356,9 @@
+@@ -349,6 +356,9 @@ fn view_key(app: &WordApp, geo: &Geometry) -> u64 {
  /// on-and-off blink says. Returns where and how strongly to draw it. `content_origin` is the scrolled
  /// content's top-left on screen.
  pub fn look(app: &WordApp, ui: &Ui, content_origin: Pos2, geo: &Geometry, target: Bar, shown: bool, since_ms: f64, on: bool) -> Look {
@@ -202,31 +210,25 @@
      // Turned off in Options, Animation effects off (the setting, or the system's under "Use system
      // setting"), or egui's own switch for "no animations": the caret jumps and blinks on and off.
      if !app.ui.caret_animation || !app.animations_on() || ui.style().animation_time <= 0.0 || glide_secs() <= 0.0 {
---- a/crates/ui-egui/src/canvas.rs
-+++ b/crates/ui-egui/src/canvas.rs
-@@ -1498,7 +1498,9 @@
-                     painter.line_segment(look.bar, Stroke::new(1.5, caret_color.gamma_multiply(look.opacity)));
-                 }
-                 if focused {
--                    ui.ctx().request_repaint_after(std::time::Duration::from_millis(530 - (since as u64 % 530)));
-+                    if !crate::caret_glide::static_caret() {
-+                        ui.ctx().request_repaint_after(std::time::Duration::from_millis(530 - (since as u64 % 530)));
-+                    }
-                     let cr = Rect::from_min_max(pos2(x, y0), pos2(x + 1.0, y1));
-                     ui.ctx().output_mut(|o| {
-                         o.ime = Some(egui::output::IMEOutput {
-@@ -1536,7 +1538,7 @@
-             if shown && look.opacity > 0.0 {
-                 painter.line_segment(look.bar, Stroke::new(1.5, caret_color(app).gamma_multiply(look.opacity)));
-             }
--            if focused {
-+            if focused && !crate::caret_glide::static_caret() {
-                 ui.ctx().request_repaint_after(std::time::Duration::from_millis(530 - (since as u64 % 530)));
-             }
-             // IME candidate window placement.
+--- a/crates/ui-egui/src/control.rs
++++ b/crates/ui-egui/src/control.rs
+@@ -61,7 +61,12 @@ pub fn inspect(app: &mut WordApp, ctx: &egui::Context) -> Value {
+         "focused": app.canvas.focused,
+         "title": app.title_stem(),
+         "dirty": app.session.dirty,
+-        "perf": {"frameMs": app.frame_ms, "renderMs": app.canvas.render_ms, "layoutMs": app.session.layout().ms},
++        "perf": {
++            "frameMs": app.frame_ms, "renderMs": app.canvas.render_ms, "layoutMs": app.session.layout().ms,
++            "frameNr": ctx.cumulative_frame_nr(),
++            "repaintCauses": ctx.repaint_causes().iter().map(ToString::to_string).collect::<Vec<_>>(),
++            "inputEvents": ctx.input(|i| i.raw.events.len()),
++        },
+     })
+ }
+ 
 --- a/crates/ui-egui/src/lib.rs
 +++ b/crates/ui-egui/src/lib.rs
-@@ -369,7 +369,7 @@
+@@ -404,7 +404,7 @@ impl Default for UiState {
              theme: theme::Appearance::default(),
              interface_size: theme::InterfaceSize::default(),
              legacy_interface_size: None,

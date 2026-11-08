@@ -1,8 +1,6 @@
-diff --git a/Cargo.lock b/Cargo.lock
-index 848fa2c..5aec3d5 100644
 --- a/Cargo.lock
 +++ b/Cargo.lock
-@@ -1016,6 +1016,7 @@ dependencies = [
+@@ -1083,6 +1083,7 @@ dependencies = [
   "egui-wgpu",
   "egui-winit",
   "egui_glow",
@@ -10,7 +8,7 @@ index 848fa2c..5aec3d5 100644
   "glutin",
   "glutin-winit",
   "image",
-@@ -3727,6 +3728,7 @@ dependencies = [
+@@ -3765,6 +3766,7 @@ dependencies = [
   "serde_json",
   "soundcraft-audio-io",
   "soundcraft-dsp",
@@ -18,19 +16,15 @@ index 848fa2c..5aec3d5 100644
   "soundcraft-mix",
   "soundcraft-model",
   "soundcraft-time",
-diff --git a/apps/soundcraft/Cargo.toml b/apps/soundcraft/Cargo.toml
-index 0f30c7a..5c6dccd 100644
 --- a/apps/soundcraft/Cargo.toml
 +++ b/apps/soundcraft/Cargo.toml
-@@ -34,3 +34,6 @@ winresource = "0.1"
- muda = { version = "0.19.2", default-features = false }
+@@ -35,3 +35,6 @@ winresource = "0.1"
+ muda = { version = "0.21.2", default-features = false }
  objc2 = "0.6"
  objc2-app-kit = { version = "0.3", default-features = false, features = ["NSApplication", "NSResponder"] }
 +
 +[target.'cfg(all(target_os = "linux", target_arch = "x86"))'.dependencies]
 +eframe = { workspace = true, features = ["glow"] }
-diff --git a/apps/soundcraft/src/main.rs b/apps/soundcraft/src/main.rs
-index 808cdef..71cbf8e 100644
 --- a/apps/soundcraft/src/main.rs
 +++ b/apps/soundcraft/src/main.rs
 @@ -92,7 +92,7 @@ impl eframe::App for App {
@@ -42,7 +36,7 @@ index 808cdef..71cbf8e 100644
          self.0.close_autosave();
          save_prefs(&self.0.ui);
          if let Some(logger) = self.1 {
-@@ -246,7 +246,7 @@ fn main() -> eframe::Result {
+@@ -248,7 +248,7 @@ fn main() -> eframe::Result {
      }
  
      let engine = if demo { soundcraft_engine::demo::demo_engine() } else { Engine::default() };
@@ -51,7 +45,7 @@ index 808cdef..71cbf8e 100644
      let mut options = eframe::NativeOptions {
          viewport: egui::ViewportBuilder::default()
              .with_title("SoundCraft")
-@@ -257,6 +257,10 @@ fn main() -> eframe::Result {
+@@ -259,6 +259,10 @@ fn main() -> eframe::Result {
              .with_app_id("ai.storyteller.soundcraft"),
          ..Default::default()
      };
@@ -62,7 +56,7 @@ index 808cdef..71cbf8e 100644
      if let Some(icon) = app_icon() {
          options.viewport = options.viewport.with_icon(icon);
      }
-@@ -304,6 +308,20 @@ fn main() -> eframe::Result {
+@@ -306,6 +310,20 @@ fn main() -> eframe::Result {
      )
  }
  
@@ -83,8 +77,6 @@ index 808cdef..71cbf8e 100644
  /// A saved window size, or the default when the prefs file holds nonsense (NaN, negative, tiny).
  fn sane_window_size([w, h]: [f32; 2]) -> [f32; 2] {
      if w.is_finite() && h.is_finite() && w >= 960.0 && h >= 600.0 { [w.min(16_384.0), h.min(16_384.0)] } else { [1600.0, 1000.0] }
-diff --git a/crates/engine/src/autosave.rs b/crates/engine/src/autosave.rs
-index 01899d2..5b224f1 100644
 --- a/crates/engine/src/autosave.rs
 +++ b/crates/engine/src/autosave.rs
 @@ -25,7 +25,14 @@ const STOPPED: &str = "the autosave thread stopped";
@@ -156,8 +148,8 @@ index 01899d2..5b224f1 100644
  }
  
  /// An open session's autosave folder, locked while the session is open so a later launch can tell
-@@ -427,6 +447,35 @@ mod tests {
-         dir
+@@ -464,6 +484,35 @@ mod tests {
+         std::fs::File::options().write(true).open(path).unwrap().set_modified(then).unwrap();
      }
  
 +    #[test]
@@ -192,8 +184,6 @@ index 01899d2..5b224f1 100644
      fn record(e: &mut Engine, level: f32) {
          let before = e.session_arc();
          let s = e.session_mut();
-diff --git a/crates/playback/Cargo.toml b/crates/playback/Cargo.toml
-index 514879a..df9a134 100644
 --- a/crates/playback/Cargo.toml
 +++ b/crates/playback/Cargo.toml
 @@ -29,6 +29,7 @@ asio = ["cpal/asio"]
@@ -204,163 +194,6 @@ index 514879a..df9a134 100644
  
  [lints]
  workspace = true
-diff --git a/crates/ui-egui/src/dialogs.rs b/crates/ui-egui/src/dialogs.rs
-index d752c16..8957cae 100644
---- a/crates/ui-egui/src/dialogs.rs
-+++ b/crates/ui-egui/src/dialogs.rs
-@@ -295,6 +295,12 @@ fn clear_message(s: &Session, clips: &[ClipId], sources: &[SourceId]) -> Option<
- fn default_dir() -> String {
-     #[cfg(not(target_arch = "wasm32"))]
-     {
-+        #[cfg(all(target_os = "linux", target_arch = "x86"))]
-+        if let Ok(folder) = std::env::var("VAIO_ARTCRAFT_DOCUMENTS")
-+            && std::path::Path::new(&folder).is_dir()
-+        {
-+            return folder;
-+        }
-         std::env::var("HOME").or_else(|_| std::env::var("USERPROFILE")).unwrap_or_else(|_| ".".into())
-     }
-     #[cfg(target_arch = "wasm32")]
-diff --git a/crates/ui-egui/src/edit_window.rs b/crates/ui-egui/src/edit_window.rs
-index 7e24a4c..c4c0664 100644
---- a/crates/ui-egui/src/edit_window.rs
-+++ b/crates/ui-egui/src/edit_window.rs
-@@ -2702,7 +2702,8 @@ fn overlay(app: &mut SoundApp, ui: &mut Ui, tl: Rect, area: Rect) {
-             }
-             *since
-         });
--        let phase = (now - since) * 2.0;
-+        let blink = !cfg!(all(target_os = "linux", target_arch = "x86"));
-+        let phase = if blink { (now - since) * 2.0 } else { 0.0 };
-         if (phase as i64) % 2 == 0 {
-             for (id, r) in &app.edit_layout.rows {
-                 if s.edit.selected_tracks.contains(&TrackId(*id)) {
-@@ -2710,7 +2711,9 @@ fn overlay(app: &mut SoundApp, ui: &mut Ui, tl: Rect, area: Rect) {
-                 }
-             }
-         }
--        ui.ctx().request_repaint_after_secs(((1.0 - phase.fract()) / 2.0) as f32);
-+        if blink {
-+            ui.ctx().request_repaint_after_secs(((1.0 - phase.fract()) / 2.0) as f32);
-+        }
-     }
-     if app.is_playing() {
-         let x = x_of(s, tl, app.position());
-diff --git a/crates/ui-egui/src/lib.rs b/crates/ui-egui/src/lib.rs
-index 3fdd989..0b3e809 100644
---- a/crates/ui-egui/src/lib.rs
-+++ b/crates/ui-egui/src/lib.rs
-@@ -273,6 +273,8 @@ pub struct SoundApp {
-     pub autosave_dir: Option<std::path::PathBuf>,
-     /// Writes the open session's autosaves in the background, once there is something to write.
-     autosaver: Option<soundcraft_engine::autosave::Autosaver>,
-+    /// Lets a failed background save wake a sleeping, event-driven UI.
-+    background_repaint: Option<egui::Context>,
-     /// The document revision last handed to the autosaver (0 once that autosave is stale).
-     autosaved_rev: u64,
-     /// Unsaved work that earlier runs left in the autosave folder, offered for recovery.
-@@ -365,6 +367,7 @@ impl SoundApp {
-             native_menu_bar: false,
-             autosave_dir: None,
-             autosaver: None,
-+            background_repaint: None,
-             autosaved_rev: 0,
-             leftovers: Vec::new(),
-             panic_rev: 0,
-@@ -687,7 +690,11 @@ impl SoundApp {
-     /// Hand the session to the autosaver for its folder under `root`.
-     fn queue_autosave(&mut self, root: std::path::PathBuf) {
-         self.autosaved_rev = self.engine.revision;
--        let w = self.autosaver.get_or_insert_with(|| soundcraft_engine::autosave::Autosaver::new(root));
-+        let repaint = self.background_repaint.clone();
-+        let w = self.autosaver.get_or_insert_with(|| match repaint {
-+            Some(ctx) => soundcraft_engine::autosave::Autosaver::with_error_wake(root, move || ctx.request_repaint()),
-+            None => soundcraft_engine::autosave::Autosaver::new(root),
-+        });
-         w.write(self.engine.session_arc(), self.engine.path.clone(), self.take_plan.clone());
-     }
- 
-@@ -1137,6 +1144,7 @@ impl SoundApp {
-         if ctx.current_pass_index() > 0 {
-             return;
-         }
-+        self.background_repaint = Some(ctx.clone());
-         // Fonts set now take effect next frame, so draw only from the frame after.
-         if !self.fonts_ready {
-             if self.fonts_installed {
-@@ -1150,6 +1158,11 @@ impl SoundApp {
-         let light = theme::wants_light(ctx, self.ui.theme);
-         if self.theme_applied != Some(light) || theme::is_light() != light {
-             theme::apply(ctx, light);
-+            #[cfg(all(target_os = "linux", target_arch = "x86"))]
-+            ctx.global_style_mut(|style| {
-+                style.animation_time = 0.0;
-+                style.visuals.text_cursor.blink = false;
-+            });
-             self.theme_applied = Some(light);
-         }
-         let now = ctx.input(|i| i.time);
-@@ -1191,7 +1204,15 @@ impl SoundApp {
-         // Autosave and the macOS menu bar only run on frames, and plugin editors are native windows egui never hears from.
-         // egui takes its predicted frame time off every delay, so add it back.
-         let editors = self.player.as_ref().is_some_and(Player::any_editor_open);
--        ctx.request_repaint_after_secs(if editors { 0.03 } else { 1.0 } + ctx.input(|i| i.predicted_dt));
-+        if editors || !cfg!(all(target_os = "linux", target_arch = "x86")) {
-+            ctx.request_repaint_after_secs(if editors { 0.03 } else { 1.0 } + ctx.input(|i| i.predicted_dt));
-+        } else if self.autosave_dir.is_some() && self.engine.is_dirty() && !self.engine.transport.recording {
-+            // Change autosaves already run on their worker. Only the two-minute
-+            // plugin-state snapshot needs a timer; failures wake us explicitly.
-+            let elapsed = self.last_autosave.map_or(std::time::Duration::ZERO, |last| last.elapsed());
-+            let due = std::time::Duration::from_secs(120).saturating_sub(elapsed);
-+            ctx.request_repaint_after(due + std::time::Duration::from_secs_f32(ctx.input(|i| i.predicted_dt)));
-+        }
-         control::collect_screenshots(self, ctx);
-     }
- 
-@@ -1265,7 +1286,13 @@ impl SoundApp {
-         dialogs::show(self, &ctx);
-         // Here, not in logic(): a covered or minimized window runs only logic(), with no vsync to pace it.
-         if self.meters_live() {
--            let hz = if self.ui.window == MainWindow::Mix { 60 } else { 30 };
-+            let hz = if cfg!(all(target_os = "linux", target_arch = "x86")) {
-+                12
-+            } else if self.ui.window == MainWindow::Mix {
-+                60
-+            } else {
-+                30
-+            };
-             ctx.request_repaint_after(std::time::Duration::from_millis(1000 / hz));
-         } else if self.meters.values().any(|m| m.level[0] > 0.0001) {
-             ctx.request_repaint_after(std::time::Duration::from_millis(80));
-@@ -1284,6 +1311,8 @@ impl SoundApp {
-             "position": self.position(),
-             "dialog": self.dialogs.open_name(),
-             "frame_ms": self.frame_ms,
-+            "repaint_causes": format!("{:?}", ctx.repaint_causes()),
-+            "cumulative_passes": ctx.cumulative_pass_nr(),
-             "audio_device": self.player.as_ref().map(|p| p.device_name.clone()),
-             "status": self.ui.status,
-         })
-diff --git a/crates/ui-egui/src/panels.rs b/crates/ui-egui/src/panels.rs
-index a208511..c4c3240 100644
---- a/crates/ui-egui/src/panels.rs
-+++ b/crates/ui-egui/src/panels.rs
-@@ -622,10 +622,10 @@ fn about(app: &mut SoundApp, ctx: &egui::Context) {
-             _ => {
-                 ui.label(egui::RichText::new("SoundCraft").font(bold(22.0)));
-                 ui.label(format!("Version {}", env!("CARGO_PKG_VERSION")));
--                ui.label("An open-source digital audio workstation from the ArtCraft team.");
-+                ui.label("VAIO preview based on SoundCraft by the ArtCraft team.");
-                 ui.label("Dual-licensed MIT OR Apache-2.0. Made with Rust and egui.");
-                 ui.hyperlink_to("getartcraft.com/apps/soundcraft", "https://getartcraft.com/apps/soundcraft");
--                ui.hyperlink_to("Join us on Discord", "https://discord.gg/artcraft");
-+                ui.hyperlink_to("Upstream community", "https://discord.gg/artcraft");
-             }
-         }
-     });
-diff --git a/crates/playback/examples/vaio_output.rs b/crates/playback/examples/vaio_output.rs
-new file mode 100644
-index 0000000..6d6d065
 --- /dev/null
 +++ b/crates/playback/examples/vaio_output.rs
 @@ -0,0 +1,85 @@
@@ -449,3 +282,149 @@ index 0000000..6d6d065
 +        }
 +    }
 +}
+--- a/crates/ui-egui/src/dialogs.rs
++++ b/crates/ui-egui/src/dialogs.rs
+@@ -388,6 +388,12 @@ fn clear_message(s: &Session, clips: &[ClipId], sources: &[SourceId]) -> Option<
+ fn default_dir() -> String {
+     #[cfg(not(target_arch = "wasm32"))]
+     {
++        #[cfg(all(target_os = "linux", target_arch = "x86"))]
++        if let Ok(folder) = std::env::var("VAIO_ARTCRAFT_DOCUMENTS")
++            && std::path::Path::new(&folder).is_dir()
++        {
++            return folder;
++        }
+         std::env::var("HOME").or_else(|_| std::env::var("USERPROFILE")).unwrap_or_else(|_| ".".into())
+     }
+     #[cfg(target_arch = "wasm32")]
+--- a/crates/ui-egui/src/edit_window.rs
++++ b/crates/ui-egui/src/edit_window.rs
+@@ -2836,7 +2836,8 @@ fn overlay(app: &mut SoundApp, ui: &mut Ui, tl: Rect, area: Rect) {
+             }
+             *since
+         });
+-        let phase = (now - since) * 2.0;
++        let blink = !cfg!(all(target_os = "linux", target_arch = "x86"));
++        let phase = if blink { (now - since) * 2.0 } else { 0.0 };
+         if (phase as i64) % 2 == 0 {
+             for (id, r) in &app.edit_layout.rows {
+                 if s.edit.selected_tracks.contains(&TrackId(*id)) {
+@@ -2844,7 +2845,9 @@ fn overlay(app: &mut SoundApp, ui: &mut Ui, tl: Rect, area: Rect) {
+                 }
+             }
+         }
+-        ui.ctx().request_repaint_after_secs(((1.0 - phase.fract()) / 2.0) as f32);
++        if blink {
++            ui.ctx().request_repaint_after_secs(((1.0 - phase.fract()) / 2.0) as f32);
++        }
+     }
+     if app.is_playing() {
+         let x = x_of(s, tl, app.position());
+--- a/crates/ui-egui/src/lib.rs
++++ b/crates/ui-egui/src/lib.rs
+@@ -275,6 +275,8 @@ pub struct SoundApp {
+     pub autosave_dir: Option<std::path::PathBuf>,
+     /// Writes the open session's autosaves in the background, once there is something to write.
+     autosaver: Option<soundcraft_engine::autosave::Autosaver>,
++    /// Lets a failed background save wake a sleeping, event-driven UI.
++    background_repaint: Option<egui::Context>,
+     /// The document revision last handed to the autosaver (0 once that autosave is stale).
+     autosaved_rev: u64,
+     /// Unsaved work that earlier runs left in the autosave folder, offered for recovery.
+@@ -398,6 +400,7 @@ impl SoundApp {
+             native_menu_bar: false,
+             autosave_dir: None,
+             autosaver: None,
++            background_repaint: None,
+             autosaved_rev: 0,
+             leftovers: Vec::new(),
+             panic_rev: 0,
+@@ -767,7 +770,11 @@ impl SoundApp {
+     /// Hand the session to the autosaver for its folder under `root`.
+     fn queue_autosave(&mut self, root: std::path::PathBuf) {
+         self.autosaved_rev = self.engine.revision;
+-        let w = self.autosaver.get_or_insert_with(|| soundcraft_engine::autosave::Autosaver::new(root));
++        let repaint = self.background_repaint.clone();
++        let w = self.autosaver.get_or_insert_with(|| match repaint {
++            Some(ctx) => soundcraft_engine::autosave::Autosaver::with_error_wake(root, move || ctx.request_repaint()),
++            None => soundcraft_engine::autosave::Autosaver::new(root),
++        });
+         w.write(self.engine.session_arc(), self.engine.path.clone(), self.take_plan.clone());
+     }
+ 
+@@ -1217,6 +1224,7 @@ impl SoundApp {
+         if ctx.current_pass_index() > 0 {
+             return;
+         }
++        self.background_repaint = Some(ctx.clone());
+         // Fonts set now take effect next frame, so draw only from the frame after.
+         if !self.fonts_ready {
+             if self.fonts_installed {
+@@ -1230,6 +1238,11 @@ impl SoundApp {
+         let light = theme::wants_light(ctx, self.ui.theme);
+         if self.theme_applied != Some(light) || theme::is_light() != light {
+             theme::apply(ctx, light);
++            #[cfg(all(target_os = "linux", target_arch = "x86"))]
++            ctx.global_style_mut(|style| {
++                style.animation_time = 0.0;
++                style.visuals.text_cursor.blink = false;
++            });
+             self.theme_applied = Some(light);
+         }
+         let now = ctx.input(|i| i.time);
+@@ -1272,7 +1285,15 @@ impl SoundApp {
+         // Autosave and the macOS menu bar only run on frames, and plugin editors are native windows egui never hears from.
+         // egui takes its predicted frame time off every delay, so add it back.
+         let editors = self.player.as_ref().is_some_and(Player::any_editor_open);
+-        ctx.request_repaint_after_secs(if editors { 0.03 } else { 1.0 } + ctx.input(|i| i.predicted_dt));
++        if editors || !cfg!(all(target_os = "linux", target_arch = "x86")) {
++            ctx.request_repaint_after_secs(if editors { 0.03 } else { 1.0 } + ctx.input(|i| i.predicted_dt));
++        } else if self.autosave_dir.is_some() && self.engine.is_dirty() && !self.engine.transport.recording {
++            // Change autosaves already run on their worker. Only the two-minute
++            // plugin-state snapshot needs a timer; failures wake us explicitly.
++            let elapsed = self.last_autosave.map_or(std::time::Duration::ZERO, |last| last.elapsed());
++            let due = std::time::Duration::from_secs(120).saturating_sub(elapsed);
++            ctx.request_repaint_after(due + std::time::Duration::from_secs_f32(ctx.input(|i| i.predicted_dt)));
++        }
+         control::collect_screenshots(self, ctx);
+     }
+ 
+@@ -1346,7 +1367,13 @@ impl SoundApp {
+         dialogs::show(self, &ctx);
+         // Here, not in logic(): a covered or minimized window runs only logic(), with no vsync to pace it.
+         if self.meters_live() {
+-            let hz = if self.ui.window == MainWindow::Mix { 60 } else { 30 };
++            let hz = if cfg!(all(target_os = "linux", target_arch = "x86")) {
++                12
++            } else if self.ui.window == MainWindow::Mix {
++                60
++            } else {
++                30
++            };
+             ctx.request_repaint_after(std::time::Duration::from_millis(1000 / hz));
+         } else if self.meters.values().any(|m| m.level[0] > 0.0001) {
+             ctx.request_repaint_after(std::time::Duration::from_millis(80));
+@@ -1365,6 +1392,8 @@ impl SoundApp {
+             "position": self.position(),
+             "dialog": self.dialogs.open_name(),
+             "frame_ms": self.frame_ms,
++            "repaint_causes": format!("{:?}", ctx.repaint_causes()),
++            "cumulative_passes": ctx.cumulative_pass_nr(),
+             "audio_device": self.player.as_ref().map(|p| p.device_name.clone()),
+             "status": self.ui.status,
+         })
+--- a/crates/ui-egui/src/panels.rs
++++ b/crates/ui-egui/src/panels.rs
+@@ -681,10 +681,10 @@ fn about(app: &mut SoundApp, ctx: &egui::Context) {
+             _ => {
+                 ui.label(egui::RichText::new("SoundCraft").font(bold(22.0)));
+                 ui.label(format!("Version {}", env!("CARGO_PKG_VERSION")));
+-                ui.label("An open-source digital audio workstation from the ArtCraft team.");
++                ui.label("VAIO preview based on SoundCraft by the ArtCraft team.");
+                 ui.label("Dual-licensed MIT OR Apache-2.0. Made with Rust and egui.");
+                 ui.hyperlink_to("getartcraft.com/apps/soundcraft", "https://getartcraft.com/apps/soundcraft");
+-                ui.hyperlink_to("Join us on Discord", "https://discord.gg/artcraft");
++                ui.hyperlink_to("Upstream community", "https://discord.gg/artcraft");
+             }
+         }
+     });

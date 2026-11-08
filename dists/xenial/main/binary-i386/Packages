@@ -1,19 +1,3 @@
-Package: wordcraft-vaio
-Version: 0.9.0~vaio1
-Section: editors
-Priority: optional
-Architecture: i386
-Maintainer: VAIO local build <vaio@localhost>
-Installed-Size: 104527
-Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa
-Description: WordCraft preview adapted for the Sony VAIO P and Ubuntu Xenial
- Experimental native 32-bit build with a software-rendering profile and
- a private compatible XCB library. Package-managed application files only.
-Filename: pool/main/wordcraft-vaio_0.9.0~vaio1_i386.deb
-Size: 44528708
-MD5sum: b2d8eae8330c7163bb7326589958bc1c
-SHA256: dbcc55785b73bc5fdc397ec5d69540186d7b8a5b2da222b4f30d3e2849a54203
-
 Package: gridcraft-vaio
 Version: 0.10.0~vaio1
 Architecture: i386
@@ -157,4 +141,20 @@ Filename: pool/main/artcraft-launcher-vaio_0.6.1~vaio2_i386.deb
 Size: 7063300
 MD5sum: c4406bf9100105596c4b9a60a855708e
 SHA256: b2bf34285d878a515485ece08c771009c9e784d457b34d4f79561faafe95f466
+
+Package: wordcraft-vaio
+Version: 0.11.0~vaio1
+Section: editors
+Priority: optional
+Architecture: i386
+Maintainer: VAIO local build <vaio@localhost>
+Installed-Size: 106085
+Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa
+Description: WordCraft preview adapted for the Sony VAIO P and Ubuntu Xenial
+ Experimental native 32-bit build with a software-rendering profile and
+ a private compatible XCB library. Package-managed application files only.
+Filename: pool/main/wordcraft-vaio_0.11.0~vaio1_i386.deb
+Size: 45427396
+MD5sum: f879fc9b3e33cf246bac217d67a0250f
+SHA256: 05b277ba72de805e575588a63dac6c84034683210ce29dc1a59dfa14c64aea70
 

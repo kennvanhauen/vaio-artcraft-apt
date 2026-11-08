@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "package_sha256": "d56f695cdd4b1ba4eb4a80984a45c6b652fc46163dc21048fe490fe28f7687d3",
+  "steps": [
+    "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+    "designcraft_headless.py",
+    "designcraft_gui.py",
+    "designcraft_native_dialogs.py"
+  ],
+  "measurements": [
+    {
+      "idle_cpu_percent": 0.17,
+      "rss_kib": 133284,
+      "probe": "designcraft_gui.py"
+    }
+  ],
+  "version_newer": true,
+  "archive_version_newer": true,
+  "source_revision": "dcce40fb8731213c1f8e31cdd23444995afc62ce",
+  "version": "0.13.0~vaio1"
+}

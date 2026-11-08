@@ -26,8 +26,8 @@
     },
     "figcraft": {
       "repo": "storytold/figcraft",
-      "revision": "28de91d9ae72fc7fbc2199ac5ee2c8be237980d5",
-      "version": "0.9.0~vaio1",
+      "revision": "d4a303d4708602a9df1738960852d18b185a616b",
+      "version": "0.11.2~vaio1",
       "package": "figcraft-vaio",
       "port_base_revision": "d4a303d4708602a9df1738960852d18b185a616b"
     },

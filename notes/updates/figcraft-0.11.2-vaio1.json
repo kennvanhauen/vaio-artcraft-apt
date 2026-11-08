@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "package_sha256": "bfc8c99cbb6ef35b6cc9eedd951685a8d90a293c3f391279f161a2c79cf01b1c",
+  "steps": [
+    "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+    "figcraft_headless.py",
+    "figcraft_gui.py",
+    "figcraft_native_dialogs.py"
+  ],
+  "measurements": [
+    {
+      "rss_kib": 111260,
+      "idle_cpu_percent": 0.0,
+      "probe": "figcraft_gui.py"
+    }
+  ],
+  "version_newer": true,
+  "archive_version_newer": true,
+  "source_revision": "d4a303d4708602a9df1738960852d18b185a616b",
+  "version": "0.11.2~vaio1"
+}

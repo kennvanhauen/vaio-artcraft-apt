@@ -14,22 +14,6 @@ Size: 84746114
 MD5sum: 0c4cc42276878e7149787cd5d53f2364
 SHA256: d47b0d56d4b520c8ac520a369da0229957328a207c87f7c71cf219565fcd5fb0
 
-Package: figcraft-vaio
-Version: 0.9.0~vaio1
-Architecture: i386
-Section: editors
-Priority: optional
-Maintainer: VAIO local build <vaio@localhost>
-Installed-Size: 182353
-Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa, shared-mime-info
-Description: FigCraft preview adapted for Ubuntu Xenial i386 on the Sony VAIO
- Unofficial native 32-bit build using Glow and a private XCB library.
- APT owns application files; existing user documents and settings are retained.
-Filename: pool/main/figcraft-vaio_0.9.0~vaio1_i386.deb
-Size: 63736978
-MD5sum: c146f5955f54d88dc12796279889309a
-SHA256: 0fbe3254b1915d636d48bb7620cbc9e4931a3cff6d6baf4c6280825b4aff962e
-
 Package: cadcraft-vaio
 Version: 0.10.0~vaio1
 Architecture: i386
@@ -157,4 +141,20 @@ Filename: pool/main/designcraft-vaio_0.13.0~vaio1_i386.deb
 Size: 82085280
 MD5sum: 7c1c90924e83ee2dac42cd59efa76560
 SHA256: d56f695cdd4b1ba4eb4a80984a45c6b652fc46163dc21048fe490fe28f7687d3
+
+Package: figcraft-vaio
+Version: 0.11.2~vaio1
+Architecture: i386
+Section: editors
+Priority: optional
+Maintainer: VAIO local build <vaio@localhost>
+Installed-Size: 183935
+Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa, shared-mime-info
+Description: FigCraft preview adapted for Ubuntu Xenial i386 on the Sony VAIO
+ Unofficial native 32-bit build using Glow and a private XCB library.
+ APT owns application files; existing user documents and settings are retained.
+Filename: pool/main/figcraft-vaio_0.11.2~vaio1_i386.deb
+Size: 64214470
+MD5sum: 5f02f436b0813f82e3448ab337aefd39
+SHA256: bfc8c99cbb6ef35b6cc9eedd951685a8d90a293c3f391279f161a2c79cf01b1c
 

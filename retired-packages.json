@@ -168,6 +168,54 @@
       "asset_name": "vectorcraft-vaio_0.13.1.vaio1_i386.deb",
       "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/vectorcraft-0.13.1-vaio1/vectorcraft-vaio_0.13.1.vaio1_i386.deb",
       "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/vectorcraft-0.13.1-vaio1"
+    },
+    {
+      "filename": "pool/main/designcraft-vaio_0.11.0~vaio1_i386.deb",
+      "sha256": "7d22def37b8dc8324386843ca934f08abfa8408956c92c8e6fbff16ef7f11b44",
+      "size": 81493688,
+      "asset_name": "designcraft-vaio_0.11.0.vaio1_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/designcraft-0.11.0-vaio1/designcraft-vaio_0.11.0.vaio1_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/designcraft-0.11.0-vaio1"
+    },
+    {
+      "filename": "pool/main/figcraft-vaio_0.9.0~vaio1_i386.deb",
+      "sha256": "0fbe3254b1915d636d48bb7620cbc9e4931a3cff6d6baf4c6280825b4aff962e",
+      "size": 63736978,
+      "asset_name": "figcraft-vaio_0.9.0.vaio1_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/figcraft-0.9.0-vaio1/figcraft-vaio_0.9.0.vaio1_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/figcraft-0.9.0-vaio1"
+    },
+    {
+      "filename": "pool/main/gridcraft-vaio_0.10.0~vaio1_i386.deb",
+      "sha256": "efa4dedd699aaf4a9bad4464734f2feab56507e7ccb269fb963f089c0cb82a48",
+      "size": 21896556,
+      "asset_name": "gridcraft-vaio_0.10.0.vaio1_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/gridcraft-0.10.0-vaio1/gridcraft-vaio_0.10.0.vaio1_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/gridcraft-0.10.0-vaio1"
+    },
+    {
+      "filename": "pool/main/pdfcraft-vaio_0.11.0~vaio1_i386.deb",
+      "sha256": "310b22ebb6366c775616b63bb63c919e159178bf617bd1f937d8ff53fb709840",
+      "size": 57193102,
+      "asset_name": "pdfcraft-vaio_0.11.0.vaio1_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/pdfcraft-0.11.0-vaio1/pdfcraft-vaio_0.11.0.vaio1_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/pdfcraft-0.11.0-vaio1"
+    },
+    {
+      "filename": "pool/main/vectorcraft-vaio_0.14.0~vaio1_i386.deb",
+      "sha256": "23d46e80b7183ccf32e8c63b862d6ddf2eeca187cc5a03a50013845fb7844dbf",
+      "size": 91192848,
+      "asset_name": "vectorcraft-vaio_0.14.0.vaio1_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/vectorcraft-0.14.0-vaio1/vectorcraft-vaio_0.14.0.vaio1_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/vectorcraft-0.14.0-vaio1"
+    },
+    {
+      "filename": "pool/main/wordcraft-vaio_0.9.0~vaio1_i386.deb",
+      "sha256": "dbcc55785b73bc5fdc397ec5d69540186d7b8a5b2da222b4f30d3e2849a54203",
+      "size": 44528708,
+      "asset_name": "wordcraft-vaio_0.9.0.vaio1_i386.deb",
+      "download_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/download/wordcraft-0.9.0-vaio1/wordcraft-vaio_0.9.0.vaio1_i386.deb",
+      "release_url": "https://github.com/kennvanhauen/vaio-artcraft-apt/releases/tag/wordcraft-0.9.0-vaio1"
     }
   ]
 }

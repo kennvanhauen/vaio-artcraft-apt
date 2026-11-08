@@ -29,12 +29,12 @@ class App:
         self.process = None
         self.serial = 0
 
-    def start(self):
+    def start(self, audio=False):
         subprocess.call(['xscreensaver-command', '-deactivate'], env=self.env,
                         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         log = self.base/('launch-%d.log' % self.serial)
         self.stream = log.open('w')
-        self.process = subprocess.Popen([str(self.binary), '--no-audio', '--control', '0'],
+        self.process = subprocess.Popen([str(self.binary)] + ([] if audio else ['--no-audio']) + ['--control', '0'],
                                         cwd=str(self.base), env=self.env, stdout=self.stream, stderr=self.stream)
         until = time.monotonic()+30
         while time.monotonic() < until:

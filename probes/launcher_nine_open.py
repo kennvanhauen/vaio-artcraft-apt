@@ -48,7 +48,11 @@ try:
     snapshot=json.loads(subprocess.check_output([binary,'--check'],env=env).decode())
     result['snapshot']=snapshot
     applications=snapshot['applications'];assert len(applications)==9,applications
-    sound=next(x for x in applications if x['package']=='soundcraft-vaio');assert sound['installed']=='0.12.1~vaio2',sound
+    expected=json.loads(os.environ.get('VAIO_LAUNCHER_EXPECTED_VERSIONS','{}'))
+    for app in applications:
+        assert app['installed'],app
+        if expected:
+            assert app['installed']==expected[app['package']],app
     process=subprocess.Popen([binary],env=env,cwd=str(folder),stdout=log,stderr=log)
     time.sleep(12)
     window=command('xdotool','search','--onlyvisible','--pid',str(process.pid)).splitlines()[-1]

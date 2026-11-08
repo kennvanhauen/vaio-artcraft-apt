@@ -46,22 +46,6 @@ Size: 45868428
 MD5sum: 50a460be44215c89bb46ad6a5983bf28
 SHA256: 57d9107b142aec81a9a8dac61304202b16a7fd2580e3ef41599952271931ddb6
 
-Package: vectorcraft-vaio
-Version: 0.14.0~vaio1
-Architecture: i386
-Section: graphics
-Priority: optional
-Maintainer: VAIO local build <vaio@localhost>
-Installed-Size: 237353
-Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa, shared-mime-info
-Description: VectorCraft preview adapted for Ubuntu Xenial i386 on the Sony VAIO
- Unofficial native 32-bit build using Glow and a private XCB library.
- APT owns application files; existing user documents and settings are retained.
-Filename: pool/main/vectorcraft-vaio_0.14.0~vaio1_i386.deb
-Size: 91192848
-MD5sum: e6c17658d99e788dafbd5f102eda4e89
-SHA256: 23d46e80b7183ccf32e8c63b862d6ddf2eeca187cc5a03a50013845fb7844dbf
-
 Package: designcraft-vaio
 Version: 0.11.0~vaio1
 Architecture: i386
@@ -157,4 +141,20 @@ Filename: pool/main/gridcraft-vaio_0.12.1~vaio1_i386.deb
 Size: 22820852
 MD5sum: 97813ec4d63b63c707b11b5a1103495c
 SHA256: e8351003ef72bc3979c01018a2a04524ac8d1f2816ce2199a9516916bd37a7c2
+
+Package: vectorcraft-vaio
+Version: 0.17.0~vaio1
+Architecture: i386
+Section: graphics
+Priority: optional
+Maintainer: VAIO local build <vaio@localhost>
+Installed-Size: 244814
+Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa, shared-mime-info
+Description: VectorCraft preview adapted for Ubuntu Xenial i386 on the Sony VAIO
+ Unofficial native 32-bit build using Glow and a private XCB library.
+ APT owns application files; existing user documents and settings are retained.
+Filename: pool/main/vectorcraft-vaio_0.17.0~vaio1_i386.deb
+Size: 93742126
+MD5sum: 27b1ab7677851068fe31af42842158b5
+SHA256: 90489f275c7ddcf71d8dcbc0f69f77243b063f6fafd0091a39b7be1a35f1dfad
 

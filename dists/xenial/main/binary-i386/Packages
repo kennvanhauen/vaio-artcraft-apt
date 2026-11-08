@@ -1,19 +1,3 @@
-Package: cadcraft-vaio
-Version: 0.10.0~vaio1
-Architecture: i386
-Section: editors
-Priority: optional
-Maintainer: VAIO local build <vaio@localhost>
-Installed-Size: 124060
-Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa, shared-mime-info
-Description: CADCraft preview adapted for Ubuntu Xenial i386 on the Sony VAIO
- Unofficial native 32-bit build using Glow and a private XCB library.
- APT owns application files; existing user documents and settings are retained.
-Filename: pool/main/cadcraft-vaio_0.10.0~vaio1_i386.deb
-Size: 45868428
-MD5sum: 50a460be44215c89bb46ad6a5983bf28
-SHA256: 57d9107b142aec81a9a8dac61304202b16a7fd2580e3ef41599952271931ddb6
-
 Package: soundcraft-vaio
 Version: 0.12.1~vaio2
 Architecture: i386
@@ -157,4 +141,20 @@ Filename: pool/main/deckcraft-vaio_0.11.1~vaio1_i386.deb
 Size: 85068224
 MD5sum: 004e7d784828a4d5374e071d591cbf5b
 SHA256: b07571203d8882031edff5e96ff3b4b26758fd3b86b62353a17f41a8b04939d5
+
+Package: cadcraft-vaio
+Version: 0.13.0~vaio1
+Architecture: i386
+Section: editors
+Priority: optional
+Maintainer: VAIO local build <vaio@localhost>
+Installed-Size: 134019
+Depends: zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, libxcursor1, libxext6, libgl1-mesa-glx, libgl1-mesa-dri, libegl1-mesa, shared-mime-info
+Description: CADCraft preview adapted for Ubuntu Xenial i386 on the Sony VAIO
+ Unofficial native 32-bit build using Glow and a private XCB library.
+ APT owns application files; existing user documents and settings are retained.
+Filename: pool/main/cadcraft-vaio_0.13.0~vaio1_i386.deb
+Size: 48604994
+MD5sum: a0d0c9f771c412735b9a698618fe96d9
+SHA256: 0a24fba7ed0a587592558a3b65e616750e4e86f97f336186b02aa68563b89443
 

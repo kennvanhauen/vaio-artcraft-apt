@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "package_sha256": "0a24fba7ed0a587592558a3b65e616750e4e86f97f336186b02aa68563b89443",
+  "steps": [
+    "Xenial dpkg metadata, ELF, manifest hashes and native dependency loading",
+    "cadcraft_headless.py",
+    "cadcraft_gui.py",
+    "cadcraft_native_dialogs.py"
+  ],
+  "measurements": [
+    {
+      "idle_cpu_percent": 0.0,
+      "probe": "cadcraft_gui.py",
+      "rss_kib": 119536
+    }
+  ],
+  "version_newer": true,
+  "archive_version_newer": true,
+  "source_revision": "1fcf654ea8414ea2ef052ca2b3b77411f2026f78",
+  "version": "0.13.0~vaio1"
+}

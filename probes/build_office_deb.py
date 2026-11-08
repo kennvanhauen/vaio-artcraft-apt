@@ -187,11 +187,11 @@ if app in ('deckcraft', 'vectorcraft', 'designcraft', 'figcraft', 'cadcraft'):
         add(doc+'craft-fonts/'+licence,(font_root/licence).read_bytes())
 if app == 'cadcraft':
     used_lock = tomllib.loads((root/'.build/cadcraft-port/Cargo.lock').read_text())
-    if {p['version'] for p in used_lock['package'] if p['name'] == 'acadrust'} != {'0.6.4'}:
+    if {p['version'] for p in used_lock['package'] if p['name'] == 'acadrust'} != {'0.6.5'}:
         raise SystemExit('acadrust changed: review and update the MPL source notice before packaging')
-    dep=next((root/'.build/cargo/registry/src').glob('*/acadrust-0.6.4'))
+    dep=next((root/'.build/cargo/registry/src').glob('*/acadrust-0.6.5'))
     add(doc+'acadrust-MPL-2.0.txt',(dep/'LICENSE').read_bytes())
-    add(doc+'acadrust-SOURCE.txt',b'Unmodified acadrust 0.6.4, Mozilla Public License 2.0.\nCorresponding source: https://crates.io/api/v1/crates/acadrust/0.6.4/download\nRepository: https://github.com/hakanaktt/acadrust\nCrate archive SHA256: 94862189cab6e282ed0433a801a216cd1a712953813284a48fa81c67223e38f6\n')
+    add(doc+'acadrust-SOURCE.txt',b'Unmodified acadrust 0.6.5, Mozilla Public License 2.0.\nCorresponding source: https://crates.io/api/v1/crates/acadrust/0.6.5/download\nRepository: https://github.com/hakanaktt/acadrust\nCrate archive SHA256: 5eaa72520f70eb6f7f09b06f44e1ed0d8fad5fa743364f2c3715c30df962ec7c\n')
 add(doc+'build.json', (json.dumps(metadata, indent=2)+'\n').encode())
 depends = ('zenity, cups-client, libc6 (>= 2.23), libx11-6, libx11-xcb1, libxau6, '
            'libxcb1, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxi6, '

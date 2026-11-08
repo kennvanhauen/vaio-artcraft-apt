@@ -2,13 +2,15 @@
 """Two-phase autosave check; respect the upstream five-minute recovery lease."""
 import json,os,socket,subprocess,sys,time
 from pathlib import Path
+from cadcraft_control import control_token
 base=Path('/tmp/vaio-cadcraft-test');phase=base/'recovery-phase.json';binary=os.environ.get('VAIO_CAD_BINARY',str(base/'cadcraft'));mode=sys.argv[1] if len(sys.argv)>1 else 'snapshot'
 r={};p=None;c=None;serial=0
 profile=base/('recovery-'+str(os.getpid())) if mode=='snapshot' else Path(json.loads(phase.read_text())['profile'])
 profile.mkdir(exist_ok=True)
 env=dict(os.environ,DISPLAY=':0',CADCRAFT_CONFIG_DIR=str(profile),XDG_CONFIG_HOME=str(profile/'config'),XDG_DATA_HOME=str(profile/'data'),XDG_CACHE_HOME=str(profile/'cache'),LD_LIBRARY_PATH='/usr/lib/wordcraft-vaio/lib')
+runtime=profile/'runtime';runtime.mkdir(mode=0o700,exist_ok=True);env['XDG_RUNTIME_DIR']=str(runtime)
 def start():
- global p,c,ch
+ global p,c,ch,token
  subprocess.run(['xscreensaver-command','-deactivate'],env=env,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
  p=subprocess.Popen([binary,'--control','7994'],env=env,stdin=subprocess.DEVNULL,stdout=(profile/'application.log').open('a'),stderr=subprocess.STDOUT)
  until=time.monotonic()+45
@@ -17,9 +19,10 @@ def start():
   try:c=socket.create_connection(('127.0.0.1',7994),timeout=60);break
   except OSError:time.sleep(.2)
  assert c;ch=c.makefile('rwb',buffering=0)
+ token=control_token(env,7994)
 def req(m,a=None):
  global serial
- serial+=1;ch.write((json.dumps({'id':serial,'method':m,'params':a or {}})+'\n').encode());q=json.loads(ch.readline().decode());assert q.get('ok'),q
+ serial+=1;ch.write((json.dumps({'id':serial,'method':m,'params':a or {},'token':token})+'\n').encode());q=json.loads(ch.readline().decode());assert q.get('ok'),q
  return q.get('result')
 def ex(n,a=None):return req('engine.execute',{'command':n,'params':a or {}})
 try:

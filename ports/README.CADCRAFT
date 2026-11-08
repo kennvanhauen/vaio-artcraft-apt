@@ -13,7 +13,10 @@ options, plotting and geometry operations remain incomplete; this is not a full
 Headless: cadcraft-vaio-cli --help
 Example: cadcraft-vaio-cli convert Drawing.dxf Drawing.pdf
 MCP: cadcraft-vaio-cli mcp
-Desktop automation is opt-in with --control PORT, loopback only without auth.
+Desktop automation is opt-in with --control PORT and listens only on loopback.
+From upstream 0.13, each request needs the owner-only session token from
+cadcraft-control-PORT.token in XDG_RUNTIME_DIR (or ~/.cache). The CLI MCP bridge
+reads it automatically when connecting. Ordinary launches create no listener.
 Automation runs with the account's file access; use explicit disposable paths.
 Normal launches start no control/MCP listener.
 
